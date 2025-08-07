@@ -1,2 +1,109 @@
-<h1>Foos App</h1>
-<p>Random number: <%= @random_number %></p>
+<div class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Welcome to USA Foosball</h1>
+      <p>The United States Foosball Association - Promoting the sport of table football across America</p>
+      <div class="hero-buttons">
+        <a href="/begin" class="btn btn-primary">Get Started</a>
+        <a href="/events" class="btn btn-secondary">Find A Club</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="/assets/hero-foosball.jpg" alt="Foosball players in action">
+    </div>
+  </div>
+</div>
+
+<section class="features-section">
+  <div class="container">
+    <h2>Why Choose USA Foosball?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Official Tournaments</h3>
+        <p>Compete in sanctioned tournaments across the country</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Community</h3>
+        <p>Join a passionate community of foosball enthusiasts</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Learn & Improve</h3>
+        <p>Access training resources and coaching programs</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <h3>Rankings & Ratings</h3>
+        <p>Track your progress with our ranking system</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="news-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Latest News</h2>
+      <a href="/news" class="view-all-link">View All News</a>
+    </div>
+    <div class="news-grid">
+      <% @news_articles&.first(3)&.each do |article| %>
+        <article class="news-card">
+          <div class="news-image">
+            <img src="<%= article["image_url"] %>" alt="<%= article["title"] %>">
+          </div>
+          <div class="news-content">
+            <h3><%= article["title"] %></h3>
+            <p class="news-excerpt"><%= article["excerpt"] %></p>
+            <div class="news-meta">
+              <span class="news-date"><%= article["published_at"].strftime("%B %d, %Y") %></span>
+              <a href="/news/<%= article["slug"] %>" class="read-more">Read More</a>
+            </div>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="where-to-play-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Where to Play</h2>
+      <a href="/locations" class="view-all-link">View All Locations</a>
+    </div>
+    <div class="locations-grid">
+      <% @locations&.first(6)&.each do |location| %>
+        <div class="location-card">
+          <div class="location-image">
+            <img src="<%= location["image_url"] %>" alt="<%= location["name"] %>">
+          </div>
+          <div class="location-content">
+            <h3><%= location["name"] %></h3>
+            <p class="location-address"><%= location["address"] %></p>
+            <p class="location-description"><%= location["description"] %></p>
+            <div class="location-meta">
+              <span class="location-type"><%= location["type"] %></span>
+              <a href="/locations/<%= location["id"] %>" class="location-link">View Details</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to Get Started?</h2>
+      <p>Join thousands of players across the United States</p>
+      <div class="cta-buttons">
+        <a href="/membership" class="btn btn-primary">Become a Member</a>
+        <a href="/contact" class="btn btn-outline">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
