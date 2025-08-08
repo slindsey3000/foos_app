@@ -1,0 +1,55 @@
+<div class="articles-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>USA Foosball News</h1>
+      <p>Stay updated with the latest news, tournaments, and community updates</p>
+    </div>
+
+    <% if current_user&.admin? %>
+      <div class="admin-actions">
+        <%= link_to "Create New Article", new_article_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <div class="articles-grid">
+      <% @articles.each do |article| %>
+        <article class="article-card">
+          <% if article.image_url.present? %>
+            <div class="article-image">
+              <%= image_tag article.image_url, alt: article.title %>
+            </div>
+          <% end %>
+          
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="article-date"><%= article.published_at.strftime("%B %d, %Y") %></span>
+              <% if article.featured? %>
+                <span class="featured-badge">Featured</span>
+              <% end %>
+            </div>
+            
+            <h2 class="article-title">
+              <%= link_to article.title, article_path(article.slug) %>
+            </h2>
+            
+            <p class="article-excerpt">
+              <%= truncate(strip_tags(article.content.to_s), length: 150) %>
+            </p>
+            
+            <div class="article-footer">
+              <span class="article-author">By <%= article.author %></span>
+              <%= link_to "Read More", article_path(article.slug), class: "read-more-link" %>
+            </div>
+          </div>
+        </article>
+      <% end %>
+    </div>
+
+    <% if @articles.empty? %>
+      <div class="empty-state">
+        <h3>No articles yet</h3>
+        <p>Check back soon for the latest USA Foosball news and updates!</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,29 +1,7 @@
 class HomeController < ApplicationController
   def index
-    # For now, we'll use placeholder data until models are created
-    @news_articles = [
-      {
-        "title" => "2024 National Championship Announced",
-        "excerpt" => "The USA Foosball Association is excited to announce the 2024 National Championship tournament...",
-        "image_url" => "/assets/news-championship.jpg",
-        "published_at" => Date.current - 2.days,
-        "slug" => "2024-national-championship"
-      },
-      {
-        "title" => "New Training Program Launches",
-        "excerpt" => "We're launching a comprehensive training program for players of all skill levels...",
-        "image_url" => "/assets/news-training.jpg",
-        "published_at" => Date.current - 5.days,
-        "slug" => "new-training-program"
-      },
-      {
-        "title" => "Regional League Updates",
-        "excerpt" => "Updates on regional league standings and upcoming matches across the country...",
-        "image_url" => "/assets/news-league.jpg",
-        "published_at" => Date.current - 1.week,
-        "slug" => "regional-league-updates"
-      }
-    ]
+    # Get real articles from the database
+    @news_articles = Article.published.featured.recent.limit(3)
 
     @locations = [
       {

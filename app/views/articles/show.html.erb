@@ -1,0 +1,41 @@
+<div class="article-page">
+  <div class="container">
+    <article class="article-full">
+      <header class="article-header">
+        <div class="article-meta">
+          <span class="article-date"><%= @article.published_at.strftime("%B %d, %Y") %></span>
+          <span class="article-author">By <%= @article.author %></span>
+          <% if @article.featured? %>
+            <span class="featured-badge">Featured</span>
+          <% end %>
+        </div>
+        
+        <h1 class="article-title"><%= @article.title %></h1>
+      </header>
+
+      <% if @article.image_url.present? %>
+        <div class="article-hero-image">
+          <%= image_tag @article.image_url, alt: @article.title %>
+        </div>
+      <% end %>
+
+      <div class="article-body">
+        <%= @article.content %>
+      </div>
+
+      <footer class="article-footer">
+        <div class="article-actions">
+          <%= link_to "← Back to News", articles_path, class: "btn btn-outline" %>
+          
+          <% if current_user&.admin? %>
+            <%= link_to "Edit Article", edit_article_path(@article.slug), class: "btn btn-secondary" %>
+            <%= link_to "Delete Article", article_path(@article.slug), 
+                method: :delete, 
+                data: { confirm: "Are you sure?" }, 
+                class: "btn btn-danger" %>
+          <% end %>
+        </div>
+      </footer>
+    </article>
+  </div>
+</div>

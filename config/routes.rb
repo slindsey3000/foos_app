@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Articles routes
+  get "news", to: "articles#index"
+  resources :articles, path: "news"
+  
   # Authentication routes
   get "signin", to: "sessions#new"
   post "signin", to: "sessions#create"
