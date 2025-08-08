@@ -1,0 +1,40 @@
+<%= form_with(model: document, local: true, class: "document-form") do |form| %>
+  <% if document.errors.any? %>
+    <div class="error-messages">
+      <h2><%= pluralize(document.errors.count, "error") %> prohibited this document from being saved:</h2>
+      <ul>
+        <% document.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "form-control", required: true, placeholder: "Enter document title" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Describe the document content and purpose..." %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :file_url, "Document URL (AWS S3 or other cloud storage link)" %>
+    <%= form.text_field :file_url, class: "form-control", required: true, placeholder: "https://your-bucket.s3.amazonaws.com/document.pdf" %>
+    <small class="form-text">
+      Upload your document to AWS S3 or another cloud storage service and paste the direct download link here.
+    </small>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :uploaded_by, "Uploaded By" %>
+    <%= form.text_field :uploaded_by, class: "form-control", required: true, value: current_user&.fullname || "", placeholder: "Your name" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", documents_path, class: "btn btn-outline" %>
+  </div>
+<% end %>

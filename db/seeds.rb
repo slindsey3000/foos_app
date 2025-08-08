@@ -11,17 +11,23 @@ shawn_lindsey = User.create!(
   firstname: 'Shawn',
   lastname: 'Lindsey',
   fullname: 'Shawn Lindsey',
-  admin: true
+  admin: true,
+  director: true,
+  about: 'President and founder of USA Foosball Association. Passionate about growing the sport and building a strong community of players across the United States.',
+  image_url: nil
 )
 
 jim_provest = User.create!(
-  username: 'jim_provest',
+  username: 'jim_provost',
   email: 'jim@usafoosball.com',
   password: 'password123',
   firstname: 'Jim',
-  lastname: 'Provest',
-  fullname: 'Jim Provest',
-  admin: true
+  lastname: 'Provost',
+  fullname: 'Jim Provost',
+  admin: true,
+  director: true,
+  about: 'Marketing of USA Foosball Association. Former professional player with over 20 years of experience in tournament organization and player development.',
+  image_url: nil
 )
 
 # Create regular user
@@ -32,7 +38,10 @@ dave_hertzenberg = User.create!(
   firstname: 'Dave',
   lastname: 'Hertzenberg',
   fullname: 'Dave Hertzenberg',
-  admin: false
+  admin: false,
+  director: true,
+  about: 'Board member and regional coordinator for the Midwest. Dedicated to expanding foosball opportunities in local communities and schools.',
+  image_url: nil
 )
 
 puts "Created admin user: #{shawn_lindsey.fullname} (username: #{shawn_lindsey.username}, password: password123)"
@@ -41,7 +50,7 @@ puts "Created regular user: #{dave_hertzenberg.fullname} (username: #{dave_hertz
 
 puts "\nSeed data created successfully!"
 puts "You can now sign in with:"
-puts "- Admin users: shawn_lindsey or jim_provest (password: password123)"
+puts "- Admin users: shawn_lindsey or jim_provost (password: password123)"
 puts "- Regular user: dave_hertzenberg (password: password123)"
 
 # Create test articles
@@ -82,3 +91,36 @@ puts "Created article: #{article3.title}"
 
 puts "\nArticles created successfully!"
 puts "You can now view articles at /news"
+
+# Create test documents
+puts "\nCreating test documents..."
+
+Document.destroy_all
+
+document1 = Document.create!(
+  title: "USA Foosball Official Rules",
+  description: "Complete official rules and regulations for USA Foosball tournaments and competitions. This document covers all aspects of gameplay, scoring, and tournament procedures.",
+  uploaded_by: "Shawn Lindsey",
+  file_url: "https://example.com/documents/usa-foosball-rules.pdf"
+)
+
+document2 = Document.create!(
+  title: "Tournament Registration Form",
+  description: "Official registration form for USA Foosball tournaments. Complete this form to register for upcoming competitions and events.",
+  uploaded_by: "Jim Provost",
+  file_url: "https://example.com/documents/tournament-registration.docx"
+)
+
+document3 = Document.create!(
+  title: "Player Code of Conduct",
+  description: "Standards of behavior and conduct expected from all USA Foosball players, officials, and spectators at tournaments and events.",
+  uploaded_by: "Dave Hertzenberg",
+  file_url: "https://example.com/documents/player-code-of-conduct.pdf"
+)
+
+puts "Created document: #{document1.title}"
+puts "Created document: #{document2.title}"
+puts "Created document: #{document3.title}"
+
+puts "\nDocuments created successfully!"
+puts "You can now view documents at /documents"

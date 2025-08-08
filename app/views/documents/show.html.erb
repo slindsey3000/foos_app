@@ -1,0 +1,62 @@
+<div class="document-show-page">
+  <div class="container">
+    <div class="document-full">
+      <header class="document-header">
+        <div class="document-meta">
+          <span class="document-type-badge"><%= @document.file_type %></span>
+          <span class="document-uploader">Uploaded by <%= @document.uploaded_by %></span>
+          <span class="document-date"><%= @document.created_at.strftime("%B %d, %Y") %></span>
+        </div>
+        
+        <h1 class="document-title"><%= @document.title %></h1>
+      </header>
+
+      <% if @document.description.present? %>
+        <div class="document-description">
+          <h3>Description</h3>
+          <p><%= @document.description %></p>
+        </div>
+      <% end %>
+
+      <div class="document-actions">
+        <a href="<%= @document.file_url %>" target="_blank" class="btn btn-primary">
+          <span class="download-icon">⬇️</span>
+          Download Document
+        </a>
+        
+        <% if current_user&.admin? %>
+          <%= link_to "Edit Document", edit_document_path(@document), class: "btn btn-secondary" %>
+          <%= link_to "Delete Document", document_path(@document), 
+              method: :delete, 
+              data: { confirm: "Are you sure you want to delete this document?" }, 
+              class: "btn btn-danger" %>
+        <% end %>
+        
+        <%= link_to "← Back to Documents", documents_path, class: "btn btn-outline" %>
+      </div>
+
+      <div class="document-info">
+        <h3>Document Information</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <strong>File Type:</strong> <%= @document.file_type %>
+          </div>
+          <div class="info-item">
+            <strong>File Extension:</strong> <%= @document.file_extension %>
+          </div>
+          <div class="info-item">
+            <strong>Uploaded By:</strong> <%= @document.uploaded_by %>
+          </div>
+          <div class="info-item">
+            <strong>Upload Date:</strong> <%= @document.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </div>
+          <% if @document.updated_at != @document.created_at %>
+            <div class="info-item">
+              <strong>Last Updated:</strong> <%= @document.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

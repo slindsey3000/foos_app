@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :documents
+  get "board/index"
   # Articles routes
   get "news", to: "articles#index"
   resources :articles, path: "news"
@@ -10,11 +12,13 @@ Rails.application.routes.draw do
   
   # Admin routes
   namespace :admin do
+    resources :users
     get "dashboard", to: "dashboard#index", as: :dashboard
   end
   
   # Main routes
   get "home/index"
+  get "board", to: "board#index"
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

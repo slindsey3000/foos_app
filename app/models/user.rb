@@ -7,12 +7,17 @@ class User < ApplicationRecord
   validates :lastname, presence: true
   validates :fullname, presence: true
   
-  # Set admin to false by default
-  after_initialize :set_default_admin, if: :new_record?
+  # Set defaults
+  after_initialize :set_defaults, if: :new_record?
+  
+  # Scopes
+  scope :directors, -> { where(director: true) }
+  scope :admins, -> { where(admin: true) }
   
   private
   
-  def set_default_admin
+  def set_defaults
     self.admin ||= false
+    self.director ||= false
   end
 end

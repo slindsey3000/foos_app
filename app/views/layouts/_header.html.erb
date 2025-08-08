@@ -9,8 +9,8 @@
         </div>
       </a>
       <div class="header-auth">
-        <% if session[:user_id] %>
-          <% if current_user&.admin? %>
+        <% if current_user %>
+          <% if current_user.admin? %>
             <span class="welcome-message">Welcome Admin <%= current_user.username %>!</span>
             <a href="/admin/dashboard" class="btn btn-outline">Dashboard</a>
           <% else %>

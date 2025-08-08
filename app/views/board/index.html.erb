@@ -1,0 +1,45 @@
+<div class="board-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Board of Directors</h1>
+      <p>Meet the leadership team of USA Foosball</p>
+    </div>
+
+    <% if @directors.any? %>
+      <div class="directors-grid">
+        <% @directors.each do |director| %>
+          <div class="director-card">
+            <div class="director-image">
+              <div class="director-placeholder">
+                <span><%= director.firstname[0] %><%= director.lastname[0] %></span>
+              </div>
+            </div>
+            
+            <div class="director-content">
+              <h3><%= director.fullname %></h3>
+              <p class="director-role">
+                <% if director.admin? %>
+                  <span class="badge badge-admin">Admin</span>
+                <% end %>
+                <span class="badge badge-director">Director</span>
+              </p>
+              
+              <% if director.about.present? %>
+                <p class="director-bio"><%= director.about %></p>
+              <% end %>
+              
+              <div class="director-contact">
+                <p class="director-email"><%= director.email %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <h3>No Directors Found</h3>
+        <p>Board of Directors information will be available soon.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
