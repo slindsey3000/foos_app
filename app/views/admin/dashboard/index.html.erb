@@ -1,0 +1,142 @@
+<div class="admin-dashboard">
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, <%= current_user.username %>! Manage your USA Foosball platform.</p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3><%= @total_users %></h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-info">
+          <h3><%= @upcoming_tournaments %></h3>
+          <p>Upcoming Tournaments</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-info">
+          <h3><%= @active_clubs %></h3>
+          <p>Active Clubs</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📰</div>
+        <div class="stat-info">
+          <h3><%= @news_articles %></h3>
+          <p>News Articles</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-section">
+      <h2>Quick Actions</h2>
+      <div class="action-grid">
+        <a href="#" class="action-card">
+          <div class="action-icon">📝</div>
+          <h3>Create News Article</h3>
+          <p>Publish updates and announcements</p>
+        </a>
+        
+        <a href="#" class="action-card">
+          <div class="action-icon">🏆</div>
+          <h3>Manage Tournaments</h3>
+          <p>Create and organize tournaments</p>
+        </a>
+        
+        <a href="#" class="action-card">
+          <div class="action-icon">👥</div>
+          <h3>User Management</h3>
+          <p>Manage user accounts and permissions</p>
+        </a>
+        
+        <a href="#" class="action-card">
+          <div class="action-icon">🏢</div>
+          <h3>Club Directory</h3>
+          <p>Manage foosball clubs and locations</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="dashboard-section">
+      <h2>Recent Users</h2>
+      <div class="recent-users">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Admin</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_users.each do |user| %>
+              <tr>
+                <td><%= user.username %></td>
+                <td><%= user.email %></td>
+                <td>
+                  <span class="badge <%= user.admin? ? 'badge-admin' : 'badge-user' %>">
+                    <%= user.admin? ? 'Admin' : 'User' %>
+                  </span>
+                </td>
+                <td><%= user.created_at.strftime("%b %d, %Y") %></td>
+                <td>
+                  <a href="#" class="btn btn-sm btn-outline">Edit</a>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="dashboard-section">
+      <h2>System Overview</h2>
+      <div class="system-stats">
+        <div class="system-card">
+          <h4>User Breakdown</h4>
+          <div class="user-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-label">Admins:</span>
+              <span class="breakdown-value"><%= @admin_users %></span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">Regular Users:</span>
+              <span class="breakdown-value"><%= @regular_users %></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="system-card">
+          <h4>Pending Actions</h4>
+          <div class="pending-actions">
+            <div class="pending-item">
+              <span class="pending-label">Tournament Registrations:</span>
+              <span class="pending-value"><%= @pending_registrations %></span>
+            </div>
+            <div class="pending-item">
+              <span class="pending-label">Club Applications:</span>
+              <span class="pending-value">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

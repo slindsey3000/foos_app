@@ -8,12 +8,18 @@
           <span style="font-size: 0.9rem; color: #6b7280;">The United States Foosball Association</span>
         </div>
       </a>
-      <div class="header-search">
-        <form action="/search" method="get">
-          <label for="search-input">Search for:</label>
-          <input type="search" id="search-input" name="q">
-          <button type="submit">Search</button>
-        </form>
+      <div class="header-auth">
+        <% if session[:user_id] %>
+          <% if current_user&.admin? %>
+            <span class="welcome-message">Welcome Admin <%= current_user.username %>!</span>
+            <a href="/admin/dashboard" class="btn btn-outline">Dashboard</a>
+          <% else %>
+            <span class="welcome-message">Welcome <%= current_user.username %>!</span>
+          <% end %>
+          <a href="/logout" class="btn btn-secondary">Sign Out</a>
+        <% else %>
+          <a href="/signin" class="btn btn-primary">Sign In</a>
+        <% end %>
       </div>
     </div>
   </div>
