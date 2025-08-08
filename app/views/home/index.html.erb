@@ -40,6 +40,7 @@
   </div>
 </section>
 
+<%# 
 <section class="features-section">
   <div class="container">
     <h2>Why Choose USA Foosball?</h2>
@@ -67,26 +68,35 @@
     </div>
   </div>
 </section>
+%>
 
 <section class="where-to-play-section">
   <div class="container">
     <div class="section-header">
       <h2>Where to Play</h2>
-      <a href="/locations" class="view-all-link">View All Locations</a>
+      <a href="/clubs" class="view-all-link">View All Clubs</a>
     </div>
     <div class="locations-grid">
-      <% @locations&.first(6)&.each do |location| %>
+      <% @locations&.first(6)&.each do |club| %>
         <div class="location-card">
           <div class="location-image">
-            <img src="<%= location["image_url"] %>" alt="<%= location["name"] %>">
+            <% if club.image_url.present? %>
+              <%= image_tag club.image_url, alt: club.name %>
+            <% else %>
+              <div class="club-placeholder">
+                <span>🏓</span>
+              </div>
+            <% end %>
           </div>
           <div class="location-content">
-            <h3><%= location["name"] %></h3>
-            <p class="location-address"><%= location["address"] %></p>
-            <p class="location-description"><%= location["description"] %></p>
+            <h3><%= link_to club.name, club_path(club) %></h3>
+            <p class="location-address"><%= club.full_address %></p>
+            <% if club.description.present? %>
+              <p class="location-description"><%= truncate(club.description, length: 100) %></p>
+            <% end %>
             <div class="location-meta">
-              <span class="location-type"><%= location["type"] %></span>
-              <a href="/locations/<%= location["id"] %>" class="location-link">View Details</a>
+              <span class="location-type">Club</span>
+              <a href="<%= club_path(club) %>" class="location-link">View Details</a>
             </div>
           </div>
         </div>

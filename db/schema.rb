@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_08_190225) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_192019) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -62,6 +62,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_190225) do
     t.index ["featured"], name: "index_articles_on_featured"
     t.index ["published_at"], name: "index_articles_on_published_at"
     t.index ["slug"], name: "index_articles_on_slug", unique: true
+  end
+
+  create_table "clubs", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address", null: false
+    t.string "city", null: false
+    t.string "state", null: false
+    t.string "zip_code", null: false
+    t.string "phone"
+    t.string "email"
+    t.string "website"
+    t.string "coordinates"
+    t.text "day_and_time_info"
+    t.text "description"
+    t.string "image_url"
+    t.string "contact_person"
+    t.date "established_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city"], name: "index_clubs_on_city"
+    t.index ["email"], name: "index_clubs_on_email"
+    t.index ["name"], name: "index_clubs_on_name"
+    t.index ["state"], name: "index_clubs_on_state"
+    t.index ["zip_code"], name: "index_clubs_on_zip_code"
   end
 
   create_table "documents", force: :cascade do |t|

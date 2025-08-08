@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :clubs
   resources :documents
   get "board/index"
   # Articles routes

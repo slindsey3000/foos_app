@@ -1,0 +1,90 @@
+<div class="club-show-page">
+  <div class="container">
+    <div class="club-full">
+      <header class="club-header">
+        <div class="club-meta">
+          <% if @club.established_date %>
+            <span class="club-established">Est. <%= @club.established_year %></span>
+          <% end %>
+          <% if @club.contact_person.present? %>
+            <span class="club-contact-person">Contact: <%= @club.contact_person %></span>
+          <% end %>
+        </div>
+        
+        <h1 class="club-title"><%= @club.name %></h1>
+      </header>
+
+      <div class="club-details">
+        <div class="club-main-info">
+          <div class="club-location">
+            <h3>Location</h3>
+            <p class="club-address"><%= @club.full_address %></p>
+            <% if @club.google_maps_url %>
+              <a href="<%= @club.google_maps_url %>" target="_blank" class="btn btn-outline">
+                📍 Get Directions on Google Maps
+              </a>
+            <% end %>
+          </div>
+
+          <div class="club-contact-info">
+            <h3>Contact Information</h3>
+            <div class="contact-grid">
+              <% if @club.phone.present? %>
+                <div class="contact-item">
+                  <strong>Phone:</strong> <%= @club.phone %>
+                </div>
+              <% end %>
+              <% if @club.email.present? %>
+                <div class="contact-item">
+                  <strong>Email:</strong> <a href="mailto:<%= @club.email %>"><%= @club.email %></a>
+                </div>
+              <% end %>
+              <% if @club.website.present? %>
+                <div class="contact-item">
+                  <strong>Website:</strong> <a href="<%= @club.website %>" target="_blank">Visit Website</a>
+                </div>
+              <% end %>
+              <% if @club.contact_person.present? %>
+                <div class="contact-item">
+                  <strong>Contact Person:</strong> <%= @club.contact_person %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <% if @club.day_and_time_info.present? %>
+            <div class="club-schedule">
+              <h3>Playing Times</h3>
+              <p><%= @club.day_and_time_info %></p>
+            </div>
+          <% end %>
+
+          <% if @club.description.present? %>
+            <div class="club-description">
+              <h3>About This Club</h3>
+              <p><%= @club.description %></p>
+            </div>
+          <% end %>
+        </div>
+
+        <% if @club.image_url.present? %>
+          <div class="club-image-large">
+            <%= image_tag @club.image_url, alt: @club.name %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="club-actions">
+        <% if current_user&.admin? %>
+          <%= link_to "Edit Club", edit_club_path(@club), class: "btn btn-secondary" %>
+          <%= link_to "Delete Club", club_path(@club), 
+              method: :delete, 
+              data: { confirm: "Are you sure you want to delete this club?" }, 
+              class: "btn btn-danger" %>
+        <% end %>
+        
+        <%= link_to "← Back to Clubs", clubs_path, class: "btn btn-outline" %>
+      </div>
+    </div>
+  </div>
+</div>

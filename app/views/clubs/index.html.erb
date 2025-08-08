@@ -1,0 +1,89 @@
+<div class="clubs-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Where to Play Foosball</h1>
+      <p>Find foosball clubs and locations near you</p>
+    </div>
+
+    <% if current_user&.admin? %>
+      <div class="admin-actions">
+        <%= link_to "Add New Club", new_club_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <div class="clubs-grid">
+      <% if @clubs.any? %>
+        <% @clubs.each do |club| %>
+          <div class="club-card">
+            <div class="club-image">
+              <% if club.image_url.present? %>
+                <%= image_tag club.image_url, alt: club.name %>
+              <% else %>
+                <div class="club-placeholder">
+                  <span>🏓</span>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="club-content">
+              <h3 class="club-title">
+                <%= link_to club.name, club_path(club) %>
+              </h3>
+              
+              <div class="club-location">
+                <p class="club-address"><%= club.full_address %></p>
+              </div>
+              
+              <% if club.day_and_time_info.present? %>
+                <div class="club-schedule">
+                  <h4>Playing Times</h4>
+                  <p><%= club.day_and_time_info %></p>
+                </div>
+              <% end %>
+              
+              <% if club.description.present? %>
+                <p class="club-description"><%= truncate(club.description, length: 150) %></p>
+              <% end %>
+              
+              <div class="club-contact">
+                <% if club.phone.present? %>
+                  <p class="club-phone">📞 <%= club.phone %></p>
+                <% end %>
+                <% if club.email.present? %>
+                  <p class="club-email">✉️ <%= club.email %></p>
+                <% end %>
+                <% if club.website.present? %>
+                  <p class="club-website">🌐 <a href="<%= club.website %>" target="_blank">Visit Website</a></p>
+                <% end %>
+              </div>
+              
+              <div class="club-actions">
+                <% if club.google_maps_url %>
+                  <a href="<%= club.google_maps_url %>" target="_blank" class="btn btn-sm btn-outline">
+                    📍 Get Directions
+                  </a>
+                <% end %>
+                
+                <% if current_user&.admin? %>
+                  <%= link_to "Edit", edit_club_path(club), class: "btn btn-sm btn-secondary" %>
+                  <%= link_to "Delete", club_path(club), 
+                      method: :delete, 
+                      data: { confirm: "Are you sure you want to delete this club?" }, 
+                      class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <h3>No Clubs Found</h3>
+          <p>Foosball clubs and locations will be added here soon.</p>
+          <% if current_user&.admin? %>
+            <p><%= link_to "Add the first club", new_club_path, class: "btn btn-primary" %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
