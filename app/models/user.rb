@@ -12,8 +12,8 @@ class User < ApplicationRecord
   validates :state, presence: true, on: :create
   validates :zip_code, presence: true, format: { with: /\A\d{5}(-\d{4})?\z/, message: "must be a valid ZIP code" }, on: :create
   validates :level, presence: true, inclusion: { in: %w[Unknown Beginner Rookie Amateur Expert Pro ProMaster] }, on: :create
-  validates :password, length: { minimum: 6 }, if: :password_digest_changed?
-  validates :password_confirmation, presence: true, if: :password_digest_changed?
+  validates :password, length: { minimum: 6 }, if: -> { password.present? }
+  validates :password_confirmation, presence: true, if: -> { password.present? }
   
   # Set defaults
   after_initialize :set_defaults, if: :new_record?

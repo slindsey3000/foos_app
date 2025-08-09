@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="hero-image">
-      <%= image_tag "Hero-image-foosball.jpg", alt: "Professional foosball table with Tornado branding" %>
+      <%= image_tag "Hero-image-foosball.png", alt: "Professional foosball table with Tornado branding" %>
     </div>
   </div>
 </div>
@@ -76,6 +76,23 @@
       <h2>Where to Play</h2>
       <a href="/clubs" class="view-all-link">View All Clubs</a>
     </div>
+    
+    <div class="state-search">
+      <%= form_with url: root_path, method: :get, local: true, class: "state-search-form" do |f| %>
+        <div class="search-input-group">
+          <%= f.text_field :state, placeholder: "Enter state name (e.g., California or CA)", 
+                          class: "state-search-input", 
+                          list: "states-list",
+                          autocomplete: "off" %>
+          <%= f.submit "Find Clubs", class: "btn btn-primary search-btn" %>
+        </div>
+                                <datalist id="states-list">
+                          <% StateHelper::STATES.keys.sort.each do |name| %>
+                            <option value="<%= name %>"></option>
+                          <% end %>
+                        </datalist>
+      <% end %>
+    </div>
     <div class="locations-grid">
       <% @locations&.first(6)&.each do |club| %>
         <div class="location-card">
@@ -84,7 +101,9 @@
               <%= image_tag club.image_url, alt: club.name %>
             <% else %>
               <div class="club-placeholder">
-                <span>🔴</span>
+                <div class="placeholder-content">
+                  <div class="placeholder-icon">📍</div>
+                </div>
               </div>
             <% end %>
           </div>

@@ -5,6 +5,33 @@
       <p>Find foosball clubs and locations near you</p>
     </div>
 
+    <div class="state-search">
+      <%= form_with url: clubs_path, method: :get, local: true, class: "state-search-form" do |f| %>
+        <div class="search-input-group">
+          <%= f.text_field :state, value: @search_query, 
+                          placeholder: "Enter state name (e.g., California or CA)", 
+                          class: "state-search-input", 
+                          list: "states-list",
+                          autocomplete: "off" %>
+          <%= f.submit "Find Clubs", class: "btn btn-primary search-btn" %>
+          <% if @search_query.present? %>
+            <%= link_to "Clear", clubs_path, class: "btn btn-outline clear-btn" %>
+          <% end %>
+        </div>
+                                <datalist id="states-list">
+                          <% StateHelper::STATES.keys.sort.each do |name| %>
+                            <option value="<%= name %>"></option>
+                          <% end %>
+                        </datalist>
+      <% end %>
+      
+      <% if @search_message.present? %>
+        <div class="search-message">
+          <%= @search_message %>
+        </div>
+      <% end %>
+    </div>
+
     <% if current_user&.admin? %>
       <div class="admin-actions">
         <%= link_to "Add New Club", new_club_path, class: "btn btn-primary" %>
@@ -20,7 +47,9 @@
                 <%= image_tag club.image_url, alt: club.name %>
               <% else %>
                 <div class="club-placeholder">
-                  <span>🏓</span>
+                  <div class="placeholder-content">
+                    <div class="placeholder-icon">📍</div>
+                  </div>
                 </div>
               <% end %>
             </div>
@@ -85,5 +114,62 @@
         </div>
       <% end %>
     </div>
+    
+    <% if @has_more %>
+      <div class="load-more-section">
+        <% if @search_query.present? %>
+          <%= link_to "Load More Clubs", clubs_path(state: @search_query, page: (@current_page + 1)), 
+                      class: "btn btn-outline btn-large load-more-btn" %>
+        <% else %>
+          <%= link_to "Load More Clubs", clubs_path(page: (@current_page + 1)), 
+                      class: "btn btn-outline btn-large load-more-btn" %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle load more button clicks
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('load-more-btn')) {
+        e.preventDefault();
+        const btn = e.target;
+        const originalText = btn.textContent;
+        
+        btn.textContent = 'Loading...';
+        btn.disabled = true;
+        
+        fetch(btn.href)
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newClubs = doc.querySelectorAll('.club-card');
+            const clubsGrid = document.querySelector('.clubs-grid');
+            
+            // Append new clubs
+            newClubs.forEach(club => {
+              clubsGrid.appendChild(club);
+            });
+            
+            // Update load more button
+            const newLoadMoreSection = doc.querySelector('.load-more-section');
+            const currentLoadMoreSection = document.querySelector('.load-more-section');
+            
+            if (newLoadMoreSection) {
+              currentLoadMoreSection.innerHTML = newLoadMoreSection.innerHTML;
+            } else {
+              currentLoadMoreSection.remove();
+            }
+          })
+          .catch(error => {
+            console.error('Error loading more clubs:', error);
+            btn.textContent = originalText;
+            btn.disabled = false;
+          });
+      }
+    });
+  });
+</script>

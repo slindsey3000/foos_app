@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :clubs
+  resources :clubs do
+    collection do
+      get :search
+    end
+  end
   resources :documents
   get "board/index"
   # Articles routes
