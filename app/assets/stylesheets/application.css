@@ -2642,10 +2642,22 @@ main {
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
+  /* Hide desktop navigation completely */
   .desktop-nav {
-    display: none;
+    display: none !important;
   }
   
+  /* Hide the main navigation background on mobile */
+  .main-navigation {
+    background-color: transparent;
+    padding: 0;
+  }
+  
+  .main-navigation ul {
+    display: none !important;
+  }
+  
+  /* Show mobile navigation */
   .mobile-nav {
     display: block;
     position: relative;
