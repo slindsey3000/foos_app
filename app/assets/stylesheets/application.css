@@ -2562,29 +2562,37 @@ main {
 }
 
 .mobile-menu {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transform: translateY(-10px);
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transform: translateX(100%);
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .mobile-menu.active {
-  transform: translateY(0);
+  transform: translateX(0);
   opacity: 1;
   visibility: visible;
 }
 
 .mobile-menu ul {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background: white;
   list-style: none;
   margin: 0;
-  padding: 1rem 0;
+  padding: 4rem 0 2rem 0;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
 }
 
 .mobile-menu li {
@@ -2597,10 +2605,11 @@ main {
 
 .mobile-menu a {
   display: block;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2rem;
   color: #333;
   text-decoration: none;
   font-weight: 500;
+  font-size: 1.1rem;
   transition: background-color 0.2s;
 }
 
@@ -2673,9 +2682,14 @@ main {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    position: relative;
   }
   
   /* Make logo/text smaller on mobile */
+  .logo-link {
+    flex: 1;
+  }
+  
   .logo-link h1 {
     font-size: 1.2rem !important;
   }
@@ -2694,9 +2708,12 @@ main {
     display: none !important;
   }
   
-  /* Position mobile nav in header */
+  /* Position mobile nav in top right */
   .mobile-nav {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
     z-index: 1000;
   }
   
