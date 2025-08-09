@@ -8,7 +8,8 @@
           <span style="font-size: 0.9rem; color: #6b7280;">The United States Foosball Association</span>
         </div>
       </a>
-      <div class="header-auth">
+      <!-- Desktop Auth -->
+      <div class="header-auth desktop-only">
         <% if current_user %>
           <% if current_user.admin? %>
             <span class="welcome-message">Welcome Admin <%= current_user.firstname %> <%= current_user.lastname %>!</span>
@@ -23,7 +24,7 @@
         <% end %>
       </div>
       
-      <!-- Simple Mobile Hamburger -->
+      <!-- Mobile Hamburger -->
       <div class="mobile-nav">
         <button class="hamburger-btn" id="hamburger-btn">
           <span class="hamburger-line"></span>

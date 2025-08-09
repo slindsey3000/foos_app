@@ -2634,6 +2634,11 @@ main {
     order: initial !important;
     margin-top: 0 !important;
   }
+  
+  /* Hide mobile nav on desktop */
+  .mobile-nav {
+    display: none !important;
+  }
 }
 
 /* Mobile Responsive Styles */
@@ -2713,12 +2718,12 @@ main {
     height: 40px !important;
   }
   
-  /* Hide desktop auth buttons completely on mobile */
-  .header-auth {
+  /* Hide desktop auth buttons on mobile */
+  .desktop-only {
     display: none !important;
   }
   
-  /* Show mobile nav instead of desktop auth */
+  /* Show mobile nav on mobile */
   .mobile-nav {
     display: block !important;
     position: relative;
