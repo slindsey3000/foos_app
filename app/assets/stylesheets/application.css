@@ -2669,14 +2669,35 @@ main {
   
   /* Header adjustments for mobile */
   .site-header .container {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
   }
   
+  /* Hide desktop auth buttons completely on mobile */
   .header-auth {
-    order: 3;
-    width: 100%;
-    margin-top: 1rem;
-    justify-content: center;
+    display: none !important;
+  }
+  
+  /* Position hamburger on the right */
+  .main-navigation .container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  /* Ensure hamburger is visible */
+  .hamburger-btn {
+    z-index: 1001;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  
+  .hamburger-line {
+    background-color: #333 !important;
   }
   
   /* Hero section mobile adjustments */
