@@ -82,7 +82,8 @@ Article.create!(
   slug: "usa-foosball-championship-2024",
   featured: true,
   published_at: 2.days.ago,
-  content: "<p>We're excited to announce the dates and location for the 2024 USA Foosball Championship...</p>"
+  content: "<p>We're excited to announce the dates and location for the 2024 USA Foosball Championship...</p>",
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
 )
 
 Article.create!(
@@ -91,7 +92,8 @@ Article.create!(
   slug: "new-tournament-rules-2024",
   featured: false,
   published_at: 1.week.ago,
-  content: "<p>Several important rule changes will take effect for the 2024 tournament season...</p>"
+  content: "<p>Several important rule changes will take effect for the 2024 tournament season...</p>",
+  image_url: "https://www.mensjournal.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_618/MTk2MTM2NjcyOTc1OTg4MjI5/mj-618_348_the-party-boy-king-of-foosball.webp"
 )
 
 Article.create!(
@@ -100,7 +102,28 @@ Article.create!(
   slug: "foosball-training-tips-pros",
   featured: true,
   published_at: 3.days.ago,
-  content: "<p>Learn advanced techniques and strategies from professional foosball players...</p>"
+  content: "<p>Learn advanced techniques and strategies from professional foosball players...</p>",
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
+)
+
+Article.create!(
+  title: "Youth Foosball Programs Expanding Nationwide",
+  author: "Youth Program Director",
+  slug: "youth-foosball-programs-expanding",
+  featured: true,
+  published_at: 4.days.ago,
+  content: "<p>USA Foosball is proud to announce the expansion of our youth programs to 15 new cities across the country...</p>",
+  image_url: "https://www.mensjournal.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_618/MTk2MTM2NjcyOTc1OTg4MjI5/mj-618_348_the-party-boy-king-of-foosball.webp"
+)
+
+Article.create!(
+  title: "The Science of Foosball: Physics in Action",
+  author: "Dr. Sarah Chen",
+  slug: "science-of-foosball-physics",
+  featured: false,
+  published_at: 5.days.ago,
+  content: "<p>Ever wondered about the physics behind the perfect foosball shot? Our resident sports scientist breaks down the mechanics...</p>",
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
 )
 
 puts "Created #{Article.count} articles"

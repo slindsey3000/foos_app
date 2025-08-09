@@ -80,17 +80,12 @@
     <div class="state-search">
       <%= form_with url: root_path, method: :get, local: true, class: "state-search-form" do |f| %>
         <div class="search-input-group">
-          <%= f.text_field :state, placeholder: "Enter state name (e.g., California or CA)", 
+                                  <%= f.text_field :state, placeholder: "Enter state name (e.g., California or CA)", 
                           class: "state-search-input", 
-                          list: "states-list",
                           autocomplete: "off" %>
           <%= f.submit "Find Clubs", class: "btn btn-primary search-btn" %>
         </div>
-                                <datalist id="states-list">
-                          <% StateHelper::STATES.keys.sort.each do |name| %>
-                            <option value="<%= name %>"></option>
-                          <% end %>
-                        </datalist>
+        <div class="state-suggestions" id="state-suggestions"></div>
       <% end %>
     </div>
     <div class="locations-grid">
@@ -136,3 +131,104 @@
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const stateNames = <%= StateHelper::STATES.keys.sort.to_json.html_safe %>;
+  
+  const input = document.querySelector('.state-search-input');
+  const suggestionsContainer = document.getElementById('state-suggestions');
+  let currentFocus = -1;
+  
+  if (!input || !suggestionsContainer) return;
+  
+  function handleInputChange() {
+    console.log('Input changed, value:', input.value); // Debug log
+    const value = input.value.trim();
+    closeSuggestions();
+    currentFocus = -1;
+    
+    if (value.length < 1) {
+      console.log('Value too short, returning'); // Debug log
+      return;
+    }
+    
+    const matches = stateNames.filter(state => 
+      state.toLowerCase().startsWith(value.toLowerCase())
+    ).slice(0, 8);
+    
+    console.log('Found matches:', matches); // Debug log
+    
+    if (matches.length > 0) {
+      const dropdown = document.createElement('div');
+      dropdown.className = 'suggestions-dropdown';
+      
+      matches.forEach((match, index) => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        item.textContent = match;
+        item.addEventListener('click', function() {
+          input.value = match;
+          closeSuggestions();
+        });
+        dropdown.appendChild(item);
+      });
+      
+      suggestionsContainer.appendChild(dropdown);
+    }
+  }
+  
+  function setActive(suggestions) {
+    suggestions.forEach((item, index) => {
+      item.classList.toggle('highlighted', index === currentFocus);
+    });
+  }
+  
+  function closeSuggestions() {
+    if (suggestionsContainer) {
+      suggestionsContainer.innerHTML = '';
+    }
+    currentFocus = -1;
+  }
+  
+  // Handle all input events
+  input.addEventListener('input', handleInputChange);
+  input.addEventListener('keyup', handleInputChange);
+  input.addEventListener('paste', function() {
+    setTimeout(handleInputChange, 10);
+  });
+  input.addEventListener('cut', function() {
+    setTimeout(handleInputChange, 10);
+  });
+  
+  input.addEventListener('keydown', function(e) {
+    const suggestions = suggestionsContainer.querySelectorAll('.suggestion-item');
+    
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      currentFocus++;
+      if (currentFocus >= suggestions.length) currentFocus = 0;
+      setActive(suggestions);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = suggestions.length - 1;
+      setActive(suggestions);
+    } else if (e.key === 'Enter') {
+      if (currentFocus > -1 && suggestions[currentFocus]) {
+        e.preventDefault();
+        suggestions[currentFocus].click();
+      }
+    } else if (e.key === 'Escape') {
+      closeSuggestions();
+    }
+  });
+  
+  // Close suggestions when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+      closeSuggestions();
+    }
+  });
+});
+</script>

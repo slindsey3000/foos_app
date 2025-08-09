@@ -64,7 +64,7 @@ article1 = Article.create!(
   author: "Shawn Lindsey",
   published_at: 2.days.ago,
   featured: true,
-  image_url: "https://britfoos.com/wp-content/uploads/2025/02/475154782_1144207341044702_8672012232587329587_n.jpg"
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
 )
 
 article2 = Article.create!(
@@ -73,7 +73,7 @@ article2 = Article.create!(
   author: "Jim Provest",
   published_at: 5.days.ago,
   featured: true,
-  image_url: "https://britfoos.com/wp-content/uploads/2023/02/327900913_8768485673223358_6628759631875715819_n-1200x900.jpeg"
+  image_url: "https://www.mensjournal.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_618/MTk2MTM2NjcyOTc1OTg4MjI5/mj-618_348_the-party-boy-king-of-foosball.webp"
 )
 
 article3 = Article.create!(
@@ -82,12 +82,32 @@ article3 = Article.create!(
   author: "Dave Hertzenberg",
   published_at: 1.week.ago,
   featured: false,
-  image_url: "https://britfoos.com/wp-content/uploads/2025/02/473812784_1136507678481335_7599134555701409039_n-1200x824.jpg"
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
+)
+
+article4 = Article.create!(
+  title: "Professional Player Spotlight: The Rising Stars",
+  content: "<h2>Meet the Next Generation of Foosball Champions</h2><p>Every year, new talent emerges in the competitive foosball scene. This month, we're highlighting three rising stars who are making waves in professional tournaments.</p><h3>Sarah Martinez - West Coast Sensation</h3><p>At just 22 years old, Sarah has already won three regional championships and is quickly becoming known for her lightning-fast defensive plays and strategic offensive moves.</p><h3>Marcus Johnson - Midwest Marvel</h3><p>Marcus brings a unique style to the table, combining traditional techniques with innovative new strategies that have caught many opponents off guard.</p><h3>Elena Rodriguez - East Coast Elite</h3><p>Elena's precision and consistency have earned her a spot in the top 10 national rankings, and she's showing no signs of slowing down.</p>",
+  author: "Tournament Reporter",
+  published_at: 4.days.ago,
+  featured: true,
+  image_url: "https://www.mensjournal.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_618/MTk2MTM2NjcyOTc1OTg4MjI5/mj-618_348_the-party-boy-king-of-foosball.webp"
+)
+
+article5 = Article.create!(
+  title: "Equipment Guide: Choosing Your Perfect Table",
+  content: "<h2>Finding the Right Foosball Table for Your Needs</h2><p>Whether you're setting up a game room at home or outfitting a professional training facility, choosing the right foosball table is crucial for the best playing experience.</p><h3>Tournament-Grade Tables</h3><p>For serious players, tournament-grade tables offer the precision and durability needed for competitive play. Look for features like:</p><ul><li>Solid construction with heavy-duty materials</li><li>Professional-grade rods with proper bearings</li><li>Competition-approved ball design</li><li>Regulation playing surface dimensions</li></ul><h3>Home Recreation Tables</h3><p>For casual players and families, recreational tables provide great entertainment value while being more budget-friendly.</p><p>Remember, the right table can make all the difference in developing your skills and enjoying the game!</p>",
+  author: "Equipment Specialist",
+  published_at: 6.days.ago,
+  featured: false,
+  image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
 )
 
 puts "Created article: #{article1.title}"
 puts "Created article: #{article2.title}"
 puts "Created article: #{article3.title}"
+puts "Created article: #{article4.title}"
+puts "Created article: #{article5.title}"
 
 puts "\nArticles created successfully!"
 puts "You can now view articles at /news"
