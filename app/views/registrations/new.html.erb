@@ -1,0 +1,110 @@
+<div class="signup-container">
+  <div class="signup-form-wrapper">
+    <div class="signup-header">
+      <h1>Become a Member</h1>
+      <p>Join the USA Foosball community and connect with players nationwide</p>
+    </div>
+
+    <% if @user.errors.any? %>
+      <div class="error-messages">
+        <h3><%= pluralize(@user.errors.count, "error") %> prohibited this account from being created:</h3>
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @user, url: signup_path, local: true, class: "signup-form" do |f| %>
+      <div class="form-section">
+        <h3>Account Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <%= f.label :username, "Username*" %>
+            <%= f.text_field :username, required: true, placeholder: "Choose a unique username" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :email, "Email Address*" %>
+            <%= f.email_field :email, required: true, placeholder: "your.email@example.com" %>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <%= f.label :password, "Password*" %>
+            <%= f.password_field :password, required: true, placeholder: "At least 6 characters" %>
+            <small class="form-hint">Must be at least 6 characters long</small>
+          </div>
+          <div class="form-group">
+            <%= f.label :password_confirmation, "Confirm Password*" %>
+            <%= f.password_field :password_confirmation, required: true, placeholder: "Re-enter your password" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Personal Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <%= f.label :firstname, "First Name*" %>
+            <%= f.text_field :firstname, required: true, placeholder: "John" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :lastname, "Last Name*" %>
+            <%= f.text_field :lastname, required: true, placeholder: "Doe" %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :fullname, "Full Name*" %>
+          <%= f.text_field :fullname, required: true, placeholder: "John Doe" %>
+          <small class="form-hint">This will be displayed publicly</small>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <%= f.label :phone, "Phone Number*" %>
+            <%= f.telephone_field :phone, required: true, placeholder: "(555) 123-4567" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :level, "Skill Level*" %>
+            <%= f.select :level, options_for_select(User::SKILL_LEVELS.map { |level| [level.gsub(/([a-z])([A-Z])/, '\1 \2'), level] }), 
+                { prompt: "Select your skill level" }, { required: true, class: "form-select" } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Address Information</h3>
+        <div class="form-group">
+          <%= f.label :address, "Street Address*" %>
+          <%= f.text_field :address, required: true, placeholder: "123 Main Street" %>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <%= f.label :city, "City*" %>
+            <%= f.text_field :city, required: true, placeholder: "Your City" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :state, "State*" %>
+            <%= f.text_field :state, required: true, placeholder: "CA", maxlength: 2 %>
+            <small class="form-hint">2-letter state code</small>
+          </div>
+          <div class="form-group">
+            <%= f.label :zip_code, "ZIP Code*" %>
+            <%= f.text_field :zip_code, required: true, placeholder: "12345", pattern: "[0-9]{5}(-[0-9]{4})?" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Create My Account", class: "btn btn-primary btn-large" %>
+        <p class="signin-link">
+          Already have an account? <%= link_to "Sign In", signin_path %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

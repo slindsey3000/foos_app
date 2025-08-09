@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   post "signin", to: "sessions#create"
   get "logout", to: "sessions#destroy"
   
+  # Registration routes
+  get "signup", to: "registrations#new"
+  post "signup", to: "registrations#create"
+  
   # Admin routes
   namespace :admin do
     resources :users

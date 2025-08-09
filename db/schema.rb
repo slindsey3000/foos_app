@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_08_192019) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_09_161639) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -112,6 +112,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_192019) do
     t.boolean "director", default: false
     t.text "about"
     t.string "image_url"
+    t.string "phone"
+    t.string "address"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.string "level"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
