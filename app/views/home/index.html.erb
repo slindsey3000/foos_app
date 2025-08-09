@@ -5,6 +5,9 @@
       <p>The United States Foosball Association - Promoting the sport across America</p>
       <div class="hero-buttons">
         <a href="/clubs" class="btn btn-primary">Find A Club</a>
+        <% unless current_user %>
+          <a href="/signup" class="btn btn-secondary mobile-only-btn">Become a Member</a>
+        <% end %>
       </div>
     </div>
     <div class="hero-image">
