@@ -18,6 +18,9 @@ class User < ApplicationRecord
   # Set defaults
   after_initialize :set_defaults, if: :new_record?
   
+  # Normalize email to lowercase before saving
+  before_save :normalize_email
+  
   # Scopes
   scope :directors, -> { where(director: true) }
   scope :admins, -> { where(admin: true) }
@@ -46,5 +49,9 @@ class User < ApplicationRecord
     self.admin ||= false
     self.director ||= false
     self.level ||= 'Unknown'
+  end
+  
+  def normalize_email
+    self.email = email.downcase.strip if email.present?
   end
 end

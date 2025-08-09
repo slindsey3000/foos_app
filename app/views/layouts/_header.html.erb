@@ -11,12 +11,12 @@
       <div class="header-auth">
         <% if current_user %>
           <% if current_user.admin? %>
-            <span class="welcome-message">Welcome Admin <%= current_user.username %>!</span>
-            <a href="/admin/dashboard" class="btn btn-outline">Dashboard</a>
+            <span class="welcome-message">Welcome Admin <%= current_user.firstname %> <%= current_user.lastname %>!</span>
+            <%= link_to "Dashboard", admin_dashboard_path, class: "btn btn-outline" %>
           <% else %>
-            <span class="welcome-message">Welcome <%= current_user.username %>!</span>
+            <span class="welcome-message">Welcome <%= current_user.firstname %> <%= current_user.lastname %>!</span>
           <% end %>
-          <a href="/logout" class="btn btn-secondary">Sign Out</a>
+          <%= link_to "Sign Out", logout_path, data: { method: :delete, confirm: "Are you sure you want to sign out?" }, class: "btn btn-secondary" %>
         <% else %>
           <a href="/signup" class="btn btn-primary">Become a Member</a>
           <a href="/signin" class="btn btn-outline">Sign In</a>

@@ -15,8 +15,8 @@ puts "Creating test users..."
 
 # Create users through normal Rails methods
 admin_user = User.create!(
-  username: "admin",
-  email: "admin@usafoosball.com", 
+  username: "Superstar3000",
+  email: "slindsey3000@gmail.com", 
   password: "password",
   password_confirmation: "password",
   firstname: "Shawn",
@@ -34,14 +34,14 @@ admin_user = User.create!(
 )
 
 director_user = User.create!(
-  username: "jim_provost",
-  email: "jim@usafoosball.com",
+  username: "ILoveProduce",
+  email: "jamesprovost44@gmail.com",
   password: "password", 
   password_confirmation: "password",
   firstname: "Jim",
   lastname: "Provost",
   fullname: "Jim Provost",
-  admin: false,
+  admin: true,
   director: true,
   about: "Executive Director and tournament organizer. Dedicated to growing the sport across America.",
   phone: "(555) 234-5678",

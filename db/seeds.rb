@@ -5,8 +5,8 @@ User.destroy_all
 
 # Create admin users
 shawn_lindsey = User.create!(
-  username: 'shawn_lindsey',
-  email: 'shawn@usafoosball.com',
+  username: 'Superstar3000',
+  email: 'slindsey3000@gmail.com',
   password: 'password123',
   firstname: 'Shawn',
   lastname: 'Lindsey',
@@ -18,8 +18,8 @@ shawn_lindsey = User.create!(
 )
 
 jim_provest = User.create!(
-  username: 'jim_provost',
-  email: 'jim@usafoosball.com',
+  username: 'ILoveProduce',
+  email: 'jamesprovost44@gmail.com',
   password: 'password123',
   firstname: 'Jim',
   lastname: 'Provost',
@@ -50,7 +50,7 @@ puts "Created regular user: #{dave_hertzenberg.fullname} (username: #{dave_hertz
 
 puts "\nSeed data created successfully!"
 puts "You can now sign in with:"
-puts "- Admin users: shawn_lindsey or jim_provost (password: password123)"
+puts "- Admin users: Superstar3000 or ILoveProduce (password: password123)"
 puts "- Regular user: dave_hertzenberg (password: password123)"
 
 # Create test articles

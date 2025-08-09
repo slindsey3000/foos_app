@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Authentication routes
   get "signin", to: "sessions#new"
   post "signin", to: "sessions#create"
+  delete "logout", to: "sessions#destroy"
   get "logout", to: "sessions#destroy"
   
   # Registration routes
