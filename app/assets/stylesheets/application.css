@@ -2585,12 +2585,12 @@ main {
   position: absolute;
   top: 0;
   right: 0;
-  width: 250px;
+  width: 280px;
   height: 100%;
   background: white;
   list-style: none;
   margin: 0;
-  padding: 4rem 0 2rem 0;
+  padding: 1rem 0 2rem 0;
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
 }
@@ -2615,6 +2615,26 @@ main {
 
 .mobile-menu a:hover {
   background-color: #f3f4f6;
+}
+
+.mobile-auth-divider {
+  height: 1px;
+  background-color: #d1d5db;
+  margin: 1rem 0;
+  border: none;
+}
+
+.mobile-auth-link {
+  background-color: #2563eb !important;
+  color: white !important;
+  margin: 0.5rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.mobile-auth-link:hover {
+  background-color: #1d4ed8 !important;
 }
 
 .mobile-signup-btn {
