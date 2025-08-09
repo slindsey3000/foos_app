@@ -31,6 +31,9 @@
           <span class="hamburger-line"></span>
         </button>
         <div class="mobile-menu" id="mobile-menu">
+          <div class="mobile-menu-header">
+            <button class="mobile-close-btn" id="mobile-close-btn">&times;</button>
+          </div>
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/news">News</a></li>
@@ -64,40 +67,53 @@
     document.addEventListener('DOMContentLoaded', function() {
       const hamburgerBtn = document.getElementById('hamburger-btn');
       const mobileMenu = document.getElementById('mobile-menu');
+      const closeBtn = document.getElementById('mobile-close-btn');
+      
+      function closeMenu() {
+        hamburgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
+      
+      function openMenu() {
+        hamburgerBtn.classList.add('active');
+        mobileMenu.classList.add('active');
+      }
       
       if (hamburgerBtn && mobileMenu) {
         // Hamburger click handler
         hamburgerBtn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          hamburgerBtn.classList.toggle('active');
-          mobileMenu.classList.toggle('active');
-        });
-        
-        // Close menu when clicking on the dark overlay
-        mobileMenu.addEventListener('click', function(e) {
-          if (e.target === mobileMenu) {
-            hamburgerBtn.classList.remove('active');
-            mobileMenu.classList.remove('active');
+          if (mobileMenu.classList.contains('active')) {
+            closeMenu();
+          } else {
+            openMenu();
           }
         });
+        
+        // Close button handler
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMenu();
+          });
+        }
         
         // Close menu when clicking a navigation link
         const menuLinks = mobileMenu.querySelectorAll('a');
         menuLinks.forEach(function(link) {
           link.addEventListener('click', function() {
-            hamburgerBtn.classList.remove('active');
-            mobileMenu.classList.remove('active');
+            closeMenu();
           });
         });
         
-        // Prevent clicks on menu content from closing menu
-        const menuContent = mobileMenu.querySelector('ul');
-        if (menuContent) {
-          menuContent.addEventListener('click', function(e) {
-            e.stopPropagation();
-          });
-        }
+        // Close menu with escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMenu();
+          }
+        });
       }
     });
   </script>
