@@ -2744,6 +2744,18 @@ main {
     height: 100vh !important;
     background: white !important;
     z-index: 9999 !important;
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.4s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .mobile-menu.active {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   
   .mobile-menu ul {
