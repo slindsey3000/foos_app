@@ -2668,10 +2668,25 @@ main {
   }
   
   /* Header adjustments for mobile */
-  .site-header .container {
-    flex-wrap: nowrap;
+  .site-header .header-main .container {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem;
+  }
+  
+  /* Make logo/text smaller on mobile */
+  .logo-link h1 {
+    font-size: 1.2rem !important;
+  }
+  
+  .logo-link span {
+    font-size: 0.75rem !important;
+  }
+  
+  .site-logo {
+    width: 40px !important;
+    height: 40px !important;
   }
   
   /* Hide desktop auth buttons completely on mobile */
@@ -2679,25 +2694,35 @@ main {
     display: none !important;
   }
   
-  /* Position hamburger on the right */
-  .main-navigation .container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 1rem;
+  /* Position mobile nav in header */
+  .mobile-nav {
+    position: relative;
+    z-index: 1000;
   }
   
-  /* Ensure hamburger is visible */
+  /* Fix hamburger button */
   .hamburger-btn {
-    z-index: 1001;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32px;
+    height: 26px;
     background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    padding: 8px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
   .hamburger-line {
+    display: block !important;
+    height: 3px !important;
+    width: 100% !important;
     background-color: #333 !important;
+    border-radius: 2px;
+    transition: all 0.3s ease;
   }
   
   /* Hero section mobile adjustments */
