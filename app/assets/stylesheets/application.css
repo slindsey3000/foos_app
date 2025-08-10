@@ -2694,7 +2694,7 @@ main {
   /* Header adjustments for mobile */
   .site-header .header-main .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 0.5rem 1rem;
     position: relative;
@@ -2705,6 +2705,11 @@ main {
     flex: 0 0 auto;
     margin-left: 0;
     padding-left: 0;
+  }
+  
+  /* Position hamburger on the right */
+  .mobile-nav {
+    margin-left: auto;
   }
   
   .logo-link h1 {
