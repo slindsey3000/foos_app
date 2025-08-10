@@ -137,6 +137,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .logo-link {
@@ -2693,28 +2694,33 @@ main {
   
   /* Header adjustments for mobile */
   .site-header .header-main .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     padding: 0.5rem 1rem;
     position: relative;
+    width: 100%;
   }
   
   /* Make logo/text smaller on mobile and move to far left */
   .logo-link {
-    flex: 0 0 auto;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
     gap: 12px;
+    order: 1;
   }
   
   /* Position hamburger on the right */
   .mobile-nav {
-    flex: 0 0 auto;
-    margin: 0;
-    padding: 0;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    order: 2;
   }
   
   .logo-link h1 {
