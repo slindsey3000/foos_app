@@ -2696,13 +2696,15 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     position: relative;
   }
   
-  /* Make logo/text smaller on mobile */
+  /* Make logo/text smaller on mobile and move to far left */
   .logo-link {
-    flex: 1;
+    flex: 0 0 auto;
+    margin-left: 0;
+    padding-left: 0;
   }
   
   .logo-link h1 {
