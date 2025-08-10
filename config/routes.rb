@@ -5,10 +5,13 @@ Rails.application.routes.draw do
     end
   end
   resources :documents
-  get "board/index"
-  # Articles routes
-  get "news", to: "articles#index"
-  resources :articles, path: "news"
+                get "board/index"
+              # Articles routes
+              get "news", to: "articles#index"
+              resources :articles, path: "news"
+              
+              # Brackets routes
+              get "brackets", to: "brackets#index"
   
   # Authentication routes
   get "signin", to: "sessions#new"

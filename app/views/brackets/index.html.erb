@@ -1,0 +1,846 @@
+<div class="brackets-page">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Tournament Brackets</h1>
+      <p>Create and manage single and double elimination tournaments</p>
+    </div>
+
+    <!-- Tournament Controls -->
+    <div class="tournament-controls">
+      <div class="control-section">
+        <h3>Tournament Setup</h3>
+        <div class="setup-form">
+          <div class="form-group">
+            <label for="tournament-name">Tournament Name:</label>
+            <input type="text" id="tournament-name" placeholder="Enter tournament name" value="USA Foosball Tournament">
+          </div>
+          
+          <div class="form-group">
+            <label for="tournament-type">Tournament Type:</label>
+            <select id="tournament-type">
+              <option value="single_elimination">Single Elimination</option>
+              <option value="double_elimination">Double Elimination</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="participant-count">Number of Participants:</label>
+            <select id="participant-count">
+              <option value="4">4 Players</option>
+              <option value="8" selected>8 Players</option>
+              <option value="16">16 Players</option>
+              <option value="32">32 Players</option>
+              <option value="64">64 Players</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants Management -->
+      <div class="control-section">
+        <h3>Participants</h3>
+        <div class="participants-management">
+          <div class="participants-list" id="participants-list">
+            <!-- Participants will be populated here -->
+          </div>
+          
+          <div class="add-participant">
+            <input type="text" id="new-participant" placeholder="Enter participant name">
+            <button id="add-participant" class="btn btn-secondary">Add Participant</button>
+          </div>
+          
+          <div class="participant-actions">
+            <button id="clear-participants" class="btn btn-outline">Clear All</button>
+            <button id="randomize-participants" class="btn btn-outline">Randomize Order</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tournament Actions -->
+      <div class="control-section">
+        <h3>Tournament Actions</h3>
+        <div class="tournament-actions">
+          <button id="start-tournament" class="btn btn-primary" disabled>Start Tournament</button>
+          <button id="reset-tournament" class="btn btn-outline" disabled>Reset Tournament</button>
+          <button id="export-tournament" class="btn btn-secondary" disabled>Export Results</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tournament Bracket Display -->
+    <div class="tournament-display">
+      <div class="bracket-container" id="bracket-container">
+        <!-- Brackets will be rendered here -->
+        <div class="bracket-placeholder">
+          <div class="placeholder-content">
+            <div class="placeholder-icon">🏆</div>
+            <h3>Create a Tournament</h3>
+            <p>Set up your tournament above to see the bracket here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Tournament Bracket System -->
+<script>
+
+  class TournamentManager {
+    constructor() {
+      // Use in-memory storage for simplicity
+      this.storage = {
+        stages: [],
+        matches: [],
+        matchGames: [],
+        participants: []
+      };
+      this.tournament = null;
+      this.participants = [];
+      this.maxParticipants = 8;
+      this.stageId = 1;
+      this.matchId = 1;
+      
+      this.initializeEventListeners();
+      this.loadParticipants();
+    }
+
+    initializeEventListeners() {
+      // Tournament setup
+      document.getElementById('tournament-type').addEventListener('change', () => this.updateTournamentType());
+      document.getElementById('participant-count').addEventListener('change', () => this.updateParticipantCount());
+      
+      // Participants management
+      document.getElementById('add-participant').addEventListener('click', () => this.addParticipant());
+      document.getElementById('new-participant').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.addParticipant();
+      });
+      document.getElementById('clear-participants').addEventListener('click', () => this.clearParticipants());
+      document.getElementById('randomize-participants').addEventListener('click', () => this.randomizeParticipants());
+      
+      // Tournament actions
+      document.getElementById('start-tournament').addEventListener('click', () => this.startTournament());
+      document.getElementById('reset-tournament').addEventListener('click', () => this.resetTournament());
+      document.getElementById('export-tournament').addEventListener('click', () => this.exportTournament());
+    }
+
+    loadParticipants() {
+      const saved = localStorage.getItem('tournament-participants');
+      if (saved) {
+        this.participants = JSON.parse(saved);
+        this.renderParticipants();
+      }
+    }
+
+    saveParticipants() {
+      localStorage.setItem('tournament-participants', JSON.stringify(this.participants));
+    }
+
+    addParticipant() {
+      const input = document.getElementById('new-participant');
+      const name = input.value.trim();
+      
+      if (!name) return;
+      
+      if (this.participants.length >= this.maxParticipants) {
+        alert(`Maximum ${this.maxParticipants} participants allowed`);
+        return;
+      }
+      
+      if (this.participants.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+        alert('Participant already exists');
+        return;
+      }
+      
+      this.participants.push({
+        id: Date.now().toString(),
+        name: name
+      });
+      
+      input.value = '';
+      this.renderParticipants();
+      this.saveParticipants();
+      this.updateStartButton();
+    }
+
+    removeParticipant(id) {
+      this.participants = this.participants.filter(p => p.id !== id);
+      this.renderParticipants();
+      this.saveParticipants();
+      this.updateStartButton();
+    }
+
+    clearParticipants() {
+      if (confirm('Are you sure you want to clear all participants?')) {
+        this.participants = [];
+        this.renderParticipants();
+        this.saveParticipants();
+        this.updateStartButton();
+      }
+    }
+
+    randomizeParticipants() {
+      this.participants = this.participants.sort(() => Math.random() - 0.5);
+      this.renderParticipants();
+      this.saveParticipants();
+    }
+
+    renderParticipants() {
+      const container = document.getElementById('participants-list');
+      container.innerHTML = '';
+      
+      this.participants.forEach((participant, index) => {
+        const participantEl = document.createElement('div');
+        participantEl.className = 'participant-item';
+        participantEl.innerHTML = `
+          <span class="participant-number">${index + 1}</span>
+          <span class="participant-name">${participant.name}</span>
+          <button class="remove-participant" onclick="tournamentManager.removeParticipant('${participant.id}')">×</button>
+        `;
+        container.appendChild(participantEl);
+      });
+      
+      // Add placeholder slots
+      const remaining = this.maxParticipants - this.participants.length;
+      for (let i = 0; i < remaining; i++) {
+        const placeholderEl = document.createElement('div');
+        placeholderEl.className = 'participant-item placeholder';
+        placeholderEl.innerHTML = `
+          <span class="participant-number">${this.participants.length + i + 1}</span>
+          <span class="participant-name">Add participant...</span>
+        `;
+        container.appendChild(placeholderEl);
+      }
+    }
+
+    updateParticipantCount() {
+      this.maxParticipants = parseInt(document.getElementById('participant-count').value);
+      this.renderParticipants();
+      this.updateStartButton();
+    }
+
+    updateTournamentType() {
+      // Tournament type change logic
+    }
+
+    updateStartButton() {
+      const startBtn = document.getElementById('start-tournament');
+      const canStart = this.participants.length >= 2 && this.participants.length <= this.maxParticipants;
+      startBtn.disabled = !canStart;
+      
+      // Update button text based on state
+      if (this.tournament) {
+        startBtn.textContent = 'Tournament Started';
+        startBtn.disabled = true;
+      } else {
+        startBtn.textContent = 'Start Tournament';
+        startBtn.disabled = !canStart;
+      }
+    }
+
+    async createTournament() {
+      if (this.participants.length < 2) {
+        alert('Need at least 2 participants to create a tournament');
+        return;
+      }
+
+      const name = document.getElementById('tournament-name').value || 'USA Foosball Tournament';
+      const type = document.getElementById('tournament-type').value;
+      
+      try {
+        // Create tournament data
+        this.tournament = {
+          id: 'tournament-' + Date.now(),
+          name: name,
+          type: type
+        };
+
+        // Create participants
+        this.storage.participants = this.participants.map((p, index) => ({
+          id: index + 1,
+          name: p.name
+        }));
+
+        // Create stage
+        const stage = {
+          id: this.stageId++,
+          tournament_id: this.tournament.id,
+          name: type === 'single_elimination' ? 'Main Stage' : 'Winners Bracket',
+          type: type === 'single_elimination' ? 'single_elimination' : 'double_elimination',
+          number: 1,
+          settings: {
+            size: this.maxParticipants
+          }
+        };
+        this.storage.stages = [stage];
+
+        // Create matches based on tournament type
+        this.storage.matches = this.createMatches(stage, type);
+
+        this.renderBracket();
+        this.updateActionButtons(true);
+        
+      } catch (error) {
+        console.error('Error creating tournament:', error);
+        alert('Error creating tournament. Please try again.');
+      }
+    }
+
+    createMatches(stage, type) {
+      const matches = [];
+      const participantCount = this.participants.length;
+      const rounds = Math.ceil(Math.log2(participantCount));
+      
+      console.log(`Creating matches for ${participantCount} participants, ${rounds} rounds`);
+      
+      if (type === 'single_elimination') {
+        // Create single elimination matches
+        let matchNumber = 1;
+        for (let round = 1; round <= rounds; round++) {
+          const matchesInRound = Math.pow(2, rounds - round);
+          console.log(`Round ${round}: ${matchesInRound} matches starting at match ${matchNumber}`);
+          
+          for (let i = 0; i < matchesInRound; i++) {
+            const match = {
+              id: this.matchId++,
+              stage_id: stage.id,
+              round: round,
+              number: matchNumber,
+              status: round === 1 ? 0 : 2, // 0 = pending, 2 = waiting
+              opponent1: round === 1 ? (i * 2 + 1) : null,
+              opponent2: round === 1 ? (i * 2 + 2) : null,
+              opponent1_result: null,
+              opponent2_result: null
+            };
+            
+            console.log(`Created Match ${matchNumber} in Round ${round}:`, match);
+            matches.push(match);
+            matchNumber++;
+          }
+        }
+      } else {
+        // Create double elimination matches (simplified)
+        // Winners bracket
+        let matchNumber = 1;
+        for (let round = 1; round <= rounds; round++) {
+          const matchesInRound = Math.pow(2, rounds - round);
+          for (let i = 0; i < matchesInRound; i++) {
+            matches.push({
+              id: this.matchId++,
+              stage_id: stage.id,
+              round: round,
+              number: matchNumber++,
+              status: round === 1 ? 0 : 2,
+              opponent1: round === 1 ? (i * 2 + 1) : null,
+              opponent2: round === 1 ? (i * 2 + 2) : null,
+              opponent1_result: null,
+              opponent2_result: null,
+              group_id: 1 // Winners bracket
+            });
+          }
+        }
+      }
+      
+      console.log('All matches created:', matches);
+      return matches;
+    }
+
+    async renderBracket() {
+      if (!this.tournament) return;
+
+      try {
+        const container = document.getElementById('bracket-container');
+        container.innerHTML = '';
+        
+        console.log('Tournament data:', {
+          stages: this.storage.stages,
+          matches: this.storage.matches,
+          participants: this.storage.participants
+        });
+        
+        // Use custom bracket renderer
+        this.renderCustomBracket(container);
+        
+      } catch (error) {
+        console.error('Error rendering bracket:', error);
+        const container = document.getElementById('bracket-container');
+        container.innerHTML = `
+          <div class="error" style="color: red; padding: 2rem; text-align: center;">
+            <h3>Error rendering bracket</h3>
+            <p>${error.message}</p>
+            <p>Please check the browser console for more details.</p>
+          </div>
+        `;
+      }
+    }
+
+    async startTournament() {
+      if (this.participants.length < 2) {
+        alert('Need at least 2 participants to start a tournament');
+        return;
+      }
+
+      const name = document.getElementById('tournament-name').value || 'USA Foosball Tournament';
+      const type = document.getElementById('tournament-type').value;
+      
+      try {
+        // Create tournament data
+        this.tournament = {
+          id: 'tournament-' + Date.now(),
+          name: name,
+          type: type
+        };
+
+        // Create participants
+        this.storage.participants = this.participants.map((p, index) => ({
+          id: index + 1,
+          name: p.name
+        }));
+
+        // Create stage
+        const stage = {
+          id: this.stageId++,
+          tournament_id: this.tournament.id,
+          name: type === 'single_elimination' ? 'Main Stage' : 'Winners Bracket',
+          type: type === 'single_elimination' ? 'single_elimination' : 'double_elimination',
+          number: 1,
+          settings: {
+            size: this.maxParticipants
+          }
+        };
+        this.storage.stages = [stage];
+
+        // Create matches based on tournament type
+        this.storage.matches = this.createMatches(stage, type);
+
+        // Update match statuses to indicate tournament has started
+        this.storage.matches.forEach(match => {
+          if (match.status === 0) { // pending matches
+            match.status = 1; // ready
+          }
+        });
+        
+        this.renderBracket();
+        this.updateActionButtons(true);
+        
+      } catch (error) {
+        console.error('Error starting tournament:', error);
+        alert('Error starting tournament. Please try again.');
+      }
+    }
+
+    async resetTournament() {
+      if (!confirm('Are you sure you want to reset everything? This will clear all tournament data, participants, and fields.')) return;
+      
+      try {
+        // Clear tournament data
+        this.tournament = null;
+        this.storage = {
+          stages: [],
+          matches: [],
+          matchGames: [],
+          participants: []
+        };
+        this.stageId = 1;
+        this.matchId = 1;
+        
+        // Clear all form fields
+        document.getElementById('tournament-name').value = 'USA Foosball Tournament';
+        document.getElementById('tournament-type').selectedIndex = 0;
+        document.getElementById('participant-count').selectedIndex = 1; // 8 players default
+        document.getElementById('new-participant').value = '';
+        
+        // Clear participants
+        this.participants = [];
+        this.maxParticipants = 8;
+        this.renderParticipants();
+        this.saveParticipants();
+        this.updateStartButton();
+        
+        this.renderBracket();
+        this.updateActionButtons(false);
+        
+        // Show placeholder
+        const container = document.getElementById('bracket-container');
+        container.innerHTML = `
+          <div class="bracket-placeholder">
+            <div class="placeholder-content">
+              <div class="placeholder-icon">🏆</div>
+              <h3>Create a Tournament</h3>
+              <p>Set up your tournament above to see the bracket here</p>
+            </div>
+          </div>
+        `;
+        
+      } catch (error) {
+        console.error('Error resetting tournament:', error);
+        alert('Error resetting tournament');
+      }
+    }
+
+    exportTournament() {
+      if (!this.tournament) return;
+      
+      const data = {
+        tournament: this.tournament,
+        participants: this.participants,
+        exportDate: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${this.tournament.name}-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    updateActionButtons(tournamentActive) {
+      const startBtn = document.getElementById('start-tournament');
+      const resetBtn = document.getElementById('reset-tournament');
+      const exportBtn = document.getElementById('export-tournament');
+      
+      if (tournamentActive) {
+        startBtn.textContent = 'Tournament Started';
+        startBtn.disabled = true;
+        resetBtn.disabled = false;
+        exportBtn.disabled = false;
+      } else {
+        startBtn.textContent = 'Start Tournament';
+        startBtn.disabled = !(this.participants.length >= 2 && this.participants.length <= this.maxParticipants);
+        resetBtn.disabled = true;
+        exportBtn.disabled = true;
+      }
+    }
+
+    renderCustomBracket(container) {
+      const tournamentType = document.getElementById('tournament-type').value;
+      const isSingleElimination = tournamentType === 'single_elimination';
+      
+      let bracketHTML = `
+        <div class="custom-bracket" style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
+          <div class="bracket-header" style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="color: #1e293b; margin-bottom: 0.5rem;">${this.tournament.name}</h2>
+            <p style="color: #64748b; margin: 0;">
+              <strong>Type:</strong> ${isSingleElimination ? 'Single Elimination' : 'Double Elimination'} | 
+              <strong>Participants:</strong> ${this.participants.length}
+            </p>
+          </div>
+          
+          <div class="bracket-container" style="display: flex; gap: 2rem; overflow-x: auto; padding: 1rem;">
+      `;
+      
+      // Group matches by round
+      const rounds = Math.max(...this.storage.matches.map(m => m.round));
+      
+             for (let round = 1; round <= rounds; round++) {
+         const roundMatches = this.storage.matches.filter(m => m.round === round);
+         
+         // Determine round name based on number of participants and current round
+         let roundName;
+         if (this.participants.length === 4) {
+           roundName = round === 1 ? 'Semi Finals' : 'Finals';
+         } else if (this.participants.length === 8) {
+           roundName = round === 1 ? 'Quarter Finals' : 
+                      round === 2 ? 'Semi Finals' : 'Finals';
+         } else if (this.participants.length === 16) {
+           roundName = round === 1 ? 'Round of 16' : 
+                      round === 2 ? 'Quarter Finals' :
+                      round === 3 ? 'Semi Finals' : 'Finals';
+         } else if (this.participants.length === 32) {
+           roundName = round === 1 ? 'Round of 32' : 
+                      round === 2 ? 'Round of 16' :
+                      round === 3 ? 'Quarter Finals' :
+                      round === 4 ? 'Semi Finals' : 'Finals';
+         } else {
+           roundName = round === 1 ? 'First Round' : 
+                      round === 2 ? 'Second Round' :
+                      round === 3 ? 'Quarter Finals' :
+                      round === 4 ? 'Semi Finals' : 'Finals';
+         }
+        
+        bracketHTML += `
+          <div class="round" style="min-width: 200px; flex-shrink: 0;">
+            <h3 style="text-align: center; color: #374151; margin-bottom: 1rem; font-size: 1.1rem;">${roundName}</h3>
+        `;
+        
+                 roundMatches.forEach((match, index) => {
+           const player1 = this.storage.participants.find(p => p.id === match.opponent1);
+           const player2 = this.storage.participants.find(p => p.id === match.opponent2);
+           
+           // Determine match status and styling
+           const isCompleted = match.opponent1_result === 'win' || match.opponent2_result === 'win';
+           const isReady = match.opponent1 && match.opponent2 && !isCompleted;
+           const isWaiting = !match.opponent1 || !match.opponent2;
+           
+           let headerColor = '#3b82f6'; // default blue
+           let headerText = `Match ${match.number}`;
+           
+           if (isCompleted) {
+             headerColor = '#10b981'; // green for completed
+             headerText = `Match ${match.number} - Completed`;
+           } else if (isReady) {
+             headerColor = '#f59e0b'; // orange for ready
+             headerText = `Match ${match.number} - Ready`;
+           } else if (isWaiting) {
+             headerColor = '#6b7280'; // gray for waiting
+             headerText = `Match ${match.number} - Waiting`;
+           }
+           
+           bracketHTML += `
+             <div class="match" style="
+               border: 2px solid ${isCompleted ? '#10b981' : isReady ? '#f59e0b' : '#e2e8f0'}; 
+               margin: 0.5rem 0; 
+               border-radius: 8px; 
+               background: white;
+               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+               overflow: hidden;
+               cursor: ${isReady || isCompleted ? 'pointer' : 'default'};
+               opacity: ${isWaiting ? '0.6' : '1'};
+               transition: all 0.2s ease;
+             ">
+               <div class="match-header" style="
+                 background: ${headerColor}; 
+                 color: white; 
+                 padding: 0.5rem; 
+                 text-align: center; 
+                 font-weight: 600;
+               ">
+                 ${headerText}
+               </div>
+               <div class="match-content" style="padding: 1rem;">
+                 <div class="player" style="
+                   padding: 0.5rem; 
+                   border-bottom: 1px solid #f1f5f9; 
+                   font-weight: 500;
+                   ${match.opponent1_result === 'win' ? 'background: #dcfce7; color: #166534;' : ''}
+                 ">
+                   ${player1 ? player1.name : 'TBD'}
+                   ${match.opponent1_result === 'win' ? ' ✅' : ''}
+                 </div>
+                 <div class="player" style="
+                   padding: 0.5rem; 
+                   font-weight: 500;
+                   ${match.opponent2_result === 'win' ? 'background: #dcfce7; color: #166534;' : ''}
+                 ">
+                   ${player2 ? player2.name : 'TBD'}
+                   ${match.opponent2_result === 'win' ? ' ✅' : ''}
+                 </div>
+               </div>
+             </div>
+           `;
+         });
+        
+        bracketHTML += `</div>`;
+      }
+      
+      bracketHTML += `
+          </div>
+          
+          <div class="bracket-footer" style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
+            <p style="color: #64748b; margin: 0;">
+              <em>Tournament bracket generated automatically. Click on matches to update results.</em>
+            </p>
+          </div>
+        </div>
+      `;
+      
+      container.innerHTML = bracketHTML;
+      
+      // Add click handlers for match updates
+      this.addMatchClickHandlers();
+    }
+
+    addMatchClickHandlers() {
+      const matches = document.querySelectorAll('.match');
+      matches.forEach((matchEl, index) => {
+        const match = this.storage.matches[index];
+        const isReady = match.opponent1 && match.opponent2 && 
+                       !match.opponent1_result && !match.opponent2_result;
+        const isCompleted = match.opponent1_result === 'win' || match.opponent2_result === 'win';
+        
+        if (isReady || isCompleted) {
+          matchEl.addEventListener('click', () => {
+            this.showMatchResultDialog(match);
+          });
+        }
+      });
+    }
+
+    showMatchResultDialog(match) {
+      const player1 = this.storage.participants.find(p => p.id === match.opponent1);
+      const player2 = this.storage.participants.find(p => p.id === match.opponent2);
+      
+      const isCompleted = match.opponent1_result === 'win' || match.opponent2_result === 'win';
+      const currentWinner = match.opponent1_result === 'win' ? player1 : match.opponent2_result === 'win' ? player2 : null;
+      
+      let promptText = `Match ${match.number}: ${player1 ? player1.name : 'TBD'} vs ${player2 ? player2.name : 'TBD'}\n\n`;
+      
+      if (isCompleted) {
+        promptText += `Current winner: ${currentWinner ? currentWinner.name : 'Unknown'}\n\n`;
+        promptText += `Enter new winner (1 for ${player1 ? player1.name : 'Player 1'}, 2 for ${player2 ? player2.name : 'Player 2'}), or press Cancel to keep current result:`;
+      } else {
+        promptText += `Enter winner (1 for ${player1 ? player1.name : 'Player 1'}, 2 for ${player2 ? player2.name : 'Player 2'}):`;
+      }
+      
+      const winner = prompt(promptText);
+      
+      if (winner === null) {
+        return; // User cancelled
+      }
+      
+      // Clear previous winner advancement if editing
+      if (isCompleted) {
+        this.clearWinnerAdvancement(match);
+      }
+      
+      // Set the new winner and advance them
+      if (winner === '1' && player1) {
+        match.opponent1_result = 'win';
+        match.opponent2_result = 'loss';
+        this.advanceWinner(match, player1.id);
+      } else if (winner === '2' && player2) {
+        match.opponent2_result = 'win';
+        match.opponent1_result = 'loss';
+        this.advanceWinner(match, player2.id);
+      }
+    }
+
+    advanceWinner(match, winnerId) {
+      console.log(`Advancing winner ${winnerId} from Match ${match.number} in Round ${match.round}`);
+      
+      // Find the next match this winner should advance to
+      const nextMatch = this.findNextMatch(match);
+      
+      if (nextMatch) {
+        console.log(`Next match before update:`, nextMatch);
+        
+        // Determine which opponent slot to fill in the next match
+        if (!nextMatch.opponent1) {
+          nextMatch.opponent1 = winnerId;
+          console.log(`Set opponent1 to ${winnerId} in Match ${nextMatch.number}`);
+        } else if (!nextMatch.opponent2) {
+          nextMatch.opponent2 = winnerId;
+          console.log(`Set opponent2 to ${winnerId} in Match ${nextMatch.number}`);
+        } else {
+          console.log(`Both opponent slots are filled in Match ${nextMatch.number}, replacing opponent2`);
+          nextMatch.opponent2 = winnerId;
+        }
+        
+        // Update the next match status to ready if both opponents are set
+        if (nextMatch.opponent1 && nextMatch.opponent2) {
+          nextMatch.status = 1; // ready
+          console.log(`Match ${nextMatch.number} is now ready with both opponents`);
+        }
+        
+        console.log(`Next match after update:`, nextMatch);
+      } else {
+        console.log('No next match found!');
+      }
+      
+      // Re-render the bracket to show the updated progression
+      this.renderBracket();
+    }
+
+    findNextMatch(currentMatch) {
+      const currentRound = currentMatch.round;
+      const currentMatchNumber = currentMatch.number;
+      const participantCount = this.participants.length;
+      
+      // Calculate which match in the next round this winner should advance to
+      const nextRound = currentRound + 1;
+      
+      // Calculate the correct next match number based on tournament size
+      let nextMatchNumber;
+      
+      if (participantCount === 4) {
+        // 4 players: Round 1 (Matches 1,2) -> Round 2 (Match 3)
+        if (currentRound === 1) {
+          nextMatchNumber = 3; // Both matches advance to Match 3
+        }
+      } else if (participantCount === 8) {
+        // 8 players: Round 1 (Matches 1,2,3,4) -> Round 2 (Matches 5,6)
+        if (currentRound === 1) {
+          if (currentMatchNumber <= 2) {
+            nextMatchNumber = 5; // First two matches advance to Match 5
+          } else {
+            nextMatchNumber = 6; // Last two matches advance to Match 6
+          }
+        } else if (currentRound === 2) {
+          nextMatchNumber = 7; // Both matches advance to Match 7
+        }
+      } else if (participantCount === 16) {
+        // 16 players: Round 1 (Matches 1-8) -> Round 2 (Matches 9-12) -> Round 3 (Matches 13-14) -> Round 4 (Match 15)
+        if (currentRound === 1) {
+          nextMatchNumber = 8 + Math.ceil(currentMatchNumber / 2);
+        } else if (currentRound === 2) {
+          nextMatchNumber = 12 + Math.ceil(currentMatchNumber / 2);
+        } else if (currentRound === 3) {
+          nextMatchNumber = 15; // Both matches advance to Match 15
+        }
+      } else {
+        // Generic calculation for other sizes
+        const matchesInCurrentRound = Math.pow(2, Math.ceil(Math.log2(participantCount)) - currentRound);
+        const matchesInPreviousRounds = this.storage.matches.filter(m => m.round < nextRound).length;
+        nextMatchNumber = matchesInPreviousRounds + Math.ceil(currentMatchNumber / 2);
+      }
+      
+      console.log(`Finding next match for Match ${currentMatchNumber} in Round ${currentRound} (${participantCount} participants)`);
+      console.log(`Should advance to Match ${nextMatchNumber} in Round ${nextRound}`);
+      
+      // Find the corresponding match in the next round
+      const nextMatch = this.storage.matches.find(m => 
+        m.round === nextRound && 
+        m.number === nextMatchNumber
+      );
+      
+      console.log('Next match found:', nextMatch);
+      return nextMatch;
+    }
+
+    clearWinnerAdvancement(match) {
+      console.log(`Clearing winner advancement for Match ${match.number}`);
+      
+      // Find the next match this winner was supposed to advance to
+      const nextMatch = this.findNextMatch(match);
+      
+      if (nextMatch) {
+        const previousWinner = match.opponent1_result === 'win' ? match.opponent1 : match.opponent2_result === 'win' ? match.opponent2 : null;
+        
+        if (previousWinner) {
+          console.log(`Previous winner was ${previousWinner}, removing from Match ${nextMatch.number}`);
+          
+          // Remove the previous winner from the next match
+          if (nextMatch.opponent1 === previousWinner) {
+            nextMatch.opponent1 = null;
+            console.log(`Removed ${previousWinner} from opponent1 in Match ${nextMatch.number}`);
+          } else if (nextMatch.opponent2 === previousWinner) {
+            nextMatch.opponent2 = null;
+            console.log(`Removed ${previousWinner} from opponent2 in Match ${nextMatch.number}`);
+          }
+          
+          // If the next match no longer has both opponents, set status back to waiting
+          if (!nextMatch.opponent1 || !nextMatch.opponent2) {
+            nextMatch.status = 2; // waiting
+            console.log(`Match ${nextMatch.number} is now waiting for opponents`);
+          }
+          
+          // Clear results from the next match if it was completed
+          if (nextMatch.opponent1_result || nextMatch.opponent2_result) {
+            nextMatch.opponent1_result = null;
+            nextMatch.opponent2_result = null;
+            console.log(`Cleared results from Match ${nextMatch.number}`);
+            
+            // Recursively clear further advancements
+            this.clearWinnerAdvancement(nextMatch);
+          }
+        }
+      }
+    }
+  }
+
+  // Initialize tournament manager
+  window.tournamentManager = new TournamentManager();
+</script> 
