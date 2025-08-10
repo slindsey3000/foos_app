@@ -1,3 +1,6 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&family=Baloo+2:wght@400;500;600;700&display=swap');
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -8,7 +11,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.6;
-  color: #333;
+  color: #B2B3BC;
   background-color: #fff;
 }
 
@@ -20,14 +23,25 @@ body {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
   margin-bottom: 1rem;
+  color: #1A1553;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 h1 { font-size: 2.5rem; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1.5rem; }
+
+/* Secondary headings for governance/compliance sections */
+h2.secondary-heading, h3.secondary-heading {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  text-transform: none;
+  color: #3B3F73;
+}
 
 p {
   margin-bottom: 1rem;
@@ -55,43 +69,57 @@ a:hover {
   border: none;
   cursor: pointer;
   font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .btn-primary {
-  background-color: #2563eb;
+  background-color: #C2212D;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #1d4ed8;
+  background-color: #1A1553;
   color: white;
+  border: 2px solid #1A1553;
 }
 
 .btn-secondary {
-  background-color: #6b7280;
+  background-color: #3B3F73;
   color: white;
 }
 
 .btn-secondary:hover {
-  background-color: #4b5563;
+  background-color: #1A1553;
   color: white;
 }
 
 .btn-outline {
   background-color: transparent;
-  color: #2563eb;
-  border: 2px solid #2563eb;
+  color: #C2212D;
+  border: 2px solid #C2212D;
 }
 
 .btn-outline:hover {
-  background-color: #2563eb;
+  background-color: #C2212D;
   color: white;
+}
+
+.btn-gold {
+  background-color: #FFD447;
+  color: #1A1553;
+  font-weight: 700;
+}
+
+.btn-gold:hover {
+  background-color: #1A1553;
+  color: #FFD447;
+  border: 2px solid #FFD447;
 }
 
 /* Header Styles */
 .site-header {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #1A1553;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -156,12 +184,16 @@ a:hover {
 .logo-link h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: #2563eb;
+  color: #FFFFFF;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .logo-link span {
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #B2B3BC;
+  font-family: 'Open Sans', sans-serif;
   display: block;
 }
 
@@ -194,7 +226,7 @@ a:hover {
 }
 
 .main-navigation {
-  background-color: #2563eb;
+  background-color: #3B3F73;
   padding: 0;
 }
 
@@ -217,10 +249,11 @@ a:hover {
   text-decoration: none;
   font-weight: 500;
   transition: background-color 0.3s ease;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .main-navigation a:hover {
-  background-color: #1d4ed8;
+  background-color: #1A1553;
 }
 
 main {
@@ -229,7 +262,7 @@ main {
 }
 
 .hero-section {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1A1553 0%, #3B3F73 50%, #1A1553 100%);
   color: white;
   padding: 5rem 0 6rem 0;
   margin-bottom: 0;
@@ -265,10 +298,12 @@ main {
   font-size: 3.5rem;
   margin-bottom: 1.5rem;
   color: white;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 2px;
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
 }
 
 .hero-content p {
@@ -341,16 +376,17 @@ main {
 }
 
 .hero-buttons .btn-primary {
-  background: rgba(255, 255, 255, 0.15);
+  background: #C2212D;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C2212D;
+  box-shadow: 0 8px 25px rgba(194, 33, 45, 0.3);
 }
 
 .hero-buttons .btn-primary:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #1A1553;
+  border: 1px solid #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 35px rgba(26, 21, 83, 0.4);
 }
 
 .hero-buttons .btn-secondary {
@@ -394,11 +430,17 @@ main {
 .features-section {
   padding: 4rem 0;
   background-color: #f8fafc;
+  background: linear-gradient(135deg, #1A1553 0%, #3B3F73 100%);
+  color: white;
 }
 
 .features-section h2 {
   text-align: center;
   margin-bottom: 3rem;
+  color: #FFFFFF;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .features-grid {
@@ -408,12 +450,14 @@ main {
 }
 
 .feature-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .feature-card:hover {
@@ -427,11 +471,15 @@ main {
 
 .feature-card h3 {
   margin-bottom: 1rem;
-  color: #1f2937;
+  color: #FFFFFF;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .news-section {
   padding: 4rem 0;
+  background-color: #f8fafc;
 }
 
 .section-header {
@@ -442,7 +490,7 @@ main {
 }
 
 .view-all-link {
-  color: #2563eb;
+  color: #C2212D;
   font-weight: 600;
 }
 
@@ -476,7 +524,10 @@ main {
 
 .news-content h3 {
   margin-bottom: 1rem;
-  color: #1f2937;
+  color: #1A1553;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .news-excerpt {
@@ -497,13 +548,14 @@ main {
 }
 
 .read-more {
-  color: #2563eb;
+  color: #C2212D;
   font-weight: 600;
 }
 
 .where-to-play-section {
   padding: 4rem 0;
-  background-color: #f8fafc;
+  background: linear-gradient(135deg, #1A1553 0%, #3B3F73 100%);
+  color: white;
 }
 
 .locations-grid {
@@ -513,11 +565,13 @@ main {
 }
 
 .location-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .location-card:hover {
@@ -536,7 +590,10 @@ main {
 
 .location-content h3 {
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: #FFFFFF;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .location-address {
@@ -575,15 +632,18 @@ main {
 
 .cta-section {
   padding: 4rem 0;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  color: white;
+  background: linear-gradient(135deg, #FFD447 0%, #FFE066 100%);
+  color: #1A1553;
   text-align: center;
 }
 
 .cta-content h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: white;
+  color: #1A1553;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .cta-content p {
@@ -600,7 +660,7 @@ main {
 }
 
 .site-footer {
-  background-color: #1f2937;
+  background-color: #1A1553;
   color: white;
   padding: 3rem 0 1rem;
 }
