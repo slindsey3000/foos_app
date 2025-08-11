@@ -597,14 +597,14 @@ main {
 }
 
 .location-address {
-  color: #6b7280;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   margin-bottom: 1rem;
   font-style: italic;
 }
 
 .location-description {
-  color: #374151;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 1rem;
   line-height: 1.6;
 }
@@ -616,8 +616,8 @@ main {
 }
 
 .location-type {
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -625,7 +625,7 @@ main {
 }
 
 .location-link {
-  color: #2563eb;
+  color: #FFD447;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -1903,6 +1903,7 @@ main {
 /* Clubs page */
 .clubs-page {
   padding: 2rem 0;
+  background-color: #f8fafc;
 }
 
 .clubs-grid {
@@ -1981,14 +1982,18 @@ main {
 .club-title {
   margin: 0 0 0.5rem 0;
   font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .club-title a {
-  color: #2563eb;
+  color: #1A1553;
   text-decoration: none;
 }
 
 .club-title a:hover {
+  color: #C2212D;
   text-decoration: underline;
 }
 
@@ -2035,11 +2040,12 @@ main {
 }
 
 .club-contact a {
-  color: #2563eb;
+  color: #C2212D;
   text-decoration: none;
 }
 
 .club-contact a:hover {
+  color: #1A1553;
   text-decoration: underline;
 }
 
@@ -2084,7 +2090,10 @@ main {
 .club-title {
   margin: 0;
   font-size: 2.5rem;
-  color: #1f2937;
+  color: #1A1553;
+  font-family: 'Bebas Neue', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .club-details {
@@ -2129,11 +2138,12 @@ main {
 }
 
 .contact-item a {
-  color: #2563eb;
+  color: #C2212D;
   text-decoration: none;
 }
 
 .contact-item a:hover {
+  color: #1A1553;
   text-decoration: underline;
 }
 
