@@ -1053,6 +1053,19 @@ main {
   color: white;
 }
 
+.badge-director-title {
+  background-color: #7c3aed;
+  color: white;
+  font-size: 0.7rem;
+}
+
+.badge-committee {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+  border: 1px solid #ea580c;
+}
+
 .system-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1609,6 +1622,16 @@ main {
   color: #1f2937;
 }
 
+.director-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1553;
+  margin-bottom: 12px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .director-role {
   margin-bottom: 12px;
 }
@@ -1628,6 +1651,13 @@ main {
   color: #2563eb;
   font-size: 0.875rem;
   margin: 0;
+}
+
+/* Committee Section Styles */
+.committee-section {
+  margin-top: 6rem;
+  padding-top: 4rem;
+  border-top: 2px solid #e5e7eb;
 }
 
 /* Documents Styles */

@@ -22,15 +22,12 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :fullname %>
-    <%= form.text_field :fullname, class: "form-control", required: true %>
-  </div>
+
 
   <div class="form-row">
     <div class="form-group">
       <%= form.label :username %>
-      <%= form.text_field :username, class: "form-control", required: true %>
+      <%= form.text_field :username, class: "form-control", placeholder: "Optional - leave blank for auto-generation" %>
     </div>
 
     <div class="form-group">
@@ -64,6 +61,12 @@
     <%= form.text_area :about, class: "form-control", rows: 4, placeholder: "Tell us about this person..." %>
   </div>
 
+  <div class="form-group">
+    <%= form.label :director_title, "Director Title" %>
+    <%= form.text_field :director_title, class: "form-control", placeholder: "e.g., President, Vice President, Treasurer" %>
+    <small class="form-text">Only shown if user is a director</small>
+  </div>
+
   <div class="form-row">
     <div class="form-group checkbox-group">
       <%= form.label :admin do %>
@@ -79,6 +82,14 @@
         Board Director
       <% end %>
       <small class="form-text">Directors will appear on the Board of Directors page</small>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <%= form.label :world_cup_selection_committee do %>
+        <%= form.check_box :world_cup_selection_committee %>
+        World Cup Selection Committee
+      <% end %>
+      <small class="form-text">Committee members help select World Cup participants</small>
     </div>
   </div>
 

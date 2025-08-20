@@ -12,10 +12,10 @@
       <div class="header-auth desktop-only">
         <% if current_user %>
           <% if current_user.admin? %>
-            <span class="welcome-message">Welcome Admin <%= current_user.firstname %> <%= current_user.lastname %>!</span>
+            <span class="welcome-message">Welcome Admin <%= current_user.fullname %>!</span>
             <%= link_to "Dashboard", admin_dashboard_path, class: "btn btn-outline" %>
           <% else %>
-            <span class="welcome-message">Welcome <%= current_user.firstname %> <%= current_user.lastname %>!</span>
+            <span class="welcome-message">Welcome <%= current_user.fullname %>!</span>
           <% end %>
           <%= link_to "Sign Out", logout_path, data: { method: :delete, confirm: "Are you sure you want to sign out?" }, class: "btn btn-secondary" %>
         <% else %>

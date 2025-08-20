@@ -1,57 +1,9 @@
 # Create test users for USA Foosball application
 
-# Clear existing users
-User.destroy_all
-
-# Create admin users
-shawn_lindsey = User.create!(
-  username: 'Superstar3000',
-  email: 'slindsey3000@gmail.com',
-  password: 'password123',
-  firstname: 'Shawn',
-  lastname: 'Lindsey',
-  fullname: 'Shawn Lindsey',
-  admin: true,
-  director: true,
-  about: 'President and founder of USA Foosball Association. Passionate about growing the sport and building a strong community of players across the United States.',
-  image_url: nil
-)
-
-jim_provest = User.create!(
-  username: 'ILoveProduce',
-  email: 'jamesprovost44@gmail.com',
-  password: 'password123',
-  firstname: 'Jim',
-  lastname: 'Provost',
-  fullname: 'Jim Provost',
-  admin: true,
-  director: true,
-  about: 'Marketing of USA Foosball Association. Former professional player with over 20 years of experience in tournament organization and player development.',
-  image_url: nil
-)
-
-# Create regular user
-dave_hertzenberg = User.create!(
-  username: 'dave_hertzenberg',
-  email: 'dave@usafoosball.com',
-  password: 'password123',
-  firstname: 'Dave',
-  lastname: 'Hertzenberg',
-  fullname: 'Dave Hertzenberg',
-  admin: false,
-  director: true,
-  about: 'Board member and regional coordinator for the Midwest. Dedicated to expanding foosball opportunities in local communities and schools.',
-  image_url: nil
-)
-
-puts "Created admin user: #{shawn_lindsey.fullname} (username: #{shawn_lindsey.username}, password: password123)"
-puts "Created admin user: #{jim_provest.fullname} (username: #{jim_provest.username}, password: password123)"
-puts "Created regular user: #{dave_hertzenberg.fullname} (username: #{dave_hertzenberg.username}, password: password123)"
+# Load directors, admins, and World Cup selection committee
+load(Rails.root.join('db', 'directors_admin_seed.rb'))
 
 puts "\nSeed data created successfully!"
-puts "You can now sign in with:"
-puts "- Admin users: Superstar3000 or ILoveProduce (password: password123)"
-puts "- Regular user: dave_hertzenberg (password: password123)"
 
 # Create test articles
 puts "\nCreating test articles..."

@@ -9,8 +9,11 @@
       <div class="user-profile">
         <div class="user-info">
           <h2><%= @user.fullname %></h2>
-          <p class="user-username">@<%= @user.username %></p>
+          <% if @user.username.present? %>
+            <p class="user-username">@<%= @user.username %></p>
+          <% end %>
           <p class="user-email"><%= @user.email %></p>
+          <p class="user-phone"><%= @user.display_phone %></p>
           
           <div class="user-roles">
             <% if @user.admin? %>
@@ -18,6 +21,12 @@
             <% end %>
             <% if @user.director? %>
               <span class="badge badge-director">Director</span>
+              <% if @user.director_title.present? %>
+                <span class="badge badge-director-title"><%= @user.director_title %></span>
+              <% end %>
+            <% end %>
+            <% if @user.world_cup_selection_committee? %>
+              <span class="badge badge-committee">World Cup Committee</span>
             <% end %>
           </div>
           

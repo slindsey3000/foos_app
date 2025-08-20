@@ -4,15 +4,19 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # Try to find user by username or email (case insensitive)
-    login_field = params[:username]&.strip&.downcase
+    # Try to find user by email or phone (case insensitive)
+    login_field = params[:email_or_phone]&.strip&.downcase
     
     if login_field.blank?
-      flash.now[:alert] = 'Please enter a username or email address.'
+      flash.now[:alert] = 'Please enter an email address or phone number.'
       render :new and return
     end
     
-    user = User.where("LOWER(username) = ? OR LOWER(email) = ?", login_field, login_field).first
+    # Clean phone number for comparison (remove non-digits)
+    clean_phone = login_field.gsub(/\D/, '')
+    
+    user = User.where("LOWER(email) = ? OR REPLACE(phone, ' ', '') = ? OR REPLACE(REPLACE(REPLACE(REPLACE(phone, '-', ''), '(', ''), ')', ''), ' ', '') = ?", 
+                     login_field, clean_phone, clean_phone).first
     
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
@@ -25,7 +29,7 @@ class SessionsController < ApplicationController
     else
       # Provide specific feedback for better user experience
       if user.nil?
-        flash.now[:alert] = 'Username or email not found. Please check your credentials or sign up for an account.'
+        flash.now[:alert] = 'Email or phone number not found. Please check your credentials or sign up for an account.'
       else
         flash.now[:alert] = 'Incorrect password. Please try again.'
       end

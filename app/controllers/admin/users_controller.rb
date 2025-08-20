@@ -46,8 +46,15 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation, 
-                                :firstname, :lastname, :fullname, :admin, :director, 
-                                :about, :image_url)
+    permitted_params = [:username, :email, :password, :password_confirmation, 
+                       :firstname, :lastname, :phone, :address, :city, :state, :zip_code,
+                       :level, :about, :image_url, :director_title]
+    
+    # Only allow admins to set admin, director, and world_cup_selection_committee fields
+    if current_user&.admin?
+      permitted_params += [:admin, :director, :world_cup_selection_committee]
+    end
+    
+    params.require(:user).permit(permitted_params)
   end
 end

@@ -15,14 +15,17 @@
               </div>
             </div>
             
-            <div class="director-content">
-              <h3><%= director.fullname %></h3>
-              <p class="director-role">
-                <% if director.admin? %>
-                  <span class="badge badge-admin">Admin</span>
-                <% end %>
-                <span class="badge badge-director">Director</span>
-              </p>
+                          <div class="director-content">
+                <h3><%= director.fullname %></h3>
+                <p class="director-title">
+                  <%= director.director_title.present? ? director.director_title : "Board Member" %>
+                </p>
+                <p class="director-role">
+                  <span class="badge badge-director">Director</span>
+                  <% if director.world_cup_selection_committee? %>
+                    <span class="badge badge-committee">World Cup Committee</span>
+                  <% end %>
+                </p>
               
               <% if director.about.present? %>
                 <p class="director-bio"><%= director.about %></p>
@@ -41,5 +44,50 @@
         <p>Board of Directors information will be available soon.</p>
       </div>
     <% end %>
+
+    <!-- World Cup Selection Committee Section -->
+    <div class="committee-section">
+      <div class="page-header">
+        <h2>World Cup Selection Committee</h2>
+        <p>Committee members responsible for selecting USA Foosball World Cup participants</p>
+      </div>
+
+      <% if @committee_members.any? %>
+        <div class="directors-grid">
+          <% @committee_members.each do |member| %>
+            <div class="director-card">
+              <div class="director-image">
+                <div class="director-placeholder">
+                  <span><%= member.firstname[0] %><%= member.lastname[0] %></span>
+                </div>
+              </div>
+              
+              <div class="director-content">
+                <h3><%= member.fullname %></h3>
+                <p class="director-role">
+                  <% if member.director? %>
+                    <span class="badge badge-director">Director</span>
+                  <% end %>
+                  <span class="badge badge-committee">World Cup Committee</span>
+                </p>
+                
+                <% if member.about.present? %>
+                  <p class="director-bio"><%= member.about %></p>
+                <% end %>
+                
+                <div class="director-contact">
+                  <p class="director-email"><%= member.email %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <h3>No Committee Members Found</h3>
+          <p>World Cup Selection Committee information will be available soon.</p>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

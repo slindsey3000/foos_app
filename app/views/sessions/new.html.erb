@@ -20,8 +20,8 @@
 
       <%= form_with url: signin_path, method: :post, local: true, class: "signin-form", data: { turbo: false } do |f| %>
         <div class="form-group">
-          <%= f.label :username, "Username or Email" %>
-          <%= f.text_field :username, value: params[:username], required: true, placeholder: "Enter your username or email" %>
+          <%= f.label :email_or_phone, "Email or Phone Number" %>
+          <%= f.text_field :email_or_phone, value: params[:email_or_phone], required: true, placeholder: "Enter your email or phone number" %>
         </div>
 
         <div class="form-group">
@@ -47,11 +47,11 @@
     const form = document.querySelector('.signin-form');
     if (form) {
       form.addEventListener('submit', function(e) {
-        const username = document.querySelector('input[name="username"]').value.trim();
+        const emailOrPhone = document.querySelector('input[name="email_or_phone"]').value.trim();
         const password = document.querySelector('input[name="password"]').value.trim();
         
-        if (!username) {
-          alert('Please enter a username or email address.');
+        if (!emailOrPhone) {
+          alert('Please enter an email address or phone number.');
           e.preventDefault();
           return;
         }

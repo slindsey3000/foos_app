@@ -1,11 +1,10 @@
 class User < ApplicationRecord
   has_secure_password
   
-  validates :username, presence: true, uniqueness: true
+  validates :username, uniqueness: true, allow_blank: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :firstname, presence: true
   validates :lastname, presence: true
-  validates :fullname, presence: true
   validates :phone, presence: true, format: { with: /\A[\d\-\s\(\)\+\.]+\z/, message: "must be a valid phone number" }, on: :create
   validates :address, presence: true, on: :create
   validates :city, presence: true, on: :create
@@ -43,11 +42,17 @@ class User < ApplicationRecord
     end
   end
   
+  def fullname
+    return nil if firstname.blank? || lastname.blank?
+    "#{firstname} #{lastname}".strip
+  end
+  
   private
   
   def set_defaults
     self.admin ||= false
     self.director ||= false
+    self.world_cup_selection_committee ||= false
     self.level ||= 'Unknown'
   end
   
