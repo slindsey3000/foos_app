@@ -63,31 +63,40 @@ article5 = Article.create!(
 )
 
 puts "✅ Created #{Article.count} articles"
+puts "📄 Creating documents from assets/documents folder..."
 
-puts "\n📄 Creating test documents..."
+# Find Maryam Aly or any admin user
+uploader = User.find_by(firstname: "Maryam", lastname: "Aly")
+uploader ||= User.where(admin: true).first
 
-document1 = Document.create!(
-  title: "USA Foosball Official Rules",
-  description: "Complete official rules and regulations for USA Foosball tournaments and competitions. This document covers all aspects of gameplay, scoring, and tournament procedures.",
-  uploaded_by: "Shawn Lindsey",
-  file_url: "https://example.com/documents/usa-foosball-rules.pdf"
-)
+if uploader
+  documents_dir = Rails.root.join("public", "assets", "documents")
+  if Dir.exist?(documents_dir)
+    Dir.glob(File.join(documents_dir, "*")).each do |file_path|
+      next unless File.file?(file_path)
+      
+      filename = File.basename(file_path)
+      title = filename.gsub(/.[^.]*$/, "").gsub(/_/, " ").titleize
+      description = "Document: #{title}"
+      file_url = "https://usafoosball.org/assets/documents/#{filename}"
+      
+      Document.create!(
+        title: title,
+        description: description,
+        uploaded_by: uploader.fullname,
+        file_url: file_url
+      )
+      
+      puts "✅ Created document: #{title}"
+    end
+  else
+    puts "⚠️  Documents directory not found: #{documents_dir}"
+  end
+else
+  puts "⚠️  No admin user found to upload documents"
+end
 
-document2 = Document.create!(
-  title: "Tournament Registration Form",
-  description: "Official registration form for USA Foosball tournaments. Complete this form to register for upcoming competitions and events.",
-  uploaded_by: "Jim Provost",
-  file_url: "https://example.com/documents/tournament-registration.docx"
-)
-
-document3 = Document.create!(
-  title: "Player Code of Conduct",
-  description: "Standards of behavior and conduct expected from all USA Foosball players, officials, and spectators at tournaments and events.",
-  uploaded_by: "Dave Hertzenberg",
-  file_url: "https://example.com/documents/player-code-of-conduct.pdf"
-)
-
-puts "✅ Created #{Document.count} documents"
+puts "✅ Created #{Document.count} documents from assets folder"
 
 puts "\n🏢 Creating test clubs..."
 
