@@ -70,7 +70,7 @@ else
           when "The Comback Of A Tabletop Sport"
             "https://cdn.shopify.com/s/files/1/2677/1846/files/History_of_Foosball_Table_600x600.jpg?v=1716307180"
           when "Tornado World Championships 2025"
-            "https://foosballplanet.com/cdn/shop/products/tornado-t-3000-cropped_1024x1024.jpg?v=1600362991"
+            "https://arc.stimg.co/startribunemedia/3HJ67NZXJDQ26PKEVGO6EIVKHQ.jpg?&w=1080&ar=3/2&fit=crop"
           else
             "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
           end
