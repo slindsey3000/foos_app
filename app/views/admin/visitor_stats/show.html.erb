@@ -1,51 +1,49 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="mb-8">
+<div class="visitor-stats-page">
+  <div class="container mx-auto px-4 py-4">
+  <div class="mb-6">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Visitor Details</h1>
-        <p class="text-gray-600">Detailed information for IP: <%= @visitor.ip_address %></p>
+        <h1 class="text-2xl font-bold text-gray-900 mb-1">Visitor Details</h1>
+        <p class="text-sm text-gray-600">IP: <%= @visitor.ip_address %></p>
       </div>
-      <%= link_to admin_visitor_stats_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-        Back to Statistics
+      <%= link_to admin_visitor_stats_path, class: "inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" do %>
+        ← Back to Statistics
       <% end %>
     </div>
   </div>
 
   <!-- Visitor Summary -->
-  <div class="bg-white rounded-lg shadow mb-8">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-xl font-semibold text-gray-900">Visitor Information</h2>
+  <div class="bg-white rounded-lg shadow mb-6">
+    <div class="px-4 py-3 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">Visitor Information</h2>
     </div>
-    <div class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
-          <dl class="space-y-3">
+          <h3 class="text-sm font-medium text-gray-900 mb-3">Basic Information</h3>
+          <dl class="space-y-2">
             <div>
-              <dt class="text-sm font-medium text-gray-500">IP Address</dt>
+              <dt class="text-xs font-medium text-gray-500">IP Address</dt>
               <dd class="text-sm text-gray-900 font-mono"><%= @visitor.ip_address %></dd>
             </div>
             <div>
-              <dt class="text-sm font-medium text-gray-500">Total Visits</dt>
+              <dt class="text-xs font-medium text-gray-500">Total Visits</dt>
               <dd class="text-sm text-gray-900"><%= @visitor.visit_count %></dd>
             </div>
             <div>
-              <dt class="text-sm font-medium text-gray-500">First Visit</dt>
+              <dt class="text-xs font-medium text-gray-500">First Visit</dt>
               <dd class="text-sm text-gray-900"><%= @visitor.created_at.strftime("%b %d, %Y at %I:%M %p") %></dd>
             </div>
             <div>
-              <dt class="text-sm font-medium text-gray-500">Last Visit</dt>
+              <dt class="text-xs font-medium text-gray-500">Last Visit</dt>
               <dd class="text-sm text-gray-900"><%= @visitor.last_visit&.strftime("%b %d, %Y at %I:%M %p") || "Never" %></dd>
             </div>
           </dl>
         </div>
         <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4">User Agent</h3>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <p class="text-sm text-gray-700 break-words"><%= @visitor.user_agent || "Not available" %></p>
+          <h3 class="text-sm font-medium text-gray-900 mb-3">User Agent</h3>
+          <div class="bg-gray-50 rounded p-3">
+            <p class="text-xs text-gray-700 break-words"><%= @visitor.user_agent || "Not available" %></p>
           </div>
         </div>
       </div>
@@ -54,30 +52,30 @@
 
   <!-- Page Visit History -->
   <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-xl font-semibold text-gray-900">Page Visit History</h2>
-      <p class="text-sm text-gray-600 mt-1">Recent <%= @page_visits.count %> page visits</p>
+    <div class="px-4 py-3 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">Recent 50 Page Visits</h2>
+      <p class="text-xs text-gray-600 mt-1">Showing <%= @page_visits.count %> visits</p>
     </div>
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Page</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visited At</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Ago</th>
+            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Page</th>
+            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ago</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <% @page_visits.each do |visit| %>
             <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900"><%= visit.page_path %></div>
+              <td class="px-3 py-2 whitespace-nowrap">
+                <div class="text-xs font-medium text-gray-900"><%= visit.page_path %></div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900"><%= visit.visited_at.strftime("%b %d, %Y at %I:%M %p") %></div>
+              <td class="px-3 py-2 whitespace-nowrap">
+                <div class="text-xs text-gray-900"><%= visit.visited_at.strftime("%b %d, %I:%M %p") %></div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500"><%= time_ago_in_words(visit.visited_at) %> ago</div>
+              <td class="px-3 py-2 whitespace-nowrap">
+                <div class="text-xs text-gray-500"><%= time_ago_in_words(visit.visited_at) %> ago</div>
               </td>
             </tr>
           <% end %>
@@ -85,9 +83,10 @@
       </table>
     </div>
     <% if @page_visits.empty? %>
-      <div class="p-6 text-center">
-        <p class="text-gray-500">No page visits recorded for this visitor</p>
+      <div class="p-4 text-center">
+        <p class="text-gray-500 text-sm">No page visits recorded for this visitor</p>
       </div>
     <% end %>
+  </div>
   </div>
 </div> 

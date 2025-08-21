@@ -4,7 +4,7 @@ class Admin::VisitorStatsController < ApplicationController
   def index
     @total_visitors = IpVisitor.count
     @total_page_visits = PageVisit.count
-    @recent_visitors = IpVisitor.recent.limit(20)
+    @recent_visitors = IpVisitor.recent.limit(10)
     @most_visited_ips = IpVisitor.most_visited.limit(10)
     
     # Get page visit statistics
@@ -16,7 +16,7 @@ class Admin::VisitorStatsController < ApplicationController
     # Get recent page visits
     @recent_page_visits = PageVisit.includes(:ip_visitor)
                                   .recent
-                                  .limit(20)
+                                  .limit(50)
     
     # Get visitor activity by day (last 7 days)
     @visitors_by_day = IpVisitor.where('last_visit >= ?', 7.days.ago)

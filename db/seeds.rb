@@ -65,6 +65,16 @@ else
           }.join("\n")
           
           puts "💾 Creating Article record..."
+          # Set specific image URLs based on article title
+          image_url = case title
+          when "The Comback Of A Tabletop Sport"
+            "https://cdn.shopify.com/s/files/1/2677/1846/files/History_of_Foosball_Table_600x600.jpg?v=1716307180"
+          when "Tornado World Championships 2025"
+            "https://foosballplanet.com/cdn/shop/products/tornado-t-3000-cropped_1024x1024.jpg?v=1600362991"
+          else
+            "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
+          end
+          
           article = Article.create!(
             title: title,
             content: html_content,
@@ -72,7 +82,7 @@ else
             user: foos_news_user,
             published_at: 1.day.ago,
             featured: true,
-            image_url: "https://foosballplanet.com/cdn/shop/files/NSC-MatthewMTornadoTournamentT-3000FoosballTablewoassemblycompletedpic1_bd907b39-51a6-4c28-986a-1dcfde66cd4c_large.jpg?v=1692697838"
+            image_url: image_url
           )
           puts "✅ Successfully created article: #{article.title} (ID: #{article.id}) by #{article.user.fullname}"
           article_count += 1
