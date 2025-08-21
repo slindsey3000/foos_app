@@ -1,0 +1,7 @@
+# Cursor Rules for USA Foosball Project
+
+## File Editing Guidelines
+- "When editing files, always open and modify them directly. Never suggest or run sed, awk, or shell-based file edits."
+
+## Asset Management
+- "When altering CSS, JavaScript, or other asset files that should trigger asset precompilation, offer the user the option to run the precompile_assets.sh script to clean and rebuild assets." 

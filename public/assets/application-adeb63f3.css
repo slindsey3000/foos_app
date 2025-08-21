@@ -1660,27 +1660,6 @@ main {
   border-top: 2px solid #e5e7eb;
 }
 
-.committee-section .page-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem 0;
-  background: linear-gradient(135deg, #1A1553, #3B3F73);
-  color: white;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-}
-
-.committee-section .page-header h2 {
-  color: white;
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
-}
-
-.committee-section .page-header p {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
-  margin: 0;
-}
 /* Documents Styles */
 .documents-page {
   padding: 2rem 0;

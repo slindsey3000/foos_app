@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ip_visitor: one
+  page_path: MyString
+  visited_at: 2025-08-21 13:21:55
+
+two:
+  ip_visitor: two
+  page_path: MyString
+  visited_at: 2025-08-21 13:21:55

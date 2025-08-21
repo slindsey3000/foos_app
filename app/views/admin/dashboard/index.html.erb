@@ -38,6 +38,14 @@
           <p>News Articles</p>
         </div>
       </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <h3><%= @total_visitors %></h3>
+          <p>Unique Visitors</p>
+        </div>
+      </div>
     </div>
 
     <!-- Quick Actions -->
@@ -69,9 +77,15 @@
         </a>
         
         <a href="<%= clubs_path %>" class="action-card">
-          <div class="action-icon">🏓</div>
+          <div class="action-icon">🏢</div>
           <h3>Club Management</h3>
           <p>Add and manage foosball clubs and playing locations</p>
+        </a>
+        
+        <a href="<%= admin_visitor_stats_path %>" class="action-card">
+          <div class="action-icon">📊</div>
+          <h3>Visitor Statistics</h3>
+          <p>Track IP addresses and page visits across the site</p>
         </a>
       </div>
     </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_165747) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_21_172155) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -59,9 +59,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_165747) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["featured"], name: "index_articles_on_featured"
     t.index ["published_at"], name: "index_articles_on_published_at"
     t.index ["slug"], name: "index_articles_on_slug", unique: true
+    t.index ["user_id"], name: "index_articles_on_user_id"
   end
 
   create_table "clubs", force: :cascade do |t|
@@ -99,6 +101,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_165747) do
     t.index ["uploaded_by"], name: "index_documents_on_uploaded_by"
   end
 
+  create_table "ip_visitors", force: :cascade do |t|
+    t.string "ip_address", null: false
+    t.text "user_agent"
+    t.datetime "last_visit"
+    t.integer "visit_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ip_address"], name: "index_ip_visitors_on_ip_address", unique: true
+    t.index ["last_visit"], name: "index_ip_visitors_on_last_visit"
+    t.index ["visit_count"], name: "index_ip_visitors_on_visit_count"
+  end
+
+  create_table "page_visits", force: :cascade do |t|
+    t.integer "ip_visitor_id", null: false
+    t.string "page_path", null: false
+    t.datetime "visited_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ip_visitor_id"], name: "index_page_visits_on_ip_visitor_id"
+    t.index ["page_path"], name: "index_page_visits_on_page_path"
+    t.index ["visited_at"], name: "index_page_visits_on_visited_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -124,4 +149,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_165747) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "articles", "users"
+  add_foreign_key "page_visits", "ip_visitors"
 end

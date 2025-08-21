@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     get "dashboard", to: "dashboard#index", as: :dashboard
+    resources :visitor_stats, only: [:index, :show]
   end
   
   # Main routes

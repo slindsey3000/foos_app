@@ -71,6 +71,14 @@ personnel_data = [
     director_title: nil,
     admin: true,
     world_cup_selection_committee: false
+  },
+  {
+    firstname: "Foos",
+    lastname: "News",
+    director: false,
+    director_title: nil,
+    admin: true,
+    world_cup_selection_committee: false
   }
 ]
 
