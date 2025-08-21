@@ -23,6 +23,13 @@ Rails.application.routes.draw do
   get "signup", to: "registrations#new"
   post "signup", to: "registrations#create"
   
+  # Dashboard routes
+  get "dashboard", to: "dashboard#index", as: :dashboard
+  get "profile/edit", to: "dashboard#edit_profile", as: :edit_user_profile
+  patch "profile", to: "dashboard#update_profile", as: :update_user_profile
+  get "profile/change-password", to: "dashboard#change_password", as: :change_password
+  patch "profile/change-password", to: "dashboard#update_password", as: :update_password
+  
   # Admin routes
   namespace :admin do
     resources :users

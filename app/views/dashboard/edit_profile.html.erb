@@ -1,0 +1,97 @@
+<div class="edit-profile-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Edit Profile</h1>
+      <p>Update your personal information and preferences.</p>
+    </div>
+
+    <div class="form-container">
+      <%= form_with model: @user, url: update_user_profile_path, method: :patch, local: true do |form| %>
+        <% if @user.errors.any? %>
+          <div class="alert alert-error">
+            <h3><%= pluralize(@user.errors.count, "error") %> prohibited this profile from being saved:</h3>
+            <ul>
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <%= form.label :firstname, "First Name" %>
+              <%= form.text_field :firstname, class: "form-control", required: true %>
+            </div>
+            
+            <div class="form-group">
+              <%= form.label :lastname, "Last Name" %>
+              <%= form.text_field :lastname, class: "form-control", required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :email, "Email Address" %>
+            <%= form.email_field :email, class: "form-control", required: true %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :phone, "Phone Number" %>
+            <%= form.telephone_field :phone, class: "form-control", placeholder: "(555) 123-4567" %>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Address Information</h3>
+          
+          <div class="form-group">
+            <%= form.label :address, "Street Address" %>
+            <%= form.text_field :address, class: "form-control" %>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <%= form.label :city, "City" %>
+              <%= form.text_field :city, class: "form-control" %>
+            </div>
+            
+            <div class="form-group">
+              <%= form.label :state, "State" %>
+              <%= form.text_field :state, class: "form-control" %>
+            </div>
+            
+            <div class="form-group">
+              <%= form.label :zip_code, "ZIP Code" %>
+              <%= form.text_field :zip_code, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Foosball Information</h3>
+          
+          <div class="form-group">
+            <%= form.label :level, "Skill Level" %>
+            <%= form.select :level, 
+                options_for_select([
+                  ["Beginner", "beginner"],
+                  ["Intermediate", "intermediate"],
+                  ["Advanced", "advanced"],
+                  ["Professional", "professional"]
+                ], @user.level), 
+                { prompt: "Select your skill level" }, 
+                { class: "form-control" } %>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit "Update Profile", class: "btn btn-primary" %>
+          <%= link_to "Cancel", dashboard_path, class: "btn btn-outline" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 

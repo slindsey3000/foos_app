@@ -1,0 +1,123 @@
+<div class="user-dashboard">
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>My Dashboard</h1>
+      <p>Welcome back, <%= @user.fullname %>! Manage your USA Foosball account.</p>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="dashboard-section">
+      <h2>My Profile</h2>
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <span class="avatar-placeholder"><%= @user.firstname[0] %><%= @user.lastname[0] %></span>
+          </div>
+          <div class="profile-info">
+            <h3><%= @user.fullname %></h3>
+            <p class="profile-email"><%= @user.email %></p>
+            <% if @user.phone.present? %>
+              <p class="profile-phone"><%= @user.display_phone %></p>
+            <% end %>
+            <p class="profile-location">
+              <% if @user.city.present? && @user.state.present? %>
+                <%= @user.city %>, <%= @user.state %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+        
+        <div class="profile-actions">
+          <a href="<%= edit_user_profile_path %>" class="btn btn-primary">Edit Profile</a>
+          <a href="<%= change_password_path %>" class="btn btn-outline">Change Password</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-section">
+      <h2>Quick Actions</h2>
+      <div class="action-grid">
+        <a href="<%= edit_user_profile_path %>" class="action-card">
+          <div class="action-icon">👤</div>
+          <h3>Update Profile</h3>
+          <p>Edit your personal information and preferences</p>
+        </a>
+        
+        <a href="<%= clubs_path %>" class="action-card">
+          <div class="action-icon">🏓</div>
+          <h3>Find Clubs</h3>
+          <p>Discover foosball clubs and playing locations near you</p>
+        </a>
+        
+        <a href="<%= news_path %>" class="action-card">
+          <div class="action-icon">📰</div>
+          <h3>Latest News</h3>
+          <p>Stay updated with USA Foosball news and announcements</p>
+        </a>
+        
+        <a href="<%= documents_path %>" class="action-card">
+          <div class="action-icon">📄</div>
+          <h3>Documents</h3>
+          <p>Access official documents, rules, and resources</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Account Status -->
+    <div class="dashboard-section">
+      <h2>Account Status</h2>
+      <div class="status-grid">
+        <div class="status-card">
+          <div class="status-icon">✅</div>
+          <div class="status-info">
+            <h4>Account Status</h4>
+            <p class="status-text">Active</p>
+          </div>
+        </div>
+        
+        <div class="status-card">
+          <div class="status-icon">📅</div>
+          <div class="status-info">
+            <h4>Member Since</h4>
+            <p class="status-text"><%= @user.created_at.strftime("%B %Y") %></p>
+          </div>
+        </div>
+        
+        <% if @user.director? %>
+          <div class="status-card">
+            <div class="status-icon">👑</div>
+            <div class="status-info">
+              <h4>Role</h4>
+              <p class="status-text">
+                Director
+                <% if @user.director_title.present? %>
+                  - <%= @user.director_title %>
+                <% end %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+        
+        <% if @user.world_cup_selection_committee? %>
+          <div class="status-card">
+            <div class="status-icon">🏆</div>
+            <div class="status-info">
+              <h4>Committee</h4>
+              <p class="status-text">World Cup Selection Committee</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Recent Activity (Placeholder) -->
+    <div class="dashboard-section">
+      <h2>Recent Activity</h2>
+      <div class="activity-placeholder">
+        <p>No recent activity to display.</p>
+        <p>Your tournament registrations, club visits, and other activities will appear here.</p>
+      </div>
+    </div>
+  </div>
+</div> 

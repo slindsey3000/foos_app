@@ -11,12 +11,8 @@
       <!-- Desktop Auth -->
       <div class="header-auth desktop-only">
         <% if current_user %>
-          <% if current_user.admin? %>
-            <span class="welcome-message">Welcome Admin <%= current_user.fullname %>!</span>
-            <%= link_to "Dashboard", admin_dashboard_path, class: "btn btn-outline" %>
-          <% else %>
-            <span class="welcome-message">Welcome <%= current_user.fullname %>!</span>
-          <% end %>
+          <span class="welcome-message">Welcome <%= current_user.admin? ? "Admin " : "" %><%= current_user.fullname %>!</span>
+          <%= link_to "Dashboard", current_user.admin? ? admin_dashboard_path : dashboard_path, class: "btn btn-primary" %>
           <%= link_to "Sign Out", logout_path, data: { method: :delete, confirm: "Are you sure you want to sign out?" }, class: "btn btn-secondary" %>
         <% else %>
           <a href="/signup" class="btn btn-primary">Become a Member</a>
@@ -32,17 +28,20 @@
           <span class="hamburger-line"></span>
         </button>
         <div class="mobile-menu" id="mobile-menu">
-                                <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/news">News</a></li>
-                        <li><a href="/board">Board of Directors</a></li>
-                        <li><a href="/documents">Documents</a></li>
-                        <li><a href="/clubs">Where to Play</a></li>
-                        <li><a href="/brackets">Brackets</a></li>
-                        <% unless current_user %>
-                          <li><a href="/signin" class="mobile-auth-link">Sign In</a></li>
-                        <% end %>
-                      </ul>
+          <ul>
+            <% if current_user %>
+              <li><a href="<%= current_user.admin? ? admin_dashboard_path : dashboard_path %>" class="mobile-dashboard-link">Dashboard</a></li>
+            <% end %>
+            <li><a href="/">Home</a></li>
+            <li><a href="/news">News</a></li>
+            <li><a href="/board">Board of Directors</a></li>
+            <li><a href="/documents">Documents</a></li>
+            <li><a href="/clubs">Where to Play</a></li>
+            <li><a href="/brackets">Brackets</a></li>
+            <% unless current_user %>
+              <li><a href="/signin" class="mobile-auth-link">Sign In</a></li>
+            <% end %>
+          </ul>
         </div>
       </div>
     </div>
