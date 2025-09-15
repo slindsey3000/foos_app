@@ -65,8 +65,15 @@
                 </div>
               <% end %>
               
+              <% if club.contact_person.present? %>
+                <div class="club-administrator">
+                  <h4>Administrator</h4>
+                  <p><%= club.contact_person %></p>
+                </div>
+              <% end %>
+              
               <% if club.description.present? %>
-                <p class="club-description"><%= truncate(club.description, length: 150) %></p>
+                <p class="club-description"><%= truncate(club.description, length: 120) %></p>
               <% end %>
               
               <div class="club-contact">
