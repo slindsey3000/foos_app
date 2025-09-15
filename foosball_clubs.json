@@ -1,6 +1,6 @@
 [
   {
-    "name": "Asheville Foosball Association - Mudpuppies Sports Bar and Grill",
+    "name": "Asheville Foosball - Mudpuppies Sports Bar and Grill",
     "address": "5 Andrew Way, Arden, North Carolina, 28704",
     "city": "Arden",
     "state": "NC",
@@ -24,7 +24,7 @@
     "notes": "Weekly Draw Your Partner tournaments"
   },
   {
-    "name": "Austin Foosball Association - Spare Time",
+    "name": "Austin Foosball - Spare Time",
     "address": "1724 Farm to Market 685, Pflugerville, TX, 78660",
     "city": "Pflugerville",
     "state": "TX",
@@ -36,7 +36,7 @@
     "notes": "Weekly Monday evening tournaments"
   },
   {
-    "name": "Louisiana Foosball Association - Buffalo's Billiards",
+    "name": "Louisiana Foosball - Buffalo's Billiards",
     "address": "5015 Bloomfield St, Jefferson, LA, 70121",
     "city": "Jefferson",
     "state": "LA",
@@ -48,7 +48,7 @@
     "notes": "Scheduled Saturday tournaments and alternating Friday competitions"
   },
   {
-    "name": "New York City Foosball Association - Banter Bar",
+    "name": "New York City Foosball - Banter Bar",
     "address": "132 Havemeyer St, Brooklyn, NY, 11211",
     "city": "Brooklyn",
     "state": "NY",
@@ -72,7 +72,7 @@
     "notes": "Family-friendly environment; weekly Draw Your Partner tournaments"
   },
   {
-    "name": "Music City Nashville Foosball Association - Moxy Vanderbilt Hotel",
+    "name": "Music City Nashville Foosball - Moxy Vanderbilt Hotel",
     "address": "1911 Belcourt Avenue, Nashville, TN, 37212",
     "city": "Nashville",
     "state": "TN",
@@ -84,7 +84,7 @@
     "notes": "Weekly Sunday afternoon events"
   },
   {
-    "name": "Angel City Foosball Association - Angel City Brewery Arts District",
+    "name": "Angel City Foosball - Angel City Brewery Arts District",
     "address": "216 Alameda Street, Los Angeles, CA, 90012",
     "city": "Los Angeles",
     "state": "CA",
@@ -132,7 +132,7 @@
     "notes": "Complimentary foosball access and professional instruction"
   },
   {
-    "name": "508 Foosball Association - Don Carlos Social Club",
+    "name": "508 Foosball - Don Carlos Social Club",
     "address": "274 Franklin St, Fall River, MA, 02721",
     "city": "Fall River",
     "state": "MA",
@@ -156,7 +156,7 @@
     "notes": "Weekly local tournament schedule"
   },
   {
-    "name": "Cincinnati Foosball Association - Fowling Warehouse Cincinnati",
+    "name": "Cincinnati Foosball - Fowling Warehouse Cincinnati",
     "address": "2940 Highland Ave, Cincinnati, OH, 45212",
     "city": "Cincinnati",
     "state": "OH",
@@ -168,7 +168,7 @@
     "notes": "Two tournaments held nightly"
   },
   {
-    "name": "St. Louis Foosball Association - Hotshots Sports Bar and Grill",
+    "name": "St. Louis Foosball - Hotshots Sports Bar and Grill",
     "address": "950 S Highway Dr, Fenton, MO, 63026",
     "city": "Fenton",
     "state": "MO",
@@ -180,7 +180,7 @@
     "notes": "Weekly Tuesday tournaments and bi-weekly Saturday events"
   },
   {
-    "name": "Cincinnati Foosball Association - 513 Sports Cafe",
+    "name": "Cincinnati Foosball - 513 Sports Cafe",
     "address": "7707 Five Mile Rd, Cincinnati, OH, 45230",
     "city": "Cincinnati",
     "state": "OH",
@@ -216,7 +216,7 @@
     "notes": "Monster Draw Your Partner and open singles on Thursday, open doubles on Saturday"
   },
   {
-    "name": "Northeast USA Foosball Association - Bellefonte Brewing Co",
+    "name": "Northeast USA Foosball - Bellefonte Brewing Co",
     "address": "3605 Old Capitol Trl, Wilmington, DE, 19808",
     "city": "Wilmington",
     "state": "DE",
@@ -228,7 +228,7 @@
     "notes": "Regular Tuesday and Friday play sessions"
   },
   {
-    "name": "Lucky 7 Bar & Grill - Seattle Foosball Association",
+    "name": "Lucky 7 Bar & Grill - Seattle Foosball",
     "address": "12715 4th Ave NE, Kirkland, WA, 98034",
     "city": "Kirkland",
     "state": "WA",
@@ -252,7 +252,7 @@
     "notes": "Open play available; tournament schedule not specified"
   },
   {
-    "name": "New Hampshire Foosball Association/Dead Bar Society – Penuche's Ale House",
+    "name": "New Hampshire Foosball/Dead Bar Society – Penuche's Ale House",
     "address": "4 Canal St, Nashua, NH, 03064",
     "city": "Nashua",
     "state": "NH",
@@ -264,7 +264,7 @@
     "notes": "Multiple weekly and monthly events"
   },
   {
-    "name": "Alabama Foosball Association – Pelican Reef Restaurant and Bar",
+    "name": "Alabama Foosball – Pelican Reef Restaurant and Bar",
     "address": "11799 Dauphin Island Pkwy, Theodore, AL, 36582",
     "city": "Theodore",
     "state": "AL",
@@ -276,7 +276,7 @@
     "notes": "Practice sessions available; no formal tournament schedule"
   },
   {
-    "name": "Alabama Foosball Association – 6 Pockets Bar and Billiards",
+    "name": "Alabama Foosball – 6 Pockets Bar and Billiards",
     "address": "615 19th Ave SE, Decatur, AL, 35601",
     "city": "Decatur",
     "state": "AL",
@@ -288,7 +288,7 @@
     "notes": "Weekly Draw Your Partner tournaments"
   },
   {
-    "name": "Tampa Bay Foosball Association – Rudy's Sports Bar",
+    "name": "Tampa Bay Foosball – Rudy's Sports Bar",
     "address": "1595 Seminole Blvd, Largo, FL, 33770",
     "city": "Largo",
     "state": "FL",
@@ -312,7 +312,7 @@
     "notes": "Separate tournament schedules for Tornado and Bonzini table formats"
   },
   {
-    "name": "Virginia Beach Foosballers Association – Private Residence",
+    "name": "Virginia Beach Foosballers – Private Residence",
     "address": "Private Residence, Virginia Beach, VA",
     "city": "Virginia Beach",
     "state": "VA",
@@ -336,7 +336,7 @@
     "notes": "Check Facebook for event details; not a regular weekly schedule"
   },
   {
-    "name": "Portland Foosball Association – Home Turf Sports Bar & Grill",
+    "name": "Portland Foosball – Home Turf Sports Bar & Grill",
     "address": "6501 SW Macadam Ave, Portland, OR, 97219",
     "city": "Tigard",
     "state": "OR",
@@ -372,7 +372,7 @@
     "notes": "Private club facility; schedule available via Facebook"
   },
   {
-    "name": "Minnesota Foosball Association – Jimmy's Pro Billiards",
+    "name": "Minnesota Foosball – Jimmy's Pro Billiards",
     "address": "4040 Central Ave NE, Columbia Heights, MN, 55421",
     "city": "Columbia Heights",
     "state": "MN",
@@ -384,7 +384,7 @@
     "notes": "Comprehensive monthly schedule including Bring Your Partner, Monster Draw, Singles, Shake N Bake, and other formats"
   },
   {
-    "name": "Tucson Foosball Association – Click's Billiards",
+    "name": "Tucson Foosball – Click's Billiards",
     "address": "136 S Eastside Loop, Tucson, AZ, 85710",
     "city": "Tucson",
     "state": "AZ",
@@ -408,7 +408,7 @@
     "notes": "League season runs November through April; Monster Draw Your Partner tournaments on alternating weeks"
   },
   {
-    "name": "Fox Valley Foosball Association – The Mad Apple Burger & Billiard Co.",
+    "name": "Fox Valley Foosball – The Mad Apple Burger & Billiard Co.",
     "address": "3025 W College Ave, Appleton, WI, 54914",
     "city": "Appleton",
     "state": "WI",
@@ -420,7 +420,7 @@
     "notes": "Weekly tournament schedule"
   },
   {
-    "name": "Sheboygan Foosball Association – George Michael's",
+    "name": "Sheboygan Foosball – George Michael's",
     "address": "513 N 8th St, Sheboygan, WI, 53081",
     "city": "Sheboygan",
     "state": "WI",
@@ -432,7 +432,7 @@
     "notes": "Monster Draw Your Partner format; weekly April-September; bi-weekly October-March"
   },
   {
-    "name": "Buffalo Foosball Association – Bison Billiards",
+    "name": "Buffalo Foosball – Bison Billiards",
     "address": "8215 Main St, Williamsville, NY, 14221",
     "city": "Williamsville",
     "state": "NY",
@@ -444,7 +444,7 @@
     "notes": "Complimentary table access; entry fees required for Draw Your Partner tournaments"
   },
   {
-    "name": "Buffalo Foosball Association – Buffalo Riverworks",
+    "name": "Buffalo Foosball – Buffalo Riverworks",
     "address": "359 Ganson St, Buffalo, NY, 14203",
     "city": "Buffalo",
     "state": "NY",
@@ -456,7 +456,7 @@
     "notes": "Beginner-friendly Monster Draw Your Partner tournaments"
   },
   {
-    "name": "518 Foosball Association – Trick Shot Billiard Hall",
+    "name": "518 Foosball – Trick Shot Billiard Hall",
     "address": "1602 Route 9, Clifton Park, NY, 12065",
     "city": "Clifton Park",
     "state": "NY",
@@ -468,7 +468,7 @@
     "notes": "Weekly Monster Draw Your Partner tournaments; six tournament tables available"
   },
   {
-    "name": "New York City Foosball Association – Sugar Mouse NYC",
+    "name": "New York City Foosball – Sugar Mouse NYC",
     "address": "110 Delancey St, New York, NY, 10002",
     "city": "New York",
     "state": "NY",
@@ -480,7 +480,7 @@
     "notes": "Weekly tournaments and casual play sessions"
   },
   {
-    "name": "New York City Foosball Association – Sour Mouse NYC",
+    "name": "New York City Foosball – Sour Mouse NYC",
     "address": "110 Delancey St, New York, NY, 10002",
     "city": "New York",
     "state": "NY",
@@ -492,7 +492,7 @@
     "notes": "Friday casual play sessions"
   },
   {
-    "name": "Philadelphia Foosball Association – Walsh's Tavern",
+    "name": "Philadelphia Foosball – Walsh's Tavern",
     "address": "63 York Rd, Warminister, PA, 18974",
     "city": "Warminister",
     "state": "PA",
@@ -504,7 +504,7 @@
     "notes": "Monday evening Draw Your Partner with rotation format; bar matches include payout; Fifth Monday specialty events"
   },
   {
-    "name": "Cleveland Foosball Association – RollHouse Parma",
+    "name": "Cleveland Foosball – RollHouse Parma",
     "address": "12859 Brookpark Rd, Cleveland, OH, 44130",
     "city": "Cleveland",
     "state": "OH",
@@ -540,7 +540,7 @@
     "notes": "Friendly group atmosphere; weekly tournament schedule"
   },
   {
-    "name": "Boise Foosball Association – Q's Billiards & Eatery",
+    "name": "Boise Foosball – Q's Billiards & Eatery",
     "address": "6570 W Fairview Ave, Boise, ID, 83704",
     "city": "Boise",
     "state": "ID",
@@ -552,7 +552,7 @@
     "notes": "Weekly tournaments and monthly Super Saturday events"
   },
   {
-    "name": "Foster Foosball Association",
+    "name": "Foster Foosball",
     "address": "6010 SE Foster Rd, Portland, OG, 97206",
     "city": "Portland",
     "state": "OR",
@@ -564,7 +564,7 @@
     "notes": "Family-friendly entertainment center; open play available five nights per week"
   },
   {
-    "name": "Utah Foosball Association – The Lab",
+    "name": "Utah Foosball – The Lab",
     "address": "2432 Washington Blvd, Ogden, UT, 84401",
     "city": "Ogden",
     "state": "UT",
@@ -576,7 +576,7 @@
     "notes": "Weekly tournament schedule"
   },
   {
-    "name": "Utah Foosball Association – Fraternal Order of Eagles",
+    "name": "Utah Foosball – Fraternal Order of Eagles",
     "address": "10 W 4th Ave, Murray, UT, 84107",
     "city": "Murray",
     "state": "UT",
@@ -588,7 +588,7 @@
     "notes": "Weekly tournament schedule"
   },
   {
-    "name": "Kalamafoos Foosball Association – One Well Brewing",
+    "name": "Kalamafoos Foosball – One Well Brewing",
     "address": "4213 Portage St, Kalamazoo, MI, 49001",
     "city": "Kalamazoo",
     "state": "MI",
@@ -600,7 +600,7 @@
     "notes": "Monster Draw Your Partner tournaments; Bring Your Partner tournaments on fifth Wednesday; $5 table fee"
   },
   {
-    "name": "Madison Foosball Association – Muskellounge And Sporting Club",
+    "name": "Madison Foosball – Muskellounge And Sporting Club",
     "address": "4102 Monona Dr, Madison, WI, 53716",
     "city": "Madison",
     "state": "WI",
@@ -612,7 +612,7 @@
     "notes": "Monthly events during summer season"
   },
   {
-    "name": "Madison Foosball Association – Pitcher's Pub",
+    "name": "Madison Foosball – Pitcher's Pub",
     "address": "323 W Beltline Hwy, Fitchburg, WI, 53713",
     "city": "Fitchburg",
     "state": "WI",
