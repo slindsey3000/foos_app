@@ -30,7 +30,7 @@ module SeoHelper
       "name": "USA Foosball",
       "alternateName": "United States Foosball Association",
       "url": request.base_url,
-      "logo": "#{request.base_url}/assets/USA_foosball_logo.png",
+      "logo": "#{request.base_url}#{asset_path('USA_foosball_logo.png')}",
       "description": "The United States Foosball Association promotes competitive foosball across America with clubs, tournaments, and leagues.",
       "sameAs": [
         "https://www.facebook.com/usafoosball",
@@ -98,10 +98,10 @@ module SeoHelper
         "name": "USA Foosball",
         "logo": {
           "@type": "ImageObject",
-          "url": "#{request.base_url}/assets/USA_foosball_logo.png"
+          "url": "#{request.base_url}#{asset_path('USA_foosball_logo.png')}"
         }
       },
-      "image": article.image_url.present? ? article.image_url : "#{request.base_url}/assets/hero-foosball-dramatic.png",
+      "image": article.image_url.present? ? article.image_url : "#{request.base_url}#{asset_path('hero-foosball-dramatic.png')}",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "#{request.base_url}/news/#{article.slug}"

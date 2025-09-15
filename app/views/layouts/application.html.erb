@@ -18,17 +18,25 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="<%= request.original_url %>">
   <meta property="og:site_name" content="USA Foosball">
-  <meta property="og:image" content="<%= request.base_url %>/assets/hero-foosball-dramatic.png">
+  <meta property="og:image" content="<%= asset_url('hero-foosball-dramatic.png') %>">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Dramatic foosball game with intense flames and stadium lighting">
+  <meta property="og:image:type" content="image/png">
   
   <%# Twitter Card Meta Tags %>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<%= page_title %>">
   <meta name="twitter:description" content="<%= page_description %>">
-  <meta name="twitter:image" content="<%= request.base_url %>/assets/hero-foosball-dramatic.png">
+  <meta name="twitter:image" content="<%= asset_url('hero-foosball-dramatic.png') %>">
   <meta name="twitter:image:alt" content="Dramatic foosball game with intense flames and stadium lighting">
+  <meta name="twitter:site" content="@usafoosball">
+  <meta name="twitter:creator" content="@usafoosball">
+  
+  <%# Additional Social Media Meta Tags %>
+  <meta property="article:publisher" content="https://www.facebook.com/usafoosball">
+  <meta property="article:author" content="USA Foosball">
+  <meta name="pinterest-rich-pin" content="true">
   
   <%# Additional SEO Meta Tags %>
   <meta name="theme-color" content="#dc2626">
