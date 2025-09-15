@@ -1,3 +1,15 @@
+<%# Dynamic SEO Meta Tags for Individual Club %>
+<% content_for :title, "#{@club.name} - Foosball Club in #{@club.city}, #{@club.state}" %>
+<% content_for :description, "Visit #{@club.name} in #{@club.city}, #{@club.state} for foosball tournaments and recreational play. #{@club.day_and_time_info.present? ? 'Playing times: ' + @club.day_and_time_info + '. ' : ''}Contact: #{@club.phone.present? ? @club.phone : 'See details for contact info'}." %>
+<% content_for :keywords, "foosball club #{@club.city.downcase}, foosball #{@club.city.downcase} #{@club.state.downcase}, #{@club.name.downcase}, table soccer #{@club.city.downcase}, foosball tournaments #{@club.city.downcase}" %>
+
+<%# Structured Data for Individual Club %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+<%= structured_data_club(@club) %>
+</script>
+<% end %>
+
 <div class="club-show-page">
   <div class="container">
     <div class="club-full">

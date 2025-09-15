@@ -1,3 +1,37 @@
+<%# SEO Meta Tags for News Page %>
+<% content_for :title, "USA Foosball News | Latest Tournament Updates & Community News" %>
+<% content_for :description, "Stay updated with the latest USA Foosball news, tournament results, community updates, and competitive foosball events across America." %>
+<% content_for :keywords, "foosball news, USA foosball news, foosball tournaments, foosball updates, competitive foosball news, foosball community" %>
+
+<%# Structured Data for News Page %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "USA Foosball News",
+  "description": "Latest news, tournaments, and community updates from USA Foosball",
+  "url": "<%= request.original_url %>",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Foosball News Articles",
+    "numberOfItems": "<%= @articles.count %>",
+    "itemListElement": [
+      <% @articles.first(5).each_with_index do |article, index| %>
+      {
+        "@type": "Article",
+        "position": <%= index + 1 %>,
+        "headline": "<%= j article.title %>",
+        "url": "<%= request.base_url %>/news/<%= article.slug %>",
+        "datePublished": "<%= article.published_at&.iso8601 %>"
+      }<%= ',' unless index == [@articles.count - 1, 4].min %>
+      <% end %>
+    ]
+  }
+}
+</script>
+<% end %>
+
 <div class="articles-page">
   <div class="container">
     <div class="page-header">

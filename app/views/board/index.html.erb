@@ -1,3 +1,26 @@
+<%# SEO Meta Tags for Board Page %>
+<% content_for :title, "USA Foosball Board of Directors | Leadership Team" %>
+<% content_for :description, "Meet the USA Foosball Board of Directors and leadership team. Learn about the people behind competitive foosball in America." %>
+<% content_for :keywords, "USA foosball board, foosball directors, foosball leadership, USA foosball team, foosball organization" %>
+
+<%# Structured Data for Board Page %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "USA Foosball Board of Directors",
+  "description": "Meet the leadership team of USA Foosball",
+  "url": "<%= request.original_url %>",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "USA Foosball",
+    "description": "The United States Foosball Association"
+  }
+}
+</script>
+<% end %>
+
 <div class="board-page">
   <div class="container">
     <div class="page-header">

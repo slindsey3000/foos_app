@@ -1,3 +1,22 @@
+<%# Dynamic SEO Meta Tags %>
+<% if @search_query.present? %>
+  <% state_name = StateHelper::STATES.key(@search_query.upcase) || @search_query %>
+  <% content_for :title, "Foosball Clubs in #{state_name} | Find Local Foosball Locations" %>
+  <% content_for :description, "Find foosball clubs and tournaments in #{state_name}. Discover local foosball locations, leagues, and players near you. Join competitive foosball in #{state_name}." %>
+  <% content_for :keywords, "foosball clubs #{state_name.downcase}, foosball #{state_name.downcase}, table soccer #{state_name.downcase}, foosball tournaments #{state_name.downcase}, foosball leagues #{state_name.downcase}" %>
+<% else %>
+  <% content_for :title, "Foosball Clubs Directory | Find Clubs Near You" %>
+  <% content_for :description, "Browse our directory of foosball clubs across the United States. Find local tournaments, leagues, and players in your area. Join the competitive foosball community." %>
+  <% content_for :keywords, "foosball clubs directory, foosball locations, table soccer clubs, foosball tournaments, foosball leagues, competitive foosball" %>
+<% end %>
+
+<%# Structured Data for Clubs Page %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+<%= geo_structured_data_for_clubs(@clubs) %>
+</script>
+<% end %>
+
 <div class="clubs-page">
   <div class="container">
     <div class="page-header">

@@ -1,3 +1,37 @@
+<%# SEO Meta Tags %>
+<% content_for :title, "Find Foosball Clubs Near You | USA Foosball Association" %>
+<% content_for :description, "Discover foosball clubs, tournaments, and players in your area. Join the United States Foosball Association for competitive play, leagues, and events across America." %>
+<% content_for :keywords, "foosball clubs near me, foosball tournaments, table soccer, foosball leagues, competitive foosball, USA foosball, foosball players, foosball locations" %>
+
+<%# Structured Data for Home Page %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "USA Foosball Home",
+  "description": "Find foosball clubs, tournaments, and players near you. Join the United States Foosball Association.",
+  "url": "<%= request.original_url %>",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "USA Foosball",
+    "description": "The United States Foosball Association promotes competitive foosball across America"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "<%= request.base_url %>"
+      }
+    ]
+  }
+}
+</script>
+<% end %>
+
 <div class="hero-section">
   <div class="container">
     <div class="hero-content">

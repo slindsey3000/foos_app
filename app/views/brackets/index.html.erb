@@ -1,3 +1,26 @@
+<%# SEO Meta Tags for Brackets Page %>
+<% content_for :title, "Foosball Tournament Brackets | USA Foosball Championships" %>
+<% content_for :description, "View current foosball tournament brackets and championship results. Follow USA Foosball tournaments and competitive play across America." %>
+<% content_for :keywords, "foosball brackets, foosball tournaments, foosball championships, tournament results, competitive foosball, USA foosball tournaments" %>
+
+<%# Structured Data for Brackets Page %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Foosball Tournament Brackets",
+  "description": "View current foosball tournament brackets and championship results",
+  "url": "<%= request.original_url %>",
+  "mainEntity": {
+    "@type": "SportsEvent",
+    "name": "USA Foosball Tournaments",
+    "description": "Competitive foosball tournaments and championships"
+  }
+}
+</script>
+<% end %>
+
 <div class="brackets-page">
   <div class="container">
     <!-- Page Header -->

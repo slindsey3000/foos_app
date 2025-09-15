@@ -1,3 +1,15 @@
+<%# Dynamic SEO Meta Tags for Individual Article %>
+<% content_for :title, "#{@article.title} | USA Foosball News" %>
+<% content_for :description, "#{truncate(strip_tags(@article.content.to_s), length: 155)}" %>
+<% content_for :keywords, "foosball news, #{@article.title.downcase}, USA foosball, foosball tournaments, competitive foosball" %>
+
+<%# Structured Data for Individual Article %>
+<% content_for :structured_data do %>
+<script type="application/ld+json">
+<%= structured_data_article(@article) %>
+</script>
+<% end %>
+
 <div class="article-page">
   <div class="container">
     <article class="article-full">

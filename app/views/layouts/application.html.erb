@@ -3,7 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>USA Foosball - The United States Foosball Association</title>
+  
+  <%# SEO Meta Tags %>
+  <title><%= page_title %></title>
+  <meta name="description" content="<%= page_description %>">
+  <meta name="keywords" content="<%= page_keywords %>">
+  <meta name="author" content="USA Foosball">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  
+  <%# Open Graph Meta Tags %>
+  <meta property="og:title" content="<%= page_title %>">
+  <meta property="og:description" content="<%= page_description %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:site_name" content="USA Foosball">
+  <meta property="og:image" content="<%= request.base_url %>/assets/hero-foosball-dramatic.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dramatic foosball game with intense flames and stadium lighting">
+  
+  <%# Twitter Card Meta Tags %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= page_title %>">
+  <meta name="twitter:description" content="<%= page_description %>">
+  <meta name="twitter:image" content="<%= request.base_url %>/assets/hero-foosball-dramatic.png">
+  <meta name="twitter:image:alt" content="Dramatic foosball game with intense flames and stadium lighting">
+  
+  <%# Additional SEO Meta Tags %>
+  <meta name="theme-color" content="#dc2626">
+  <meta name="msapplication-TileColor" content="#dc2626">
+  <link rel="canonical" href="<%= request.original_url %>">
+  
+  <%# Structured Data %>
+  <script type="application/ld+json">
+    <%= structured_data_organization %>
+  </script>
+  
+  <script type="application/ld+json">
+    <%= structured_data_website %>
+  </script>
+  
+  <%# Page-specific structured data %>
+  <%= yield :structured_data %>
   
   <%# Rails helpers for including compiled assets %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
