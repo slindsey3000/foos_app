@@ -77,14 +77,7 @@ module SeoHelper
       "email": club.email,
       "url": club.website,
       "openingHours": club.day_and_time_info,
-      "sport": "Foosball",
-      "amenityFeature": [
-        {
-          "@type": "LocationFeatureSpecification",
-          "name": "Foosball Tables",
-          "value": club.tables || "Multiple"
-        }
-      ]
+      "sport": "Foosball"
     }.to_json.html_safe
   end
 
