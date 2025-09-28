@@ -1,5 +1,5 @@
-<% content_for :title, "EZ DYP Doubles Tournament | USA Foosball" %>
-<% content_for :description, "Build and manage single or double elimination doubles brackets with EZ DYP." %>
+<% content_for :title, "Foosball DYP Doubles Tournament | USA Foosball" %>
+<% content_for :description, "Build and manage single or double elimination doubles brackets." %>
 
 <% content_for :head do %>
   <style>
@@ -687,8 +687,8 @@
 
 <div class="ezdyp-app" data-controller="ezdyp" data-ezdyp-root="true">
   <header class="ezdyp-header">
-    <h1>EZ DYP Tournament Builder</h1>
-    <p>Collect players, decide on single or double elimination, then let EZ DYP create doubles teams and a playable bracket right in the browser.</p>
+    <h1>Foosball DYP Tournament Builder</h1>
+    <p>Collect players, decide on single or double elimination, then create random doubles teams and a playable bracket right in the browser.</p>
   </header>
 
   <section class="panel">
@@ -1948,31 +1948,31 @@
       if (loser) {
         if (!loser.isBye) {
           loser.losses = (loser.losses || 0) + 1;
+        }
 
-          if (state.tournament.type === 'double' && match.bracket === 'winners') {
-            const loserClone = cloneCompetitor(loser);
-            if (match.loserDest) {
-              const loserMatch = state.matches.get(match.loserDest.matchId);
-              if (loserMatch) {
-                placePlayerInMatch(loserMatch, match.loserDest.slot, loserClone, {
-                  sourceMatchId: match.id,
-                  isWinner: false,
-                });
-                match.propagated.loser = {
-                  matchId: loserMatch.id,
-                  slot: match.loserDest.slot,
-                };
-              }
-            } else if (state.tournament.finalMatch) {
-              placePlayerInMatch(state.tournament.finalMatch, 1, loserClone, {
+        if (state.tournament.type === 'double' && match.bracket === 'winners') {
+          const loserClone = cloneCompetitor(loser);
+          if (match.loserDest) {
+            const loserMatch = state.matches.get(match.loserDest.matchId);
+            if (loserMatch) {
+              placePlayerInMatch(loserMatch, match.loserDest.slot, loserClone, {
                 sourceMatchId: match.id,
                 isWinner: false,
               });
               match.propagated.loser = {
-                matchId: state.tournament.finalMatch.id,
-                slot: 1,
+                matchId: loserMatch.id,
+                slot: match.loserDest.slot,
               };
             }
+          } else if (state.tournament.finalMatch) {
+            placePlayerInMatch(state.tournament.finalMatch, 1, loserClone, {
+              sourceMatchId: match.id,
+              isWinner: false,
+            });
+            match.propagated.loser = {
+              matchId: state.tournament.finalMatch.id,
+              slot: 1,
+            };
           }
         }
       }
