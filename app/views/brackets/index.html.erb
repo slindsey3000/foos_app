@@ -1,9 +1,2176 @@
-<% content_for :title, "Brackets Coming Soon | USA Foosball" %>
-<% content_for :description, "Tournament brackets are coming soon to USA Foosball." %>
+<% content_for :title, "EZ DYP Doubles Tournament | USA Foosball" %>
+<% content_for :description, "Build and manage single or double elimination doubles brackets with EZ DYP." %>
 
-<div class="brackets-page-coming-soon">
-  <div class="container">
-    <h1>Brackets Coming Soon</h1>
-    <p>We are rebuilding this experience. Please check back shortly.</p>
-  </div>
+<% content_for :head do %>
+  <style>
+    :root {
+      --ezdyp-accent: #2563eb;
+      --ezdyp-accent-strong: #1d4ed8;
+      --ezdyp-accent-soft: #dbeafe;
+      --ezdyp-surface: #ffffff;
+      --ezdyp-surface-muted: rgba(248, 250, 252, 0.92);
+      --ezdyp-border: #d0d7e2;
+      --ezdyp-shadow-lg: 0 30px 60px rgba(15, 23, 42, 0.12);
+      --ezdyp-shadow-md: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --ezdyp-text-strong: #0f172a;
+      --ezdyp-text-muted: #475569;
+      --ezdyp-connector: rgba(148, 163, 184, 0.55);
+    }
+
+    .ezdyp-app {
+      position: relative;
+      isolation: isolate;
+      max-width: 1200px;
+      margin: 1.5rem auto 3rem;
+      padding: 3rem 2rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.08));
+      border-radius: 32px;
+      box-shadow: var(--ezdyp-shadow-lg);
+    }
+
+    .ezdyp-app::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(18px);
+      z-index: -1;
+    }
+
+    .ezdyp-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .ezdyp-header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      color: var(--ezdyp-text-strong);
+      font-weight: 700;
+    }
+
+    .ezdyp-header p {
+      margin: 0;
+      color: var(--ezdyp-text-muted);
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: var(--ezdyp-surface);
+      border-radius: 20px;
+      border: 1px solid var(--ezdyp-border);
+      padding: 2rem 1.85rem;
+      box-shadow: var(--ezdyp-shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--ezdyp-text-strong);
+      font-weight: 600;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      padding: 1.2rem 1.4rem;
+      background: var(--ezdyp-surface-muted);
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .option-group span.label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      color: var(--ezdyp-text-strong);
+    }
+
+    .radio-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+    }
+
+    .radio-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.4rem 0.75rem;
+      font-weight: 500;
+      color: #1e293b;
+      background: rgba(148, 163, 184, 0.18);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+    }
+
+    .radio-row input[type="radio"] {
+      accent-color: var(--ezdyp-accent);
+      transform: scale(1.02);
+    }
+
+    .radio-row label:hover,
+    .radio-row label:focus-within {
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+    }
+
+    .radio-row label:has(input:checked) {
+      background: rgba(37, 99, 235, 0.18);
+      color: var(--ezdyp-accent-strong);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+    }
+
+    .info-tip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .info-tip button {
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+      transition: transform 0.18s ease;
+    }
+
+    .info-tip button:focus-visible,
+    .info-tip button:hover {
+      transform: scale(1.08);
+    }
+
+    .info-tip button:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 3px;
+    }
+
+    .info-tip .tooltip {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      min-width: 240px;
+      max-width: 280px;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 0.75rem 0.9rem;
+      border-radius: 12px;
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .info-tip button:focus + .tooltip,
+    .info-tip:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .messages {
+      min-height: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      display: none;
+    }
+
+    .messages[data-state] {
+      display: block;
+    }
+
+    .messages[data-state="info"] {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .messages[data-state="success"] {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .messages[data-state="error"] {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .player-entry {
+      position: relative;
+      display: grid;
+      grid-template-columns: 3rem minmax(180px, 1fr) 160px auto;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.85rem 1rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(16, 185, 129, 0.06));
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .player-entry .player-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--ezdyp-accent), var(--ezdyp-accent-strong));
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .player-entry input[type="text"] {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      border-radius: 12px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.9);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .player-entry input[type="text"]:focus {
+      outline: none;
+      border-color: var(--ezdyp-accent);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+      background: #ffffff;
+    }
+
+    .player-entry .tier-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--ezdyp-text-muted);
+    }
+
+    .player-entry .tier-field select {
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      border-radius: 12px;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.92rem;
+      background: rgba(255, 255, 255, 0.9);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .player-entry .tier-field select:focus {
+      outline: none;
+      border-color: var(--ezdyp-accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+      background: #ffffff;
+    }
+
+    .player-entry .remove-btn {
+      border: none;
+      background: rgba(239, 68, 68, 0.12);
+      color: #b91c1c;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .player-entry .remove-btn:hover:not([disabled]),
+    .player-entry .remove-btn:focus-visible:not([disabled]) {
+      background: rgba(239, 68, 68, 0.2);
+      color: #7f1d1d;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .player-entry .remove-btn[disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .player-list:not(.show-tiers) .tier-field {
+      display: none;
+    }
+
+    .player-hint {
+      margin: 0;
+      color: var(--ezdyp-text-muted);
+      font-size: 0.87rem;
+      letter-spacing: 0.01em;
+    }
+
+    .player-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .player-actions button {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.65rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .player-actions .ghost {
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--ezdyp-accent-strong);
+      border-color: rgba(37, 99, 235, 0.25);
+    }
+
+    .player-actions .secondary {
+      background: rgba(241, 245, 249, 0.95);
+      color: var(--ezdyp-text-strong);
+      border-color: rgba(148, 163, 184, 0.5);
+      box-shadow: 0 10px 24px rgba(148, 163, 184, 0.25);
+    }
+
+    .player-actions .primary {
+      background: linear-gradient(135deg, var(--ezdyp-accent), var(--ezdyp-accent-strong));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+    }
+
+    .player-actions button:hover,
+    .player-actions button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.18);
+    }
+
+    .teams-panel[hidden] {
+      display: none;
+    }
+
+    .teams-grid {
+      display: grid;
+      gap: 1.1rem;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .team-card {
+      position: relative;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 18px;
+      padding: 1rem 1.2rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(20, 184, 166, 0.08));
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    }
+
+    .team-card strong {
+      color: var(--ezdyp-text-strong);
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .team-card span {
+      font-size: 0.88rem;
+      color: var(--ezdyp-text-muted);
+    }
+
+    .bracket-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+
+    .bracket-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .bracket-section h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1e293b;
+      letter-spacing: 0.04em;
+    }
+
+    .rounds {
+      display: flex;
+      gap: 2.4rem;
+      overflow-x: auto;
+      padding: 0 0 1rem;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .rounds::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .rounds::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 999px;
+    }
+
+    .round {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      min-width: 220px;
+      position: relative;
+    }
+
+    .round-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+    }
+
+    .match {
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(148, 163, 184, 0.48);
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      padding: 0.85rem 0.95rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      min-height: 96px;
+    }
+
+    .match.has-bye {
+      opacity: 0.85;
+      border-style: dashed;
+    }
+
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .player-row {
+      display: grid;
+      grid-template-columns: 1fr 56px;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.55rem;
+      border-radius: 10px;
+      background: rgba(241, 245, 249, 0.9);
+      position: relative;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .player-row.active {
+      background: rgba(34, 197, 94, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .player-name {
+      font-weight: 600;
+      color: var(--ezdyp-text-strong);
+    }
+
+    .player-meta,
+    .player-origin {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--ezdyp-text-muted);
+    }
+
+    .player-origin {
+      font-style: italic;
+    }
+
+    .player-row-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .player-row.is-bye {
+      opacity: 0.55;
+      font-style: italic;
+    }
+
+    .match-connector {
+      position: absolute;
+      left: -34px;
+      top: calc(50% + var(--connector-offset, 0px));
+      width: 34px;
+      height: 2px;
+      background: var(--ezdyp-connector);
+      display: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .match-connector::before,
+    .match-connector::after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      width: 2px;
+      height: calc(var(--connector-height, 0px) / 2);
+      background: var(--ezdyp-connector);
+    }
+
+    .match-connector::before {
+      top: 1px;
+      transform: translateY(calc(-1 * var(--connector-height, 0px) / 2));
+    }
+
+    .match-connector::after {
+      top: 1px;
+      transform: translateY(calc(var(--connector-height, 0px) / 2));
+    }
+
+    .match.has-connector .match-connector {
+      display: block;
+    }
+
+    .score-input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      border-radius: 12px;
+      padding: 0.4rem 0.45rem;
+      text-align: center;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.92);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .score-input:focus {
+      outline: none;
+      border-color: var(--ezdyp-accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+      background: #ffffff;
+    }
+
+    .match-meta {
+      font-size: 0.75rem;
+      color: var(--ezdyp-text-muted);
+    }
+
+    .match-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.6rem;
+    }
+
+    .match-actions button {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .match-actions button:hover,
+    .match-actions button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
+    }
+
+    .match-actions .secondary {
+      background: linear-gradient(135deg, var(--ezdyp-accent), var(--ezdyp-accent-strong));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+    }
+
+    .match-actions .ghost {
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--ezdyp-text-muted);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    .match.completed {
+      border-color: #bbf7d0;
+      box-shadow: 0 12px 28px rgba(22, 163, 74, 0.15);
+    }
+
+    .empty-state {
+      border: 1px dashed #cbd5f5;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.95rem;
+      background: #f8fbff;
+    }
+
+    @media (max-width: 768px) {
+      .player-entry {
+        grid-template-columns: 3rem 1fr;
+        grid-template-areas:
+          "index name"
+          "index tier"
+          "index actions";
+      }
+
+      .player-entry .player-index {
+        grid-area: index;
+      }
+
+      .player-entry input[type="text"] {
+        grid-area: name;
+      }
+
+      .player-entry .tier-field {
+        grid-area: tier;
+      }
+
+      .player-entry .remove-btn {
+        grid-area: actions;
+        justify-self: flex-start;
+      }
+
+      .player-actions {
+        justify-content: flex-start;
+      }
+
+      .round {
+        min-width: 260px;
+      }
+    }
+  </style>
+<% end %>
+
+<div class="ezdyp-app" data-controller="ezdyp" data-ezdyp-root="true">
+  <header class="ezdyp-header">
+    <h1>EZ DYP Tournament Builder</h1>
+    <p>Collect players, decide on single or double elimination, then let EZ DYP create doubles teams and a playable bracket right in the browser.</p>
+  </header>
+
+  <section class="panel">
+    <h2>Tournament Options</h2>
+    <div class="options-grid">
+      <div class="option-group">
+        <span class="label">Elimination</span>
+        <div class="radio-row" id="elimination-options">
+          <label>
+            <input type="radio" name="elimination-type" value="single" checked>
+            <span>Single elimination</span>
+          </label>
+          <label>
+            <input type="radio" name="elimination-type" value="double">
+            <span>Double elimination</span>
+          </label>
+        </div>
+      </div>
+      <div class="option-group">
+        <span class="label">Draw Style</span>
+        <div class="radio-row" id="draw-options">
+          <label>
+            <input type="radio" name="draw-type" value="regular" checked>
+            <span>Regular draw</span>
+          </label>
+          <label class="info-tip">
+            <input type="radio" name="draw-type" value="ab">
+            <span>A/B draw</span>
+            <button type="button" aria-label="What is an A/B draw?">i</button>
+            <span class="tooltip">An A/B draw pairs stronger A players with B players to balance teams before the random draw.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="messages" id="bracket-messages" hidden></div>
+
+    <div class="player-list" id="player-list" data-max="32">
+      <div class="player-entry" data-player-row="true">
+        <span class="player-index">01</span>
+        <input
+          type="text"
+          maxlength="60"
+          placeholder="Player name"
+          autocomplete="off"
+          data-player-input="true"
+        />
+        <label class="tier-field">
+          <span>Tier</span>
+          <select data-tier-select="true">
+            <option value="A" selected>A player</option>
+            <option value="B">B player</option>
+          </select>
+        </label>
+        <button type="button" class="remove-btn" disabled>Remove</button>
+      </div>
+    </div>
+    <p class="player-hint">Type a name to add a player. A new row appears automatically. Maximum 32 players (16 teams).</p>
+
+    <div class="player-actions">
+      <button type="button" class="secondary" id="add-player">Add player</button>
+      <button type="button" class="ghost" id="reset-form">Reset list</button>
+      <button type="button" class="primary" id="generate-bracket">Build bracket</button>
+    </div>
+  </section>
+
+  <section class="panel teams-panel" id="teams-panel" hidden>
+    <h2>Randomized Teams</h2>
+    <div class="teams-grid" id="teams-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Bracket</h2>
+    <div id="bracket-container" class="bracket-wrapper">
+      <div class="empty-state">Add players and click “Build bracket” to see the draw.</div>
+    </div>
+  </section>
 </div>
+<script>
+  (() => {
+    const MAX_PLAYERS = 32;
+    let root = null;
+    let state = null;
+    let elements = null;
+    let layoutScheduled = false;
+    let resizeBound = false;
+
+    function init() {
+      const candidateRoot = document.querySelector('[data-ezdyp-root="true"]');
+      if (!candidateRoot || candidateRoot.dataset.ezdypInitialized === 'true') {
+        return;
+      }
+
+      root = candidateRoot;
+      root.dataset.ezdypInitialized = 'true';
+
+      state = {
+        matches: new Map(),
+        tournament: null,
+        teams: [],
+        messageTimeout: null,
+      };
+
+      elements = {
+        playerList: root.querySelector('#player-list'),
+        addPlayer: root.querySelector('#add-player'),
+        resetButton: root.querySelector('#reset-form'),
+        generateButton: root.querySelector('#generate-bracket'),
+        message: root.querySelector('#bracket-messages'),
+        drawRadios: root.querySelectorAll('input[name="draw-type"]'),
+        eliminationRadios: root.querySelectorAll('input[name="elimination-type"]'),
+        teamsPanel: root.querySelector('#teams-panel'),
+        teamsGrid: root.querySelector('#teams-grid'),
+        bracketContainer: root.querySelector('#bracket-container'),
+        infoTipButton: root.querySelector('.info-tip button'),
+      };
+
+      layoutScheduled = false;
+
+      if (!resizeBound) {
+        window.addEventListener('resize', scheduleBracketLayout);
+        resizeBound = true;
+      }
+
+      bootstrapPlayerRows();
+      bindControlEvents();
+      bindInfoTip();
+      toggleTierVisibility();
+    }
+
+    function showMessage(message, type = 'info') {
+      if (!elements || !state || !elements.message) return;
+      if (state.messageTimeout) {
+        clearTimeout(state.messageTimeout);
+        state.messageTimeout = null;
+      }
+      elements.message.textContent = message;
+      elements.message.dataset.state = type;
+      elements.message.hidden = false;
+      const timeoutMs = type === 'error' ? 7000 : 3500;
+      state.messageTimeout = window.setTimeout(() => {
+        if (type !== 'error') {
+          clearMessage();
+        }
+      }, timeoutMs);
+    }
+
+    function clearMessage() {
+      if (!elements || !state || !elements.message) return;
+      if (state.messageTimeout) {
+        clearTimeout(state.messageTimeout);
+        state.messageTimeout = null;
+      }
+      elements.message.textContent = '';
+      elements.message.hidden = true;
+      delete elements.message.dataset.state;
+    }
+
+    function getPlayerRows() {
+      if (!elements.playerList) return [];
+      return Array.from(elements.playerList.querySelectorAll('[data-player-row="true"]'));
+    }
+
+    function updateRowNumbers() {
+      const rows = getPlayerRows();
+      rows.forEach((row, index) => {
+        const indexEl = row.querySelector('.player-index');
+        if (indexEl) {
+          indexEl.textContent = String(index + 1).padStart(2, '0');
+        }
+      });
+    }
+
+    function updateRemoveStates() {
+      const rows = getPlayerRows();
+      rows.forEach((row, index) => {
+        const removeBtn = row.querySelector('.remove-btn');
+        if (removeBtn) {
+          removeBtn.disabled = rows.length === 1 && index === 0;
+        }
+      });
+    }
+
+    function getDrawType() {
+      const checked = root ? root.querySelector('input[name="draw-type"]:checked') : null;
+      return checked ? checked.value : 'regular';
+    }
+
+    function getEliminationType() {
+      const checked = root ? root.querySelector('input[name="elimination-type"]:checked') : null;
+      return checked ? checked.value : 'single';
+    }
+
+    function toggleTierVisibility() {
+      if (!elements.playerList) return;
+      const drawType = getDrawType();
+      elements.playerList.classList.toggle('show-tiers', drawType === 'ab');
+    }
+
+    function isLastRow(row) {
+      const rows = getPlayerRows();
+      return rows.length > 0 && rows[rows.length - 1] === row;
+    }
+
+    function ensureTrailingRow(options = {}) {
+      const rows = getPlayerRows();
+      if (rows.length === 0) {
+        addPlayerRow('', 'A', options);
+        return;
+      }
+      if (rows.length >= MAX_PLAYERS) {
+        return;
+      }
+      const lastRow = rows[rows.length - 1];
+      const lastInput = lastRow ? lastRow.querySelector('[data-player-input]') : null;
+      if (!lastInput) return;
+      if (lastInput.value.trim()) {
+        addPlayerRow('', 'A', options);
+      }
+    }
+
+    function focusRowInput(row) {
+      if (!row) return;
+      const input = row.querySelector('[data-player-input]');
+      if (input) {
+        window.requestAnimationFrame(() => input.focus());
+      }
+    }
+
+    function wirePlayerRow(row, options = {}) {
+      if (!row || row.dataset.wired === 'true') {
+        if (options.focus) focusRowInput(row);
+        return row;
+      }
+      const input = row.querySelector('[data-player-input]');
+      const removeBtn = row.querySelector('.remove-btn');
+      if (input) {
+        input.addEventListener('input', handlePlayerInput);
+        input.addEventListener('blur', handlePlayerBlur);
+        input.addEventListener('keydown', handlePlayerKeydown);
+      }
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => removePlayerRow(row));
+      }
+      row.dataset.wired = 'true';
+      if (options.focus) focusRowInput(row);
+      return row;
+    }
+
+    function createPlayerRow(value = '', tier = 'A') {
+      const row = document.createElement('div');
+      row.className = 'player-entry';
+      row.dataset.playerRow = 'true';
+
+      const indexEl = document.createElement('span');
+      indexEl.className = 'player-index';
+      indexEl.textContent = '00';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.maxLength = 60;
+      input.placeholder = 'Player name';
+      input.autocomplete = 'off';
+      input.dataset.playerInput = 'true';
+      input.value = value || '';
+
+      const tierField = document.createElement('label');
+      tierField.className = 'tier-field';
+      const tierLabel = document.createElement('span');
+      tierLabel.textContent = 'Tier';
+      const tierSelect = document.createElement('select');
+      tierSelect.dataset.tierSelect = 'true';
+      const optionA = document.createElement('option');
+      optionA.value = 'A';
+      optionA.textContent = 'A player';
+      const optionB = document.createElement('option');
+      optionB.value = 'B';
+      optionB.textContent = 'B player';
+      tierSelect.append(optionA, optionB);
+      tierSelect.value = tier === 'B' ? 'B' : 'A';
+      tierField.append(tierLabel, tierSelect);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.textContent = 'Remove';
+
+      row.dataset.hasValue = input.value.trim() ? 'true' : 'false';
+      row.append(indexEl, input, tierField, removeBtn);
+      return row;
+    }
+
+    function bootstrapPlayerRows() {
+      if (!elements || !elements.playerList) return;
+      const rows = getPlayerRows();
+      if (rows.length === 0) {
+        addPlayerRow('', 'A', { focus: true });
+        return;
+      }
+      rows.forEach((row, index) => {
+        const input = row.querySelector('[data-player-input]');
+        const shouldFocus = index === 0 && input && !input.value;
+        wirePlayerRow(row, { focus: shouldFocus });
+      });
+      updateRowNumbers();
+      updateRemoveStates();
+      ensureTrailingRow({ focus: false });
+    }
+
+    function handlePlayerInput(event) {
+      const input = event.target;
+      const row = input.closest('[data-player-row="true"]');
+      if (!row) return;
+      row.dataset.hasValue = input.value.trim() ? 'true' : 'false';
+    }
+
+    function handlePlayerBlur(event) {
+      const input = event.target;
+      const row = input.closest('[data-player-row="true"]');
+      if (!row) return;
+      if (typeof input.value === 'string') {
+        input.value = input.value.trim();
+      }
+      row.dataset.hasValue = input.value ? 'true' : 'false';
+      if (input.value && isLastRow(row)) {
+        ensureTrailingRow({ focus: false });
+      }
+    }
+
+    function handlePlayerKeydown(event) {
+      if (event.key !== 'Enter') return;
+      const input = event.target;
+      const row = input.closest('[data-player-row="true"]');
+      if (!row) return;
+      const value = input.value.trim();
+      if (!value) return;
+      event.preventDefault();
+      input.value = value;
+      row.dataset.hasValue = 'true';
+      if (isLastRow(row)) {
+        const newRow = addPlayerRow('', 'A', { focus: true });
+        if (newRow) return;
+      }
+      const rows = getPlayerRows();
+      const index = rows.indexOf(row);
+      if (index > -1 && index < rows.length - 1) {
+        const nextInput = rows[index + 1].querySelector('[data-player-input]');
+        if (nextInput) {
+          window.requestAnimationFrame(() => nextInput.focus());
+        }
+      }
+    }
+
+    function addPlayerRow(value = '', tier = 'A', options = {}) {
+      if (!elements || !elements.playerList) return null;
+      const currentRows = getPlayerRows();
+      if (currentRows.length >= MAX_PLAYERS) {
+        showMessage('Maximum of 32 players reached.', 'error');
+        return null;
+      }
+
+      const row = createPlayerRow(value, tier);
+      elements.playerList.appendChild(row);
+      wirePlayerRow(row, options);
+
+      updateRowNumbers();
+      updateRemoveStates();
+      toggleTierVisibility();
+
+      return row;
+    }
+
+    function removePlayerRow(row) {
+      if (!row || !elements.playerList) return;
+      row.remove();
+      updateRowNumbers();
+      updateRemoveStates();
+      const rows = getPlayerRows();
+      if (rows.length === 0) {
+        addPlayerRow('', 'A', { focus: true });
+      } else {
+        ensureTrailingRow({ focus: false });
+      }
+    }
+
+    function collectPlayers() {
+      const rows = getPlayerRows();
+      const players = [];
+      const seenNames = new Set();
+      rows.forEach(row => {
+        const input = row.querySelector('[data-player-input]');
+        if (!input) return;
+        const name = input.value.trim();
+        if (!name) return;
+        const key = name.toLowerCase();
+        if (seenNames.has(key)) {
+          throw new Error('Duplicate player name: "' + name + '".');
+        }
+        seenNames.add(key);
+        const tierSelect = row.querySelector('[data-tier-select]');
+        const tier = tierSelect ? tierSelect.value : 'A';
+        players.push({
+          name,
+          tier: tier === 'B' ? 'B' : 'A',
+        });
+      });
+      return players;
+    }
+
+    function shuffleArray(source) {
+      const array = source.slice();
+      for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function pairRegular(players) {
+      const shuffled = shuffleArray(players);
+      const pairs = [];
+      for (let i = 0; i < shuffled.length; i += 2) {
+        pairs.push([shuffled[i], shuffled[i + 1]]);
+      }
+      return pairs;
+    }
+
+    function pairAB(players) {
+      const groupA = shuffleArray(players.filter(player => player.tier === 'A'));
+      const groupB = shuffleArray(players.filter(player => player.tier !== 'A'));
+      const pairs = [];
+
+      while (groupA.length > 0 && groupB.length > 0) {
+        const aPlayer = groupA.pop();
+        const bPlayer = groupB.pop();
+        pairs.push([aPlayer, bPlayer]);
+      }
+
+      const remaining = shuffleArray(groupA.concat(groupB));
+      if (remaining.length % 2 !== 0) {
+        throw new Error('One player is unpaired. Adjust the number of A/B players or add one more.');
+      }
+
+      for (let i = 0; i < remaining.length; i += 2) {
+        pairs.push([remaining[i], remaining[i + 1]]);
+      }
+
+      return pairs;
+    }
+
+    function createTeamObjects(pairs) {
+      const randomized = shuffleArray(pairs);
+      return randomized.map((members, index) => {
+        const memberSummary = members
+          .map(member => member.tier + ' · ' + member.name)
+          .join(' • ');
+        const tiers = members.map(member => member.tier).join('/');
+        return {
+          id: 'T' + (index + 1),
+          name: members.map(member => member.name).join(' & '),
+          members: members.map(member => ({ ...member })),
+          memberSummary,
+          tierMix: tiers,
+          seed: null,
+          order: index,
+          losses: 0,
+        };
+      });
+    }
+
+    function pairPlayers(players, drawType) {
+      if (players.length < 4) {
+        throw new Error('Add at least four players to build doubles teams.');
+      }
+      if (players.length % 2 !== 0) {
+        throw new Error('EZ DYP needs an even number of players for doubles. Add or remove one player.');
+      }
+      const pairs = drawType === 'ab' ? pairAB(players) : pairRegular(players);
+      return createTeamObjects(pairs);
+    }
+
+    function renderTeams(teams) {
+      state.teams = teams;
+      if (!elements.teamsGrid || !elements.teamsPanel) return;
+      elements.teamsGrid.innerHTML = '';
+      teams.forEach((team, index) => {
+        const card = document.createElement('div');
+        card.className = 'team-card';
+        const heading = document.createElement('strong');
+        heading.textContent = 'Team ' + String(index + 1);
+        const names = document.createElement('span');
+        names.textContent = team.name;
+        const summary = document.createElement('span');
+        summary.textContent = team.memberSummary;
+        card.append(heading, names, summary);
+        elements.teamsGrid.appendChild(card);
+      });
+      elements.teamsPanel.hidden = teams.length === 0;
+    }
+
+    function nextPowerOfTwo(value) {
+      return Math.pow(2, Math.ceil(Math.log2(Math.max(2, value))));
+    }
+
+    function generateSeedOrder(size) {
+      if (size === 1) return [1];
+      const previous = generateSeedOrder(size / 2);
+      const output = [];
+      for (let i = 0; i < previous.length; i += 1) {
+        output.push(previous[i]);
+        output.push(size + 1 - previous[i]);
+      }
+      return output;
+    }
+
+    function createMatch(params) {
+      return {
+        id: params.id,
+        bracket: params.bracket,
+        roundIndex: params.roundIndex,
+        matchIndex: params.matchIndex,
+        roundName: params.roundName,
+        players: [null, null],
+        scores: [null, null],
+        completed: false,
+        nextMatchId: null,
+        nextSlot: null,
+        loserDest: null,
+        propagated: {
+          winner: null,
+          loser: null,
+        },
+        element: null,
+        sources: [null, null],
+        sourceMeta: [null, null],
+        slotAnnotations: ['', ''],
+        loserDestLabel: '',
+      };
+    }
+
+    function describeRound(roundIndex, totalRounds, bracket) {
+      if (roundIndex === totalRounds - 1) {
+        return bracket === 'winners' ? 'Final' : 'Losers Final';
+      }
+      if (roundIndex === totalRounds - 2 && totalRounds > 2) {
+        return bracket === 'winners' ? 'Semifinal' : 'Penultimate';
+      }
+      return (bracket === 'winners' ? 'Round ' : 'Losers Round ') + (roundIndex + 1);
+    }
+
+    function sortPlayersForSeeding(entries) {
+      const seededPlayers = entries
+        .filter(entry => Number.isInteger(entry.seed))
+        .sort((a, b) => a.seed - b.seed || a.order - b.order);
+
+      const usedSeeds = new Set(seededPlayers.map(entry => entry.seed));
+      let nextSeedCandidate = 1;
+
+      function nextAvailableSeed() {
+        while (usedSeeds.has(nextSeedCandidate)) {
+          nextSeedCandidate += 1;
+        }
+        const chosen = nextSeedCandidate;
+        usedSeeds.add(chosen);
+        nextSeedCandidate += 1;
+        return chosen;
+      }
+
+      const seeded = seededPlayers.map(entry => ({
+        ...entry,
+        seedValue: entry.seed,
+        displaySeed: entry.seed,
+      }));
+
+      const unseeded = entries
+        .filter(entry => !Number.isInteger(entry.seed))
+        .map(entry => {
+          const seedValue = nextAvailableSeed();
+          return {
+            ...entry,
+            seedValue,
+            displaySeed: null,
+          };
+        });
+
+      return seeded.concat(unseeded)
+        .sort((a, b) => a.seedValue - b.seedValue || a.order - b.order);
+    }
+
+    function buildWinnersBracket(sortedPlayers, bracketSize) {
+      const rounds = [];
+      const matchesById = new Map();
+      const seedOrder = generateSeedOrder(bracketSize);
+      const positionBySeed = new Map();
+      seedOrder.forEach((seedNumber, index) => {
+        positionBySeed.set(seedNumber, index);
+      });
+
+      const initialSlots = new Array(bracketSize).fill(null);
+      sortedPlayers.forEach(player => {
+        const slotIndex = positionBySeed.get(player.seedValue);
+        if (typeof slotIndex !== 'number') return;
+        initialSlots[slotIndex] = {
+          ...player,
+          losses: player.losses || 0,
+          members: Array.isArray(player.members) ? player.members.map(member => ({ ...member })) : [],
+        };
+      });
+
+      for (let i = 0; i < initialSlots.length; i += 1) {
+        if (!initialSlots[i]) {
+          initialSlots[i] = {
+            id: 'BYE-' + (i + 1),
+            name: 'BYE',
+            isBye: true,
+            seedValue: Infinity,
+            displaySeed: null,
+            losses: 0,
+          };
+        }
+      }
+
+      let matchesInRound = bracketSize / 2;
+      let slotCursor = 0;
+      let roundIndex = 0;
+      const totalRounds = Math.log2(bracketSize);
+
+      while (matchesInRound >= 1) {
+        const roundMatches = [];
+        for (let matchIdx = 0; matchIdx < matchesInRound; matchIdx += 1) {
+          const matchId = 'W' + (roundIndex + 1) + '-' + (matchIdx + 1);
+          const match = createMatch({
+            id: matchId,
+            bracket: 'winners',
+            roundIndex,
+            matchIndex: matchIdx,
+            roundName: describeRound(roundIndex, totalRounds, 'winners'),
+          });
+          match.loserDestLabel = 'Loser eliminated';
+
+          if (roundIndex === 0) {
+            match.players[0] = initialSlots[slotCursor] || null;
+            match.players[1] = initialSlots[slotCursor + 1] || null;
+            slotCursor += 2;
+          }
+
+          roundMatches.push(match);
+          matchesById.set(match.id, match);
+        }
+        rounds.push(roundMatches);
+        matchesInRound /= 2;
+        roundIndex += 1;
+      }
+
+      for (let r = 0; r < rounds.length - 1; r += 1) {
+        const currentRound = rounds[r];
+        const nextRound = rounds[r + 1];
+        currentRound.forEach((match, idx) => {
+          const targetIndex = Math.floor(idx / 2);
+          const nextMatch = nextRound[targetIndex];
+          match.nextMatchId = nextMatch.id;
+          match.nextSlot = idx % 2;
+          nextMatch.sources[match.nextSlot] = match.id;
+          nextMatch.sourceMeta[match.nextSlot] = { type: 'winner', from: match.id };
+          nextMatch.slotAnnotations[match.nextSlot] = 'Winner of ' + match.id;
+        });
+      }
+
+      return { rounds, matchesById };
+    }
+
+    function buildGrandFinal(matchesById) {
+      const finalMatch = createMatch({
+        id: 'GF-1',
+        bracket: 'final',
+        roundIndex: 0,
+        matchIndex: 0,
+        roundName: 'Grand Final',
+      });
+      finalMatch.loserDestLabel = 'Loser eliminated';
+      matchesById.set(finalMatch.id, finalMatch);
+      return finalMatch;
+    }
+
+    function buildLosersBracket(winnersRounds, matchesById, grandFinal) {
+      const losersRounds = [];
+      const winnersRoundsCount = winnersRounds.length;
+      if (winnersRoundsCount <= 1) {
+        return { rounds: losersRounds };
+      }
+
+      const totalLoserRounds = Math.max(0, (winnersRoundsCount - 1) * 2);
+
+      function createLosersRound(matchCount) {
+        const roundIndex = losersRounds.length;
+        const roundMatches = [];
+        for (let idx = 0; idx < matchCount; idx += 1) {
+          const id = 'L' + (roundIndex + 1) + '-' + (idx + 1);
+          const match = createMatch({
+            id,
+            bracket: 'losers',
+            roundIndex,
+            matchIndex: idx,
+            roundName: describeRound(roundIndex, totalLoserRounds, 'losers'),
+          });
+          match.loserDestLabel = 'Loser eliminated';
+          matchesById.set(id, match);
+          roundMatches.push(match);
+        }
+        losersRounds.push(roundMatches);
+        return roundMatches;
+      }
+
+      const firstWinnersRound = winnersRounds[0];
+      const firstRoundMatchCount = Math.max(0, Math.floor(firstWinnersRound.length / 2));
+      let currentRound = [];
+      if (firstRoundMatchCount > 0) {
+        currentRound = createLosersRound(firstRoundMatchCount);
+        for (let i = 0; i < firstWinnersRound.length; i += 1) {
+          const targetIndex = Math.floor(i / 2);
+          const targetMatch = currentRound[targetIndex];
+          if (!targetMatch) continue;
+          const sourceMatch = firstWinnersRound[i];
+          const slot = i % 2;
+          if (sourceMatch) {
+            sourceMatch.loserDest = { matchId: targetMatch.id, slot };
+            sourceMatch.loserDestLabel = 'Loser → ' + targetMatch.id;
+            targetMatch.sources[slot] = sourceMatch.id;
+            targetMatch.sourceMeta[slot] = { type: 'loser', from: sourceMatch.id };
+            targetMatch.slotAnnotations[slot] = 'Loser of ' + sourceMatch.id;
+          }
+        }
+      }
+
+      for (let round = 1; round < winnersRoundsCount; round += 1) {
+        const winnersRound = winnersRounds[round];
+        const incomingCount = winnersRound.length;
+        if (incomingCount === 0) continue;
+
+        const incomingRound = createLosersRound(incomingCount);
+        const flipThisRound = (round % 2 === 1);
+        for (let idx = 0; idx < incomingCount; idx += 1) {
+          const targetIndex = flipThisRound ? (incomingRound.length - 1 - idx) : idx;
+          const targetMatch = incomingRound[targetIndex];
+          if (!targetMatch) continue;
+
+          const previousMatch = currentRound[targetIndex];
+          if (previousMatch) {
+            previousMatch.nextMatchId = targetMatch.id;
+            previousMatch.nextSlot = 0;
+            targetMatch.sources[0] = previousMatch.id;
+            targetMatch.sourceMeta[0] = { type: 'winner', from: previousMatch.id };
+            targetMatch.slotAnnotations[0] = 'Winner of ' + previousMatch.id;
+          }
+
+          const winnersSource = winnersRound[idx];
+          if (winnersSource) {
+            winnersSource.loserDest = { matchId: targetMatch.id, slot: 1 };
+            winnersSource.loserDestLabel = 'Loser → ' + targetMatch.id;
+            targetMatch.sources[1] = winnersSource.id;
+            targetMatch.sourceMeta[1] = { type: 'loser', from: winnersSource.id };
+            targetMatch.slotAnnotations[1] = 'Loser of ' + winnersSource.id;
+          }
+        }
+
+        currentRound = incomingRound;
+
+        const consolidationCount = Math.floor(currentRound.length / 2);
+        if (consolidationCount > 0) {
+          const consolidationRound = createLosersRound(consolidationCount);
+          for (let pair = 0; pair < consolidationCount; pair += 1) {
+            const flipConsolidation = (round % 2 === 1);
+            const targetIndex = flipConsolidation ? (consolidationRound.length - 1 - pair) : pair;
+            const targetMatch = consolidationRound[targetIndex];
+            if (!targetMatch) continue;
+            const baseIndexA = flipConsolidation ? (currentRound.length - 1 - (pair * 2)) : (pair * 2);
+            const baseIndexB = flipConsolidation ? (currentRound.length - 2 - (pair * 2)) : (pair * 2 + 1);
+            const sourceA = currentRound[baseIndexA];
+            const sourceB = currentRound[baseIndexB];
+            if (sourceA) {
+              sourceA.nextMatchId = targetMatch.id;
+              sourceA.nextSlot = 0;
+              targetMatch.sources[0] = sourceA.id;
+              targetMatch.sourceMeta[0] = { type: 'winner', from: sourceA.id };
+              targetMatch.slotAnnotations[0] = 'Winner of ' + sourceA.id;
+            }
+            if (sourceB) {
+              sourceB.nextMatchId = targetMatch.id;
+              sourceB.nextSlot = 1;
+              targetMatch.sources[1] = sourceB.id;
+              targetMatch.sourceMeta[1] = { type: 'winner', from: sourceB.id };
+              targetMatch.slotAnnotations[1] = 'Winner of ' + sourceB.id;
+            }
+          }
+          currentRound = consolidationRound;
+        }
+      }
+
+      if (grandFinal && currentRound.length > 0) {
+        currentRound.forEach(match => {
+          match.nextMatchId = grandFinal.id;
+          match.nextSlot = 1;
+          grandFinal.sources[1] = match.id;
+          grandFinal.sourceMeta[1] = { type: 'winner', from: match.id };
+          grandFinal.slotAnnotations[1] = 'Winner of ' + match.id;
+        });
+      }
+
+      return { rounds: losersRounds };
+    }
+
+    function cloneCompetitor(entry) {
+      if (!entry) return entry;
+      return {
+        ...entry,
+        members: Array.isArray(entry.members) ? entry.members.map(member => ({ ...member })) : entry.members,
+      };
+    }
+
+    function renderTournament(tournament) {
+      state.matches = tournament.matchMap;
+      if (!elements.bracketContainer) return;
+      elements.bracketContainer.innerHTML = '';
+
+      const winnersSection = document.createElement('div');
+      winnersSection.className = 'bracket-section';
+      const winnersTitle = document.createElement('h3');
+      winnersTitle.textContent = 'Winners Bracket';
+      winnersSection.appendChild(winnersTitle);
+      const winnersRoundsEl = renderRoundColumns(tournament.winners.rounds);
+      winnersSection.appendChild(winnersRoundsEl);
+      elements.bracketContainer.appendChild(winnersSection);
+
+      if (tournament.type === 'double' && tournament.losers.rounds.length > 0) {
+        const losersSection = document.createElement('div');
+        losersSection.className = 'bracket-section';
+        const losersTitle = document.createElement('h3');
+        losersTitle.textContent = 'Losers Bracket';
+        losersSection.appendChild(losersTitle);
+        const losersRoundsEl = renderRoundColumns(tournament.losers.rounds);
+        losersSection.appendChild(losersRoundsEl);
+        elements.bracketContainer.appendChild(losersSection);
+      }
+
+      if (tournament.type === 'double' && tournament.finalMatch) {
+        const finalsSection = document.createElement('div');
+        finalsSection.className = 'bracket-section';
+        const finalsTitle = document.createElement('h3');
+        finalsTitle.textContent = 'Finals';
+        finalsSection.appendChild(finalsTitle);
+        const finalsEl = renderRoundColumns([[tournament.finalMatch]]);
+        finalsSection.appendChild(finalsEl);
+        elements.bracketContainer.appendChild(finalsSection);
+      }
+
+      state.matches.forEach(match => {
+        if (match.bracket === 'winners' || match.bracket === 'losers' || match.bracket === 'final') {
+          updateMatchDisplay(match);
+          attemptAutoAdvance(match);
+        }
+      });
+
+      scheduleBracketLayout();
+    }
+
+    function renderRoundColumns(rounds) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'rounds';
+      rounds.forEach(roundMatches => {
+        const column = document.createElement('div');
+        column.className = 'round';
+        if (roundMatches.length > 0) {
+          const title = document.createElement('div');
+          title.className = 'round-title';
+          title.textContent = roundMatches[0].roundName;
+          column.appendChild(title);
+        }
+        roundMatches.forEach(match => {
+          const matchEl = createMatchElement(match);
+          match.element = matchEl;
+          column.appendChild(matchEl);
+          updateMatchMeta(match);
+        });
+        wrapper.appendChild(column);
+      });
+      return wrapper;
+    }
+
+    function scheduleBracketLayout() {
+      if (layoutScheduled) return;
+      layoutScheduled = true;
+      window.requestAnimationFrame(() => {
+        layoutScheduled = false;
+        if (!elements.bracketContainer) return;
+        const wrappers = elements.bracketContainer.querySelectorAll('.rounds');
+        wrappers.forEach(wrapper => applyBracketSpacing(wrapper));
+      });
+    }
+
+    function resetRoundSpacing(roundsWrapper) {
+      if (!roundsWrapper) return;
+      const matches = roundsWrapper.querySelectorAll('.match');
+      matches.forEach(matchEl => {
+        matchEl.style.marginTop = '0px';
+        matchEl.classList.remove('has-connector');
+        const connector = matchEl.querySelector('.match-connector');
+        if (connector) {
+          connector.style.removeProperty('--connector-height');
+          connector.style.removeProperty('--connector-offset');
+        }
+      });
+    }
+
+    function applyBracketSpacing(roundsWrapper) {
+      if (!roundsWrapper || typeof window === 'undefined') return;
+      resetRoundSpacing(roundsWrapper);
+      const columns = Array.from(roundsWrapper.querySelectorAll('.round'));
+      if (columns.length < 2) return;
+      columns.forEach((column, columnIndex) => {
+        if (columnIndex === 0) return;
+        const matches = Array.from(column.querySelectorAll('.match'));
+        matches.forEach(matchEl => {
+          const matchId = matchEl.dataset.matchId;
+          const match = state.matches.get(matchId);
+          if (!match || !Array.isArray(match.sources)) return;
+          const sourceCenters = match.sources
+            .filter(Boolean)
+            .map(sourceId => {
+              const sourceMatch = state.matches.get(sourceId);
+              if (!sourceMatch || !sourceMatch.element) return null;
+              if (!roundsWrapper.contains(sourceMatch.element)) return null;
+              const rect = sourceMatch.element.getBoundingClientRect();
+              return rect.top + (rect.height / 2);
+            })
+            .filter(value => value !== null);
+
+          const rect = matchEl.getBoundingClientRect();
+          const currentCenter = rect.top + (rect.height / 2);
+
+          if (!sourceCenters.length) {
+            if (match.elements && match.elements.container) {
+              match.elements.container.classList.remove('has-connector');
+            }
+            if (match.elements && match.elements.connector) {
+              match.elements.connector.style.removeProperty('--connector-height');
+              match.elements.connector.style.removeProperty('--connector-offset');
+            }
+            return;
+          }
+
+          const desiredCenter = sourceCenters.reduce((sum, value) => sum + value, 0) / sourceCenters.length;
+          const delta = desiredCenter - currentCenter;
+          matchEl.style.marginTop = delta + 'px';
+
+          const adjustedCenter = currentCenter + delta;
+          const minCenter = Math.min(...sourceCenters);
+          const maxCenter = Math.max(...sourceCenters);
+          const connectorHeight = Math.max(maxCenter - minCenter, 0);
+          const averageSource = (maxCenter + minCenter) / 2;
+          const offset = averageSource - adjustedCenter;
+
+          if (match.elements && match.elements.connector && match.elements.container) {
+            const connector = match.elements.connector;
+            connector.style.setProperty('--connector-height', connectorHeight + 'px');
+            connector.style.setProperty('--connector-offset', offset + 'px');
+            match.elements.container.classList.add('has-connector');
+          }
+        });
+      });
+    }
+
+    function createMatchElement(match) {
+      const container = document.createElement('div');
+      container.className = 'match';
+      container.dataset.matchId = match.id;
+
+      const header = document.createElement('div');
+      header.className = 'match-header';
+      header.innerHTML = '<span>' + match.id + '</span><span>' + match.roundName + '</span>';
+      container.appendChild(header);
+
+      const metaInfo = document.createElement('div');
+      metaInfo.className = 'match-meta';
+      metaInfo.textContent = '';
+      container.appendChild(metaInfo);
+
+      const playerRows = [];
+      const scoreInputs = [];
+
+      for (let slot = 0; slot < 2; slot += 1) {
+        const row = document.createElement('div');
+        row.className = 'player-row';
+        row.dataset.slot = String(slot);
+
+        const infoWrapper = document.createElement('div');
+        infoWrapper.className = 'player-row-details';
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'player-name';
+        const metaSpan = document.createElement('span');
+        metaSpan.className = 'player-meta';
+        const originSpan = document.createElement('span');
+        originSpan.className = 'player-origin';
+        infoWrapper.append(nameSpan, metaSpan, originSpan);
+
+        const scoreInput = document.createElement('input');
+        scoreInput.type = 'number';
+        scoreInput.min = '0';
+        scoreInput.className = 'score-input';
+        scoreInput.disabled = true;
+        scoreInput.dataset.slot = String(slot);
+
+        row.append(infoWrapper, scoreInput);
+        container.appendChild(row);
+
+        playerRows.push({ row, nameSpan, metaSpan, originSpan });
+        scoreInputs.push(scoreInput);
+      }
+
+      match.elements = {
+        container,
+        playerRows,
+        scoreInputs,
+        metaInfo,
+        connector: null,
+      };
+
+      const connector = document.createElement('span');
+      connector.className = 'match-connector';
+      container.appendChild(connector);
+      match.elements.connector = connector;
+
+      const actions = document.createElement('div');
+      actions.className = 'match-actions';
+      const resetBtn = document.createElement('button');
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+      resetBtn.className = 'ghost';
+      resetBtn.addEventListener('click', () => handleResetMatch(match.id));
+      const completeBtn = document.createElement('button');
+      completeBtn.type = 'button';
+      completeBtn.textContent = 'Record result';
+      completeBtn.className = 'secondary';
+      completeBtn.addEventListener('click', () => handleCompleteMatch(match.id));
+
+      actions.append(resetBtn, completeBtn);
+      container.appendChild(actions);
+
+      match.elements.resetBtn = resetBtn;
+      match.elements.completeBtn = completeBtn;
+
+      return container;
+    }
+
+    function updateMatchMeta(match) {
+      if (!match || !match.elements) return;
+      const { metaInfo, playerRows } = match.elements;
+      if (metaInfo) {
+        metaInfo.textContent = match.loserDestLabel || '';
+        metaInfo.style.display = match.loserDestLabel ? 'block' : 'none';
+      }
+      if (playerRows) {
+        playerRows.forEach((rowInfo, idx) => {
+          const note = match.slotAnnotations ? match.slotAnnotations[idx] : '';
+          if (rowInfo.originSpan) {
+            rowInfo.originSpan.textContent = note || '';
+          }
+        });
+      }
+    }
+
+    function updateMatchDisplay(match) {
+      if (!match || !match.elements) return;
+      const { playerRows, scoreInputs, completeBtn, resetBtn } = match.elements;
+
+      for (let slot = 0; slot < 2; slot += 1) {
+        const player = match.players[slot];
+        const visuals = playerRows[slot];
+        const scoreInput = scoreInputs[slot];
+        if (!visuals) continue;
+        if (player) {
+          visuals.nameSpan.textContent = player.name;
+          visuals.metaSpan.textContent = player.memberSummary || '';
+          visuals.row.classList.toggle('is-bye', !!player.isBye);
+          scoreInput.disabled = !!player.isBye || match.completed === true;
+          if (!player.isBye && !match.completed) {
+            scoreInput.disabled = false;
+          }
+        } else {
+          visuals.nameSpan.textContent = 'TBD';
+          visuals.metaSpan.textContent = '';
+          visuals.row.classList.remove('is-bye', 'active');
+          scoreInput.value = '';
+          scoreInput.disabled = true;
+        }
+
+        const annotation = match.slotAnnotations ? match.slotAnnotations[slot] : '';
+        const formattedAnnotation = annotation
+          ? annotation.replace('Winner of ', 'Winner · ').replace('Loser of ', 'Loser · ')
+          : '';
+        visuals.originSpan.textContent = formattedAnnotation;
+      }
+
+      if (match.completed) {
+        match.elements.container.classList.add('completed');
+        const winnerSlot = match.winnerSlot;
+        match.elements.playerRows.forEach((rowInfo, idx) => {
+          rowInfo.row.classList.toggle('active', idx === winnerSlot);
+          match.elements.scoreInputs[idx].disabled = true;
+        });
+        if (completeBtn) completeBtn.disabled = true;
+      } else {
+        match.elements.container.classList.remove('completed');
+        match.elements.playerRows.forEach(rowInfo => rowInfo.row.classList.remove('active'));
+        if (completeBtn) {
+          const ready = match.players[0] && match.players[1] && !match.players[0].isBye && !match.players[1].isBye;
+          completeBtn.disabled = !ready;
+        }
+      }
+
+      if (resetBtn) {
+        const hasPlayers = match.players[0] || match.players[1];
+        resetBtn.disabled = !hasPlayers;
+      }
+
+      if (match.elements && match.elements.container) {
+        const hasBye = match.players.some(player => player && player.isBye);
+        match.elements.container.classList.toggle('has-bye', hasBye);
+      }
+
+      updateMatchMeta(match);
+      scheduleBracketLayout();
+    }
+
+    function attemptAutoAdvance(match) {
+      if (match.completed) return;
+      const players = match.players;
+      if (!players[0] || !players[1]) return;
+      const byeZero = players[0] && players[0].isBye;
+      const byeOne = players[1] && players[1].isBye;
+      if (byeZero && byeOne) {
+        finalizeMatch(match, 0, [0, 0], true);
+        return;
+      }
+      if (byeZero || byeOne) {
+        const winnerSlot = byeZero ? 1 : 0;
+        const scores = winnerSlot === 0 ? [1, 0] : [0, 1];
+        finalizeMatch(match, winnerSlot, scores, true);
+      }
+    }
+
+    function placePlayerInMatch(match, slot, player, meta) {
+      if (!match.players) return;
+      match.players[slot] = cloneCompetitor(player);
+      if (match.elements && match.elements.scoreInputs[slot]) {
+        match.elements.scoreInputs[slot].value = '';
+      }
+      if (meta && meta.sourceMatchId) {
+        match.slotAnnotations[slot] = (meta.isWinner ? 'Winner of ' : 'Loser of ') + meta.sourceMatchId;
+      }
+      updateMatchDisplay(match);
+      attemptAutoAdvance(match);
+    }
+
+    function clearMatchOutcome(match) {
+      if (!match.completed) {
+        return true;
+      }
+
+      const winnerDest = match.propagated.winner;
+      if (winnerDest) {
+        const targetMatch = state.matches.get(winnerDest.matchId);
+        if (targetMatch && targetMatch.completed) {
+          showMessage('Downstream matches are already recorded. Reset them first to change this result.', 'error');
+          return false;
+        }
+        if (targetMatch) {
+          targetMatch.players[winnerDest.slot] = null;
+          if (targetMatch.elements && targetMatch.elements.scoreInputs[winnerDest.slot]) {
+            targetMatch.elements.scoreInputs[winnerDest.slot].value = '';
+          }
+          updateMatchDisplay(targetMatch);
+        }
+        match.propagated.winner = null;
+      }
+
+      const loserDest = match.propagated.loser;
+      if (loserDest) {
+        const targetMatch = state.matches.get(loserDest.matchId);
+        if (targetMatch && targetMatch.completed) {
+          showMessage('Downstream matches are already recorded. Reset them first to change this result.', 'error');
+          return false;
+        }
+        if (targetMatch) {
+          const occupant = targetMatch.players[loserDest.slot];
+          if (occupant && occupant.losses > 0) {
+            occupant.losses -= 1;
+          }
+          targetMatch.players[loserDest.slot] = null;
+          if (targetMatch.elements && targetMatch.elements.scoreInputs[loserDest.slot]) {
+            targetMatch.elements.scoreInputs[loserDest.slot].value = '';
+          }
+          updateMatchDisplay(targetMatch);
+        }
+        match.propagated.loser = null;
+      }
+
+      match.completed = false;
+      match.winnerSlot = null;
+      match.scores = [null, null];
+      if (match.elements) {
+        match.elements.scoreInputs.forEach((input, idx) => {
+          input.value = '';
+          input.disabled = !(match.players[0] && match.players[1] && !match.players[0].isBye && !match.players[1].isBye);
+        });
+        if (match.elements.completeBtn) {
+          match.elements.completeBtn.disabled = !(match.players[0] && match.players[1] && !match.players[0].isBye && !match.players[1].isBye);
+        }
+      }
+      updateMatchDisplay(match);
+      return true;
+    }
+
+    function finalizeMatch(match, winnerSlot, scores, auto = false) {
+      if (!clearMatchOutcome(match)) {
+        return;
+      }
+
+      const loserSlot = winnerSlot === 0 ? 1 : 0;
+      const winner = match.players[winnerSlot];
+      const loser = match.players[loserSlot];
+
+      match.completed = true;
+      match.winnerSlot = winnerSlot;
+      match.scores = scores.slice();
+
+      if (match.elements && match.elements.scoreInputs) {
+        match.elements.scoreInputs[0].value = scores[0] ?? '';
+        match.elements.scoreInputs[1].value = scores[1] ?? '';
+      }
+
+      updateMatchDisplay(match);
+
+      if (winner && match.nextMatchId) {
+        const nextMatch = state.matches.get(match.nextMatchId);
+        if (nextMatch) {
+          placePlayerInMatch(nextMatch, match.nextSlot, winner, {
+            sourceMatchId: match.id,
+            isWinner: true,
+          });
+          match.propagated.winner = {
+            matchId: nextMatch.id,
+            slot: match.nextSlot,
+          };
+        }
+      }
+
+      if (loser) {
+        if (!loser.isBye) {
+          loser.losses = (loser.losses || 0) + 1;
+
+          if (state.tournament.type === 'double' && match.bracket === 'winners') {
+            const loserClone = cloneCompetitor(loser);
+            if (match.loserDest) {
+              const loserMatch = state.matches.get(match.loserDest.matchId);
+              if (loserMatch) {
+                placePlayerInMatch(loserMatch, match.loserDest.slot, loserClone, {
+                  sourceMatchId: match.id,
+                  isWinner: false,
+                });
+                match.propagated.loser = {
+                  matchId: loserMatch.id,
+                  slot: match.loserDest.slot,
+                };
+              }
+            } else if (state.tournament.finalMatch) {
+              placePlayerInMatch(state.tournament.finalMatch, 1, loserClone, {
+                sourceMatchId: match.id,
+                isWinner: false,
+              });
+              match.propagated.loser = {
+                matchId: state.tournament.finalMatch.id,
+                slot: 1,
+              };
+            }
+          }
+        }
+      }
+
+      if (!auto) {
+        showMessage('Result saved for ' + match.id + '.', 'success');
+      }
+    }
+
+    function handleCompleteMatch(matchId) {
+      const match = state.matches.get(matchId);
+      if (!match) return;
+      if (match.completed) {
+        showMessage('This match is already recorded. Reset it first if you need to change the result.', 'info');
+        return;
+      }
+      const p0 = match.players[0];
+      const p1 = match.players[1];
+      if (!p0 || !p1) {
+        showMessage('Both slots must be filled before recording a result.', 'error');
+        return;
+      }
+      if (p0.isBye || p1.isBye) {
+        attemptAutoAdvance(match);
+        return;
+      }
+      const input0 = match.elements.scoreInputs[0];
+      const input1 = match.elements.scoreInputs[1];
+      const s0 = parseInt(input0.value, 10);
+      const s1 = parseInt(input1.value, 10);
+      if (Number.isNaN(s0) || Number.isNaN(s1)) {
+        showMessage('Enter scores for both teams.', 'error');
+        return;
+      }
+      if (s0 === s1) {
+        showMessage('Scores cannot be tied in elimination play.', 'error');
+        return;
+      }
+      const winnerSlot = s0 > s1 ? 0 : 1;
+      finalizeMatch(match, winnerSlot, [s0, s1]);
+    }
+
+    function handleResetMatch(matchId) {
+      const match = state.matches.get(matchId);
+      if (!match) return;
+      if (!match.players[0] && !match.players[1]) {
+        showMessage('Nothing to reset for this match yet.', 'info');
+        return;
+      }
+      if (!clearMatchOutcome(match)) {
+        return;
+      }
+      updateMatchDisplay(match);
+      showMessage('Match reset.', 'info');
+    }
+
+    function createTournament(players, eliminationType) {
+      const sorted = sortPlayersForSeeding(players);
+      const bracketSize = nextPowerOfTwo(sorted.length);
+      const winnersStructure = buildWinnersBracket(sorted, bracketSize);
+      const winnersRounds = winnersStructure.rounds;
+      const matchesById = winnersStructure.matchesById;
+
+      const tournament = {
+        type: eliminationType,
+        size: bracketSize,
+        players: sorted,
+        winners: { rounds: winnersRounds },
+        losers: { rounds: [] },
+        finalMatch: null,
+        matchMap: matchesById,
+      };
+
+      if (eliminationType === 'double') {
+        const grandFinal = buildGrandFinal(matchesById);
+        tournament.finalMatch = grandFinal;
+
+        const winnersRoundsCount = winnersRounds.length;
+        const lastWinnersRound = winnersRounds[winnersRoundsCount - 1];
+        const winnersFinal = lastWinnersRound ? lastWinnersRound[0] : null;
+        if (winnersFinal) {
+          winnersFinal.nextMatchId = grandFinal.id;
+          winnersFinal.nextSlot = 0;
+          grandFinal.sources[0] = winnersFinal.id;
+          grandFinal.sourceMeta[0] = { type: 'winner', from: winnersFinal.id };
+          grandFinal.slotAnnotations[0] = 'Winner of ' + winnersFinal.id;
+        }
+
+        if (winnersRoundsCount > 1) {
+          const losersStructure = buildLosersBracket(winnersRounds, matchesById, grandFinal);
+          tournament.losers = losersStructure;
+        } else if (winnersFinal) {
+          winnersFinal.loserDest = { matchId: grandFinal.id, slot: 1 };
+          winnersFinal.loserDestLabel = 'Loser → ' + grandFinal.id;
+          grandFinal.sources[1] = winnersFinal.id;
+          grandFinal.sourceMeta[1] = { type: 'loser', from: winnersFinal.id };
+          grandFinal.slotAnnotations[1] = 'Loser of ' + winnersFinal.id;
+        }
+      }
+
+      tournament.matchMap = matchesById;
+      return tournament;
+    }
+
+    function handleBuildBracket() {
+      try {
+        const players = collectPlayers();
+        if (players.length === 0) {
+          showMessage('Add some players to get started.', 'error');
+          return;
+        }
+        const drawType = getDrawType();
+        const eliminationType = getEliminationType();
+        const teams = pairPlayers(players, drawType);
+        renderTeams(teams);
+        const tournament = createTournament(teams, eliminationType);
+        state.tournament = tournament;
+        renderTournament(tournament);
+        showMessage('Bracket ready: ' + teams.length + ' teams, ' + (eliminationType === 'double' ? 'double' : 'single') + ' elimination.', 'success');
+      } catch (error) {
+        showMessage(error.message || 'Unable to build bracket.', 'error');
+      }
+    }
+
+    function resetForm() {
+      state.matches = new Map();
+      state.tournament = null;
+      state.teams = [];
+      if (elements.playerList) {
+        elements.playerList.innerHTML = '';
+        addPlayerRow('', 'A', { focus: false });
+      }
+      if (elements.teamsGrid) {
+        elements.teamsGrid.innerHTML = '';
+      }
+      if (elements.teamsPanel) {
+        elements.teamsPanel.hidden = true;
+      }
+      if (elements.bracketContainer) {
+        elements.bracketContainer.innerHTML = '<div class="empty-state">Add players and click “Build bracket” to see the draw.</div>';
+      }
+      clearMessage();
+      toggleTierVisibility();
+    }
+
+    function bindControlEvents() {
+      if (!elements) return;
+
+      elements.drawRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          toggleTierVisibility();
+        });
+      });
+
+      elements.eliminationRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if (state && state.tournament) {
+            showMessage('Change elimination type and rebuild to refresh the bracket.', 'info');
+          }
+        });
+      });
+
+      if (elements.addPlayer) {
+        elements.addPlayer.addEventListener('click', () => {
+          addPlayerRow('', 'A', { focus: true });
+        });
+      }
+
+      if (elements.resetButton) {
+        elements.resetButton.addEventListener('click', () => {
+          resetForm();
+          showMessage('Player list reset.', 'info');
+        });
+      }
+
+      if (elements.generateButton) {
+        elements.generateButton.addEventListener('click', handleBuildBracket);
+      }
+    }
+
+    function bindInfoTip() {
+      if (elements && elements.infoTipButton) {
+        elements.infoTipButton.addEventListener('click', event => {
+          event.stopPropagation();
+          event.preventDefault();
+        });
+      }
+    }
+
+    function ready(callback) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    }
+
+    ready(init);
+    document.addEventListener('turbo:load', init);
+  })();
+</script>
