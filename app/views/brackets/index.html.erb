@@ -775,6 +775,8 @@
     let elements = null;
     let layoutScheduled = false;
     let resizeBound = false;
+    const STORAGE_KEY = 'ezdyp-state-v1';
+    let isRestoring = false;
 
     function init() {
       const candidateRoot = document.querySelector('[data-ezdyp-root="true"]');
@@ -910,6 +912,168 @@
       }
     }
 
+    function snapshotPlayers() {
+      const rows = getPlayerRows();
+      const players = [];
+      rows.forEach(row => {
+        const input = row.querySelector('[data-player-input]');
+        if (!input) return;
+        const name = input.value.trim();
+        if (!name) return;
+        const tierSelect = row.querySelector('[data-tier-select]');
+        const tier = tierSelect ? tierSelect.value : 'A';
+        players.push({ name, tier });
+      });
+      return players;
+    }
+
+    function normalizeTeamsForStorage(teams) {
+      if (!Array.isArray(teams)) return [];
+      return teams.map((team, index) => ({
+        id: team.id || 'T' + (index + 1),
+        name: team.name || '',
+        members: Array.isArray(team.members) ? team.members.map(member => ({
+          name: member.name || '',
+          tier: member.tier || 'A',
+        })) : [],
+        memberSummary: team.memberSummary || '',
+        tierMix: team.tierMix || '',
+        seed: team.seed ?? null,
+        order: team.order ?? index,
+        losses: team.losses ?? 0,
+      }));
+    }
+
+    function rebuildTeamsFromStorage(rawTeams) {
+      const teams = Array.isArray(rawTeams) ? rawTeams : [];
+      return teams.map((team, index) => ({
+        id: team.id || 'T' + (index + 1),
+        name: team.name || '',
+        members: Array.isArray(team.members) ? team.members.map(member => ({
+          name: member.name || '',
+          tier: member.tier || 'A',
+        })) : [],
+        memberSummary: team.memberSummary || '',
+        tierMix: team.tierMix || '',
+        seed: team.seed ?? null,
+        order: team.order ?? index,
+        losses: team.losses ?? 0,
+      }));
+    }
+
+    function persistState() {
+      if (isRestoring) return;
+      if (typeof window === 'undefined' || !window.localStorage) return;
+
+      const payload = {
+        version: 1,
+        timestamp: Date.now(),
+        drawType: getDrawType(),
+        eliminationType: getEliminationType(),
+        players: snapshotPlayers(),
+        teams: normalizeTeamsForStorage(state.teams),
+        matchResults: [],
+        hasTournament: !!state.tournament,
+      };
+
+      if (state.matches && typeof state.matches.forEach === 'function') {
+        const results = [];
+        state.matches.forEach(match => {
+          if (match && match.completed) {
+            results.push({
+              id: match.id,
+              winnerSlot: match.winnerSlot,
+              scores: Array.isArray(match.scores) ? match.scores.slice() : [],
+            });
+          }
+        });
+        results.sort((a, b) => a.id.localeCompare(b.id));
+        payload.matchResults = results;
+      }
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.warn('EZ DYP: unable to persist state', err);
+      }
+    }
+
+    function clearPersistedState() {
+      if (typeof window === 'undefined' || !window.localStorage) return;
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch (err) {
+        console.warn('EZ DYP: unable to clear persisted state', err);
+      }
+    }
+
+    function loadPersistedState() {
+      if (typeof window === 'undefined' || !window.localStorage) return;
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (err) {
+        console.warn('EZ DYP: invalid persisted data', err);
+        return;
+      }
+      if (!data || typeof data !== 'object') return;
+
+      isRestoring = true;
+      try {
+        if (data.drawType) {
+          const drawRadio = root.querySelector('input[name="draw-type"][value="' + data.drawType + '"]');
+          if (drawRadio) drawRadio.checked = true;
+        }
+        if (data.eliminationType) {
+          const elimRadio = root.querySelector('input[name="elimination-type"][value="' + data.eliminationType + '"]');
+          if (elimRadio) elimRadio.checked = true;
+        }
+        toggleTierVisibility();
+
+        if (elements.playerList) {
+          elements.playerList.innerHTML = '';
+          const storedPlayers = Array.isArray(data.players) ? data.players : [];
+          if (storedPlayers.length > 0) {
+            storedPlayers.forEach(player => {
+              addPlayerRow(player.name || '', player.tier || 'A', { focus: false, suppressPersist: true });
+            });
+          } else {
+            addPlayerRow('', 'A', { focus: false, suppressPersist: true });
+          }
+          updateRowNumbers();
+          updateRemoveStates();
+          ensureTrailingRow({ focus: false, suppressPersist: true });
+        }
+
+        state.teams = rebuildTeamsFromStorage(data.teams);
+        renderTeams(state.teams);
+
+        const eliminationType = data.eliminationType || getEliminationType();
+        if (data.hasTournament && state.teams.length > 0) {
+          try {
+            const tournament = createTournament(state.teams, eliminationType);
+            state.tournament = tournament;
+            renderTournament(tournament);
+
+            const results = Array.isArray(data.matchResults) ? data.matchResults : [];
+            results.forEach(result => {
+              const match = state.matches.get(result.id);
+              if (!match || match.completed) return;
+              const scores = Array.isArray(result.scores) ? result.scores : [0, 0];
+              finalizeMatch(match, result.winnerSlot, scores, true);
+            });
+          } catch (err) {
+            console.warn('EZ DYP: unable to restore tournament', err);
+          }
+        }
+      } finally {
+        isRestoring = false;
+        persistState();
+      }
+    }
+
     function focusRowInput(row) {
       if (!row) return;
       const input = row.querySelector('[data-player-input]');
@@ -985,7 +1149,7 @@
       if (!elements || !elements.playerList) return;
       const rows = getPlayerRows();
       if (rows.length === 0) {
-        addPlayerRow('', 'A', { focus: true });
+        addPlayerRow('', 'A', { focus: true, suppressPersist: true });
         return;
       }
       rows.forEach((row, index) => {
@@ -995,7 +1159,7 @@
       });
       updateRowNumbers();
       updateRemoveStates();
-      ensureTrailingRow({ focus: false });
+      ensureTrailingRow({ focus: false, suppressPersist: true });
     }
 
     function handlePlayerInput(event) {
@@ -1016,6 +1180,7 @@
       if (input.value && isLastRow(row)) {
         ensureTrailingRow({ focus: false });
       }
+      persistState();
     }
 
     function handlePlayerKeydown(event) {
@@ -1040,6 +1205,7 @@
           window.requestAnimationFrame(() => nextInput.focus());
         }
       }
+      persistState();
     }
 
     function addPlayerRow(value = '', tier = 'A', options = {}) {
@@ -1057,6 +1223,9 @@
       updateRowNumbers();
       updateRemoveStates();
       toggleTierVisibility();
+      if (!options.suppressPersist) {
+        persistState();
+      }
 
       return row;
     }
@@ -1072,6 +1241,7 @@
       } else {
         ensureTrailingRow({ focus: false });
       }
+      persistState();
     }
 
     function collectPlayers() {
@@ -1187,6 +1357,7 @@
         elements.teamsGrid.appendChild(card);
       });
       elements.teamsPanel.hidden = teams.length === 0;
+      persistState();
     }
 
     function nextPowerOfTwo(value) {
@@ -1980,6 +2151,7 @@
       if (!auto) {
         showMessage('Result saved for ' + match.id + '.', 'success');
       }
+      persistState();
     }
 
     function handleCompleteMatch(matchId) {
@@ -2027,6 +2199,7 @@
       }
       updateMatchDisplay(match);
       showMessage('Match reset.', 'info');
+      persistState();
     }
 
     function createTournament(players, eliminationType) {
@@ -2092,6 +2265,7 @@
         state.tournament = tournament;
         renderTournament(tournament);
         showMessage('Bracket ready: ' + teams.length + ' teams, ' + (eliminationType === 'double' ? 'double' : 'single') + ' elimination.', 'success');
+        persistState();
       } catch (error) {
         showMessage(error.message || 'Unable to build bracket.', 'error');
       }
@@ -2103,7 +2277,7 @@
       state.teams = [];
       if (elements.playerList) {
         elements.playerList.innerHTML = '';
-        addPlayerRow('', 'A', { focus: false });
+        addPlayerRow('', 'A', { focus: false, suppressPersist: true });
       }
       if (elements.teamsGrid) {
         elements.teamsGrid.innerHTML = '';
@@ -2116,6 +2290,7 @@
       }
       clearMessage();
       toggleTierVisibility();
+      clearPersistedState();
     }
 
     function bindControlEvents() {
@@ -2124,6 +2299,7 @@
       elements.drawRadios.forEach(radio => {
         radio.addEventListener('change', () => {
           toggleTierVisibility();
+          persistState();
         });
       });
 
@@ -2132,6 +2308,7 @@
           if (state && state.tournament) {
             showMessage('Change elimination type and rebuild to refresh the bracket.', 'info');
           }
+          persistState();
         });
       });
 
@@ -2151,6 +2328,8 @@
       if (elements.generateButton) {
         elements.generateButton.addEventListener('click', handleBuildBracket);
       }
+
+      loadPersistedState();
     }
 
     function bindInfoTip() {
